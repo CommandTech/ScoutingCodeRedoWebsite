@@ -4,6 +4,7 @@ import './App.css'; // Make sure to import your CSS file
 
 function App() {
   const [data, setData] = useState([]);
+  const [filters, setFilters] = useState({});
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -21,6 +22,23 @@ function App() {
     reader.readAsBinaryString(file);
   };
 
+  const handleFilterChange = (column, value) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [column]: value,
+    }));
+  };
+
+  const getUniqueValues = (column) => {
+    return [...new Set(data.map((row) => row[column]))];
+  };
+
+  const filteredData = data.filter((row) => {
+    return Object.keys(filters).every((column) => {
+      return filters[column] === '' || String(row[column]) === String(filters[column]);
+    });
+  });
+
   return (
     <div className="App">
       <header className="App-header">
@@ -35,12 +53,25 @@ function App() {
               <thead>
                 <tr>
                   {Object.keys(data[0]).map((key) => (
-                    <th key={key}>{key}</th>
+                    <th key={key}>
+                      {key}
+                      <select
+                        onChange={(e) => handleFilterChange(key, e.target.value)}
+                        value={filters[key] || ''}
+                      >
+                        <option value="">All</option>
+                        {getUniqueValues(key).map((value) => (
+                          <option key={value} value={value}>
+                            {value}
+                          </option>
+                        ))}
+                      </select>
+                    </th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {data.map((row, index) => (
+                {filteredData.map((row, index) => (
                   <tr key={index}>
                     {Object.values(row).map((value, i) => (
                       <td key={i}>{value}</td>

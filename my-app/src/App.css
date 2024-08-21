@@ -37,14 +37,30 @@
   }
 }
 
+body, .App {
+  margin: 0;
+  padding: 0;
+}
+
+.table-container {
+  text-align: left; /* Ensure the container aligns content to the left */
+  padding-left: 70vw; /* Remove any padding from the container */
+}
+
 .table-container table {
   border-collapse: collapse;
   width: 100%;
   color: black;
+  margin: 0;
 }
 
 .table-container th, .table-container td {
   border: 1px solid black;
   padding: 8px;
   text-align: left;
+  font-size: 12px;
+}
+
+.table-container tr:nth-child(even) {
+  background-color: #a6a2a2;
 }
