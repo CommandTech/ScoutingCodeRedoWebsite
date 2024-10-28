@@ -1,0 +1,11 @@
+/* src/components/Summary.css */
+table {
+    border-collapse: collapse;
+    width: 25%;
+    margin-top: 20px; /* Added margin to create space above the table */
+  }
+  
+  th, td {
+    border: 1px solid black;
+    padding: 8px;
+  }
