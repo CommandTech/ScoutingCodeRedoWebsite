@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { readCSVFile } from '../utils/readCSV';
+import AptsTDisplay from './AptsTDisplay';
 import './Summary.css';
 
 const Summary: React.FC = () => {
@@ -36,13 +37,11 @@ const Summary: React.FC = () => {
   return (
     <div>
       <h2>Summary Page</h2>
-      <p>This is the summary page.</p>
-      <label htmlFor="match-number">Match Number: </label>
-      <select id="match-number" onChange={handleMatchChange}>
+      <select onChange={handleMatchChange} value={selectedMatch}>
         <option value="">Select a match</option>
-        {matchNumbers.map((number, index) => (
-          <option key={index} value={number}>
-            {number}
+        {matchNumbers.map((matchNumber) => (
+          <option key={matchNumber} value={matchNumber}>
+            {matchNumber}
           </option>
         ))}
       </select>
@@ -50,28 +49,29 @@ const Summary: React.FC = () => {
         <table>
           <thead>
             <tr>
+              <th>Red 0</th>
               <th>Red 1</th>
               <th>Red 2</th>
-              <th>Red 3</th>
+              <th>Blue 0</th>
               <th>Blue 1</th>
               <th>Blue 2</th>
-              <th>Blue 3</th>
             </tr>
           </thead>
           <tbody>
             {selectedTeams.map((team, index) => (
-              <tr key={index}>
+              <tr key={team.id || index}>
+                <td>{team['Red0']}</td>
                 <td>{team['Red1']}</td>
                 <td>{team['Red2']}</td>
-                <td>{team['Red3']}</td>
+                <td>{team['Blue0']}</td>
                 <td>{team['Blue1']}</td>
                 <td>{team['Blue2']}</td>
-                <td>{team['Blue3']}</td>
               </tr>
             ))}
           </tbody>
         </table>
       )}
+      <AptsTDisplay selectedTeams={selectedTeams} />
     </div>
   );
 };
