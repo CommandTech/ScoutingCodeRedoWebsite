@@ -1,0 +1,66 @@
+Welcome to DynoScout 2024's Match Preview Report,Unnamed: 1
+This year's eScouting data is being highly supplemented by data from The Blue Alliance. Many thanks to The Blue Alliance for making their valuable data readily accessible to all.,
+Our scouters are human and doing their best to capture all of the robot action accurately.,"If you suspect any errors, please send a description of them to us at this link. Thank you!"
+,
+"This Match Preview Report is an Excel file with multiple tabs for various aspects of the Crescendo game. If you do not see the colored tabs along the bottom, please scroll down.",
+,
+Getting Started,
+"The Report shows data for a specific match. To select a different match, go to the Summary tab and use the drop-down in the upper left. A refresh of this webpage will set this value",
+to be the most recent match scouted to help expedite finding the match you want. Each tab has a drop-down that allows you to change which alliance is being evaluated on that tab.,
+,
+Summary tab,
+"This tab displays the name of the event being scouted and evaluated, and lists the alliance's teams with their event ranking and their score, which is their total ranking points with",
+"cooperition points to the right of the decimal. It also includes overview information for both alliances, with a white background, and the selected alliance with a background of",
+corresponding color. Charts included on the Summary tab:,
+• Stacked Column chart showing each alliance's average points per match,• Doughnut chart showing each team's apparent strategy played from each setup location
+• Column chart showing each team's average points per match phase,(Setup locations each have a ring and are identified by their first letter - roughly centered
+• Stacked Column chart showing the average time each team spends in each zone,"on the staged notes on the Amp side, the center of the Subwoofer, and the Podium, as"
+• Column chart showing the number of times each team had a human player in the,well as anywhere between the center and the Opponent's source. Each setup ring is then
+Amp and the number of high notes were made onto the microphones,divided proportionately into colored segments corresponding the strategies legend.)
+• Stacked Column chart showing the average number of deliveries per match each,• Bubble chart showing each team's average points for any combination of defense
+"team made to the Amp, Speaker, and Trap",(Defense played is on the Y-axis and defense faced is on the X-axis. The size of the bubbles
+• Line graph showing the trend of each team's total note deliveries,are based on the average points and normalized to the largest value on the alliance.
+"(The X-axis is not match number, but their respective 1st, 2nd, 3rd, etc. match)","Defense played ratings are 0 (avoided contact), 1 (embraced driveby contact), 2 (defended"
+• Line graph showing the trend of each team's total stage points,"teams when there was opportunity), and 3 (shadowed a team or tried to shutdown an"
+"(The X-axis is not match number, but their respective 1st, 2nd, 3rd, etc. match)",element of the field. Defense faced ratings are 0-3 and correspond to the types played.)
+,
+Center tab,
+"This tab displays the center 5 notes and which ones were contacted by which teams, from each of the robot setup locations. The 'A' column indicates that the team acquired the note;",
+the 'D' column indicates that they disrupted it instead. The percentage displayed is of the number of matches that they interacted with the note.,
+The C1 note ID is assigned to the one on the Source side (closest to the scoring table) and C5 is the one on the Amp side.,
+,
+Auto tab,
+"This tab lists the alliance's teams with their overview information from the Summary tab, plus the percentage of matches that the team earned the Leave points. Data displayed on",
+this tab is focused on planning autonomous actions. Charts included on the Auto tab:,
+• Column chart showing all six teams' average autonomous points per match,"• Clustered Column chart showing each team's average autonomous deliveries per match,"
+• Line graphs for each team's autonomous contact time with the 5 Center notes,broken down by robot setup location
+"(The X-axis is the 15 seconds of autonomous, the Y-axis is the note ID - see",• Doughnut gauges for each team's average autonomous deliveries to the Amp and Speaker
+Center tab - with positive numbers representing acquisition and negative,(The left vertical gauge illustrates Amp deliveries relative to the event. The range is from
+numbers indicating disruption. Each of the team's matches (up to 16) has a,"lowest average at the event to the highest average, with red and green zones for the"
+"series plotted on their graph. The legend at right shows which match number,","bottom 25% and highest 25%, respectively. Actual average value is displayed in a label."
+with their robot setup location code in parentheses. The match number is added,"The right vertical gauge is the same, except for Speaker deliveries. Any team that"
+to the note value as a decimal in order to provide separation between series.),delivered a note to the Trap will have a label displaying the number of auto Trap deliveries)
+,
+Teleop tab,
+"This tab lists the alliance's teams with their overview information from the Summary tab, plus the number of Melody ranking points they've earned. Data displayed on this tab is",
+focused on planning teleoperated actions. Charts included on the Teleop tab:,
+• Column chart showing all six teams' average teleoperated points per match,• Stacked Bar chart showing each team's average teleoperated deliveries per match
+• Pie charts for each team's teleoperated Speaker deliveries by origin and accuracy,"(The top bar shows the average for each team overall, at any drive station. The lower"
+"(The pie is divided proportionately by delivery origin - Subwoofer, Alliance Wing,",bar shows each team's average at the same drive station they will be at in the match)
+"and Neutral Zone. Within, or next to, these pie segments is the team's shooting",• Doughnut gauges for each team's average teleoperated deliveries to the Amp and Speaker
+"percentage from this location. In the lower right, a label displays the team's Amp",(The left vertical gauge illustrates Amp deliveries relative to the event. The range is from
+delivery accuracy.),"lowest average at the event to the highest average, with red and green zones for the"
+• Column chart for each team showing their average teleoperated deliveries from,"bottom 25% and highest 25%, respectively. Actual average value is displayed in a label."
+each drive station,"The right vertical gauge is the same, except for Speaker deliveries. Total trap deliveries"
+(A label is included for their average at the drive station they will be playing from.),"are included in a label at the bottom, with number of scouted matched shown.)"
+,
+Showtime tab,
+"This tab lists the alliance's teams with their overview information from the Summary tab, plus the number of Ensemble ranking points they've earned. Data displayed on this tab is",
+focused on planning actions related to the Stage. Charts included on the Showtime tab:,
+"• Stopwatch chart for each team, showing climb times for success and failure",• Column chart showing all six teams' average Stage points per match
+"(The red segment shows the longest climb attempt that failed, whereas the green",• Stage Diagram for each team showing successful and failed climbs at each stage location
+segment shows the quickest successful climb. Longest failure is not displayed if it,"(Near and Far labels are dynamic and, for the Amp and Source stations, will change"
+"is longer than the quickest successful climb. For a complete picture, the values and",depending on which alliance is being evaluated. For Center station climbs at Stage Left
+averages for successes and failures are included to the right of the chart.),"or Stage Right, their results are included in the Near label values.)"
+• Table showing Match Events for all six robots. Match Events are actions which,• Clustered Column chart for each team showing the number of times they earned points
+"are infrequent but notable, and not directly captured by the scouting system.",for Harmony and Spotlight

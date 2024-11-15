@@ -1,0 +1,173 @@
+End_Date,Event_Code,Event_Type,Event_Type_String,Event_Key,Event_Name,Short_Name,Start_Date,Week,Year
+2024-04-06,alhu,0,Regional,2024alhu,Rocket City Regional,Rocket City,2024-04-03,5,2024
+2024-03-09,arli,0,Regional,2024arli,Arkansas Regional,Arkansas,2024-03-06,1,2024
+2024-03-17,ausc,0,Regional,2024ausc,Southern Cross Regional,Southern Cross,2024-03-15,2,2024
+2024-03-23,azgl,0,Regional,2024azgl,Arizona East Regional,Arizona East,2024-03-20,3,2024
+2024-03-16,azva,0,Regional,2024azva,Arizona Valley Regional,Arizona Valley,2024-03-13,2,2024
+2024-03-02,bcvi,0,Regional,2024bcvi,Canadian Pacific Regional,Canadian Pacific,2024-02-28,0,2024
+2024-03-02,brbr,0,Regional,2024brbr,Brazil Regional,Brazil,2024-02-28,0,2024
+2024-04-06,caav,0,Regional,2024caav,Aerospace Valley Regional,Aerospace Valley,2024-04-03,5,2024
+2024-04-07,cabe,0,Regional,2024cabe,East Bay Regional,East Bay,2024-04-04,5,2024
+2024-03-16,cada,0,Regional,2024cada,Sacramento Regional,Sacramento,2024-03-13,2,2024
+2024-03-24,cafr,0,Regional,2024cafr,Central Valley Regional,Central Valley,2024-03-21,3,2024
+2024-03-17,cala,0,Regional,2024cala,Los Angeles Regional,Los Angeles,2024-03-14,2,2024
+2024-03-30,camb,0,Regional,2024camb,Monterey Bay Regional,Monterey Bay,2024-03-27,4,2024
+2024-03-30,caoc,0,Regional,2024caoc,Orange County Regional,Orange County,2024-03-27,4,2024
+2024-03-03,caph,0,Regional,2024caph,Hueneme Port Regional,Hueneme Port,2024-02-29,0,2024
+2024-03-24,casd,0,Regional,2024casd,San Diego Regional presented by Qualcomm,San Diego,2024-03-21,3,2024
+2024-03-10,casf,0,Regional,2024casf,San Francisco Regional,San Francisco,2024-03-07,1,2024
+2024-03-03,casj,0,Regional,2024casj,Silicon Valley Regional,Silicon Valley,2024-02-29,0,2024
+2024-03-10,cave,0,Regional,2024cave,Ventura County Regional,Ventura County,2024-03-07,1,2024
+2024-04-06,chcmp,2,District Championship,2024chcmp,FIRST Chesapeake District Championship,Chesapeake,2024-04-03,5,2024
+2024-03-23,code,0,Regional,2024code,Colorado Regional,Colorado,2024-03-20,3,2024
+2024-03-03,cthar,1,District,2024cthar,NE District Hartford Event,Hartford,2024-03-01,0,2024
+2024-03-10,ctwat,1,District,2024ctwat,NE District Waterbury Event,Waterbury,2024-03-08,1,2024
+2024-03-23,flor,0,Regional,2024flor,Orlando Regional,Orlando,2024-03-20,3,2024
+2024-03-16,flta,0,Regional,2024flta,Tallahassee Regional,Tallahassee,2024-03-13,2,2024
+2024-03-02,flwp,0,Regional,2024flwp,South Florida Regional,South Florida,2024-02-28,0,2024
+2024-03-30,gaalb,1,District,2024gaalb,PCH District Albany Event,Albany,2024-03-28,4,2024
+2024-03-23,gacar,1,District,2024gacar,PCH District Carrollton Event,Carrollton,2024-03-21,3,2024
+2024-04-06,gacmp,2,District Championship,2024gacmp,Peachtree District Championship,Peachtree,2024-04-03,5,2024
+2024-03-09,gadal,1,District,2024gadal,PCH District Dalton Event,Dalton,2024-03-07,1,2024
+2024-03-17,gagwi,1,District,2024gagwi,PCH District Gwinnett Event,Gwinnett,2024-03-15,2,2024
+2024-04-06,hiho,0,Regional,2024hiho,Hawaii Regional,Hawaii,2024-04-03,5,2024
+2024-03-23,iacf,0,Regional,2024iacf,Iowa Regional,Iowa,2024-03-20,3,2024
+2024-03-23,idbo,0,Regional,2024idbo,Idaho Regional,Idaho,2024-03-20,3,2024
+2024-03-30,ilch,0,Regional,2024ilch,Midwest Regional,Midwest,2024-03-27,4,2024
+2024-03-16,ilpe,0,Regional,2024ilpe,Central Illinois Regional,Central Illinois,2024-03-13,2,2024
+2024-04-07,incmp,2,District Championship,2024incmp,FIRST Indiana State Championship,Indiana,2024-04-05,5,2024
+2024-03-17,incol,1,District,2024incol,FIN District Columbus Event,Columbus,2024-03-15,2,2024
+2024-03-30,ineva,1,District,2024ineva,FIN District Washington Event presented by Toyota,Washington,2024-03-28,4,2024
+2024-03-03,inmis,1,District,2024inmis,FIN District Mishawaka Event,Mishawaka,2024-03-01,0,2024
+2024-03-24,inpla,1,District,2024inpla,FIN District Plainfield Event presented by Carrier,Plainfield,2024-03-22,3,2024
+2024-03-21,iscmp,2,District Championship,2024iscmp,FIRST Israel District Championship,Israel,2024-03-19,3,2024
+2024-02-26,isde1,1,District,2024isde1,ISR District Event #1,ISR #1,2024-02-24,0,2024
+2024-02-29,isde2,1,District,2024isde2,ISR District Event #2,ISR #2,2024-02-27,0,2024
+2024-03-05,isde3,1,District,2024isde3,ISR District Event #3,ISR #3,2024-03-03,0,2024
+2024-03-07,isde4,1,District,2024isde4,ISR District Event #4,ISR #4,2024-03-05,1,2024
+2024-03-16,ksla,0,Regional,2024ksla,Heartland Regional,Heartland,2024-03-13,2,2024
+2024-04-06,lake,0,Regional,2024lake,Bayou Regional,Bayou,2024-04-03,5,2024
+2024-03-24,mabos,1,District,2024mabos,NE District Greater Boston Event,Greater Boston,2024-03-22,3,2024
+2024-03-10,mabri,1,District,2024mabri,NE District BSU Event,BSU,2024-03-08,1,2024
+2024-03-17,marea,1,District,2024marea,NE District North Shore Event,North Shore,2024-03-15,2,2024
+2024-03-24,mawne,1,District,2024mawne,NE District Western NE Event,Western NE,2024-03-22,3,2024
+2024-03-31,mawor,1,District,2024mawor,NE District WPI Event,WPI,2024-03-29,4,2024
+2024-03-24,mdowi,1,District,2024mdowi,CHS District Owings Mills MD Event,Owings Mills MD,2024-03-22,3,2024
+2024-03-17,mdsev,1,District,2024mdsev,CHS District Severn MD Event,Severn MD,2024-03-15,2,2024
+2024-03-17,melew,1,District,2024melew,NE District Pine Tree Event,Pine Tree,2024-03-15,2,2024
+2024-03-17,miann,1,District,2024miann,FIM District Ann Arbor Event presented by DTE,Ann Arbor,2024-03-15,2,2024
+2024-03-03,mibat,1,District,2024mibat,FIM District Battle Creek Event presented by Parker Hannifin,Battle Creek,2024-03-01,0,2024
+2024-03-09,mibel,1,District,2024mibel,FIM District Belleville Event presented by Belleville Yacht Club,Belleville,2024-03-07,1,2024
+2024-03-03,miber,1,District,2024miber,FIM District Berrien Springs Event presented by Edgewater Automation,Berrien Springs,2024-03-01,0,2024
+2024-03-03,mibkn,1,District,2024mibkn,FIM District Jackson at Columbia Event presented by Consumers Energy Foundation,Jackson at Columbia,2024-03-01,0,2024
+2024-03-10,mibro,1,District,2024mibro,FIM District Woodhaven Event presented by Altair,Woodhaven,2024-03-08,1,2024
+2024-04-06,micmp,2,District Championship,2024micmp,FIRST in Michigan State Championship,Michigan,2024-04-04,5,2024
+2024-03-30,midet,1,District,2024midet,FIM District Renaissance Event presented by DTE Energy Foundation,Renaissance,2024-03-28,4,2024
+2024-03-16,midtr,1,District,2024midtr,FIM District Wayne State Event presented by Magna,Wayne State,2024-03-14,2,2024
+2024-03-09,miesc,1,District,2024miesc,FIM District Escanaba Event presented by Highline,Escanaba,2024-03-07,1,2024
+2024-03-09,mike2,1,District,2024mike2,FIM District Kettering University Event #2 presented by The Gene Haas Foundation,Kettering University #2,2024-03-07,1,2024
+2024-03-30,miken,1,District,2024miken,FIM District Kentwood Event presented by Dematic,Kentwood,2024-03-28,4,2024
+2024-03-02,miket,1,District,2024miket,FIM District Kettering University Event #1 presented by The Gene Haas Foundation,Kettering University #1,2024-02-29,0,2024
+2024-03-10,milac,1,District,2024milac,FIM District Lake City Event,Lake City,2024-03-08,1,2024
+2024-03-23,milan,1,District,2024milan,FIM District Lansing Event,Lansing,2024-03-21,3,2024
+2024-03-24,miliv,1,District,2024miliv,FIM District Livonia Event presented by Aisin,Livonia,2024-03-22,3,2024
+2024-03-16,milsu,1,District,2024milsu,FIM District LSSU Event,LSSU,2024-03-14,2,2024
+2024-03-30,mimcc,1,District,2024mimcc,FIM District Macomb Event presented by DTE,Macomb,2024-03-28,4,2024
+2024-03-23,mimid,1,District,2024mimid,FIM District Midland Event presented by Dow,Midland,2024-03-21,3,2024
+2024-03-02,mimil,1,District,2024mimil,FIM District Milford Event presented by GM Milford Proving Ground,Milford,2024-02-29,0,2024
+2024-03-30,mimtp,1,District,2024mimtp,FIM District Central Michigan University Event,Central Michigan University,2024-03-28,4,2024
+2024-03-16,mimus,1,District,2024mimus,FIM District Muskegon Event presented by Renk,Muskegon,2024-03-14,2,2024
+2024-03-09,misjo,1,District,2024misjo,FIM District St. Joseph Event presented by Whirlpool,St. Joseph,2024-03-07,1,2024
+2024-03-30,mitr2,1,District,2024mitr2,FIM District Troy Event #2 presented by Magna,Troy #2,2024-03-28,4,2024
+2024-03-24,mitry,1,District,2024mitry,FIM District Troy Event #1 presented by Aptiv,Troy #1,2024-03-22,3,2024
+2024-03-16,mitvc,1,District,2024mitvc,FIM District Traverse City Event presented by Cone Drive,Traverse City,2024-03-14,2,2024
+2024-03-23,miwmi,1,District,2024miwmi,FIM District West Michigan Event,West Michigan,2024-03-21,3,2024
+2024-03-02,mndu,0,Regional,2024mndu,Lake Superior Regional,Lake Superior,2024-02-28,0,2024
+2024-03-02,mndu2,0,Regional,2024mndu2,Northern Lights Regional,Northern Lights,2024-02-28,0,2024
+2024-04-06,mnmi,0,Regional,2024mnmi,"Minnesota 10,000 Lakes Regional","Minnesota 10,000 Lakes",2024-04-03,5,2024
+2024-04-07,mnmi2,0,Regional,2024mnmi2,Minnesota Granite City Regional,Minnesota Granite City,2024-04-04,5,2024
+2024-04-06,mokc,0,Regional,2024mokc,Greater Kansas City Regional,Greater Kansas City,2024-04-03,5,2024
+2024-03-09,mose,0,Regional,2024mose,Central Missouri Regional,Central Missouri,2024-03-06,1,2024
+2024-03-23,mosl,0,Regional,2024mosl,St. Louis Regional,St. Louis,2024-03-20,3,2024
+2024-04-06,mrcmp,2,District Championship,2024mrcmp,FIRST Mid-Atlantic District Championship,Mid-Atlantic,2024-04-03,5,2024
+2024-03-16,mslr,0,Regional,2024mslr,Magnolia Regional,Magnolia,2024-03-13,2,2024
+2024-03-02,mxmo,0,Regional,2024mxmo,Regional Monterrey presented by PrepaTec,Regional Monterrey,2024-02-28,0,2024
+2024-03-16,mxpu,0,Regional,2024mxpu,Regional Hermosillo presented by PrepaTec,Regional Hermosillo,2024-03-13,2,2024
+2024-03-23,mxto,0,Regional,2024mxto,Regional Laguna presented by Peñoles,Regional Laguna,2024-03-20,3,2024
+2024-03-17,ncash,1,District,2024ncash,FNC District UNC Asheville Event,UNC Asheville,2024-03-15,2,2024
+2024-04-07,nccmp,2,District Championship,2024nccmp,FIRST North Carolina District State Championship,North Carolina District,2024-04-05,5,2024
+2024-03-24,ncmec,1,District,2024ncmec,FNC District Mecklenburg County Event,Mecklenburg County,2024-03-22,3,2024
+2024-03-10,ncpem,1,District,2024ncpem,FNC District UNC Pembroke Event,UNC Pembroke,2024-03-08,1,2024
+2024-03-24,ncwa2,1,District,2024ncwa2,FNC District Wake County Event,Wake County,2024-03-22,3,2024
+2024-03-03,ncwak,1,District,2024ncwak,FNC District Orange County Event,Orange County,2024-03-01,0,2024
+2024-03-09,ndgf,0,Regional,2024ndgf,Great Northern Regional,Great Northern,2024-03-06,1,2024
+2024-04-06,necmp,2,District Championship,2024necmp,New England FIRST District Championship,New England,2024-04-03,5,2024
+2024-03-30,nhdur,1,District,2024nhdur,NE District UNH Event,UNH,2024-03-28,4,2024
+2024-03-02,nhgrs,1,District,2024nhgrs,NE District Granite State Event,Granite State,2024-02-29,0,2024
+2024-03-10,njall,1,District,2024njall,FMA District Allentown Event,Allentown,2024-03-08,1,2024
+2024-03-03,njfla,1,District,2024njfla,FMA District Mount Olive Event,Mount Olive,2024-03-01,0,2024
+2024-03-17,njski,1,District,2024njski,FMA District Montgomery Event,Montgomery,2024-03-15,2,2024
+2024-03-10,njtab,1,District,2024njtab,FMA District Seneca Event,Seneca,2024-03-08,1,2024
+2024-03-24,njwas,1,District,2024njwas,FMA District Warren Hills Event,Warren Hills,2024-03-22,3,2024
+2024-03-30,nvlv,0,Regional,2024nvlv,Las Vegas Regional,Las Vegas,2024-03-27,4,2024
+2024-03-23,nyli2,0,Regional,2024nyli2,FIRST Long Island Regional,Long Island,2024-03-20,3,2024
+2024-04-07,nyny,0,Regional,2024nyny,New York City Regional,New York City,2024-04-04,5,2024
+2024-03-16,nyro,0,Regional,2024nyro,Finger Lakes Regional,Finger Lakes,2024-03-13,2,2024
+2024-03-09,nysu,0,Regional,2024nysu,Hudson Valley Regional,Hudson Valley,2024-03-06,1,2024
+2024-03-23,nytr,0,Regional,2024nytr,New York Tech Valley Regional,New York Tech Valley,2024-03-20,3,2024
+2024-03-23,ohcl,0,Regional,2024ohcl,Buckeye Regional,Buckeye,2024-03-20,3,2024
+2024-04-06,ohmv,0,Regional,2024ohmv,Miami Valley Regional,Miami Valley,2024-04-03,5,2024
+2024-04-06,okok,0,Regional,2024okok,Oklahoma Regional,Oklahoma,2024-04-03,5,2024
+2024-03-09,oktu,0,Regional,2024oktu,Green Country Regional,Green Country,2024-03-06,1,2024
+2024-03-17,onbar,1,District,2024onbar,ONT District Georgian Event,Georgian,2024-03-15,2,2024
+2024-04-06,oncmp,2,District Championship,2024oncmp,FIRST Ontario Provincial Championship,Ontario,2024-04-03,5,2024
+2024-03-30,onham,1,District,2024onham,ONT District McMaster University,McMaster University,2024-03-28,4,2024
+2024-03-10,onnew,1,District,2024onnew,ONT District Newmarket Complex Event,Newmarket Complex,2024-03-08,1,2024
+2024-03-24,onnob,1,District,2024onnob,ONT District North Bay Event,North Bay,2024-03-22,3,2024
+2024-03-17,onosh,1,District,2024onosh,ONT District Durham College Event,Durham College,2024-03-15,2,2024
+2024-03-10,onsca,1,District,2024onsca,ONT District Centennial College Event,Centennial College,2024-03-08,1,2024
+2024-03-20,ontor,1,District,2024ontor,ONT District Humber College Event,Humber College,2024-03-18,3,2024
+2024-03-23,onwat,1,District,2024onwat,ONT District University of Waterloo Event,University of Waterloo,2024-03-21,3,2024
+2024-03-30,onwin,1,District,2024onwin,ONT District Windsor Essex Great Lakes Event,Windsor Essex Great Lakes,2024-03-28,4,2024
+2024-03-02,orore,1,District,2024orore,PNW District Clackamas Academy Event,Clackamas Academy,2024-02-29,0,2024
+2024-03-09,orsal,1,District,2024orsal,PNW District Oregon State Fairgrounds Event,Oregon State Fairgrounds,2024-03-07,1,2024
+2024-03-23,orwil,1,District,2024orwil,PNW District Wilsonville Event,Wilsonville,2024-03-21,3,2024
+2024-03-24,paben,1,District,2024paben,FMA District Bensalem Event,Bensalem,2024-03-22,3,2024
+2024-03-02,paca,0,Regional,2024paca,Greater Pittsburgh Regional,Greater Pittsburgh,2024-02-28,0,2024
+2024-03-03,pahat,1,District,2024pahat,FMA District Hatboro-Horsham Event,Hatboro-Horsham,2024-03-01,0,2024
+2024-03-17,paphi,1,District,2024paphi,FMA District Springside Chestnut Hill Event,Springside Chestnut Hill,2024-03-15,2,2024
+2024-04-06,pncmp,2,District Championship,2024pncmp,Pacific Northwest FIRST District Championship,Pacific Northwest,2024-04-03,5,2024
+2024-03-03,qcmo,0,Regional,2024qcmo,Festival de Robotique Regional,Festival de Robotique,2024-03-01,0,2024
+2024-03-16,rikin,1,District,2024rikin,NE District URI Event,URI,2024-03-14,2,2024
+2024-03-09,scand,1,District,2024scand,PCH District Anderson Event presented by MAGNA,Anderson,2024-03-07,1,2024
+2024-03-23,sccha,1,District,2024sccha,PCH District Charleston Event presented by South Carolina Department of Education,Charleston,2024-03-21,3,2024
+2024-03-06,tnkn,0,Regional,2024tnkn,Smoky Mountains Regional,Smoky Mountains,2024-03-03,0,2024
+2024-03-21,tuhc,0,Regional,2024tuhc,Haliç Regional,Haliç,2024-03-19,3,2024
+2024-03-07,tuis,0,Regional,2024tuis,İstanbul Regional,İstanbul,2024-03-05,1,2024
+2024-03-10,tuis2,0,Regional,2024tuis2,Bosphorus Regional,Bosphorus,2024-03-08,1,2024
+2024-03-24,tuis3,0,Regional,2024tuis3,Marmara Regional,Marmara,2024-03-22,3,2024
+2024-03-30,txama,1,District,2024txama,FIT District Amarillo Event,Amarillo,2024-03-28,4,2024
+2024-03-09,txbel,1,District,2024txbel,FIT District Belton Event,Belton,2024-03-07,1,2024
+2024-03-30,txcle,1,District,2024txcle,FIT District Space City @ Friendswood Event,Space City @ Friendswood,2024-03-28,4,2024
+2024-04-06,txcmp,2,District Championship,2024txcmp,FIRST In Texas District Championship,Texas,2024-04-03,5,2024
+2024-03-23,txdal,1,District,2024txdal,FIT District Dallas Event,Dallas,2024-03-21,3,2024
+2024-03-16,txfor,1,District,2024txfor,FIT District Fort Worth Event,Fort Worth,2024-03-14,2,2024
+2024-03-24,txhou,1,District,2024txhou,FIT District Houston Event,Houston,2024-03-22,3,2024
+2024-03-02,txkat,1,District,2024txkat,FIT District Katy Event,Katy,2024-02-29,0,2024
+2024-03-10,txpla,1,District,2024txpla,FIT District Plano Event,Plano,2024-03-08,1,2024
+2024-03-16,txsan,1,District,2024txsan,FIT District San Antonio Event,San Antonio,2024-03-14,2,2024
+2024-03-02,txwac,1,District,2024txwac,FIT District Waco Event,Waco,2024-02-29,0,2024
+2024-03-02,utwv,0,Regional,2024utwv,Utah Regional,Utah,2024-02-28,0,2024
+2024-03-03,vaash,1,District,2024vaash,CHS District Ashland VA Event,Ashland VA,2024-03-01,0,2024
+2024-03-03,vabla,1,District,2024vabla,CHS District Blacksburg VA Event,Blacksburg VA,2024-03-01,0,2024
+2024-03-24,vafal,1,District,2024vafal,CHS District Falls Church VA Event presented by Department of Energy,Falls Church VA,2024-03-22,3,2024
+2024-03-17,vagle,1,District,2024vagle,CHS District Glen Allen VA Event,Glen Allen VA,2024-03-15,2,2024
+2024-03-10,vapor,1,District,2024vapor,CHS District Portsmouth VA Event,Portsmouth VA,2024-03-08,1,2024
+2024-03-10,waahs,1,District,2024waahs,PNW District Auburn Event,Auburn,2024-03-08,1,2024
+2024-03-17,wabon,1,District,2024wabon,PNW District Bonney Lake Event,Bonney Lake,2024-03-15,2,2024
+2024-03-24,wasam,1,District,2024wasam,PNW District Sammamish Event,Sammamish,2024-03-22,3,2024
+2024-03-03,wasno,1,District,2024wasno,PNW District Glacier Peak Event,Glacier Peak,2024-03-01,0,2024
+2024-03-16,wayak,1,District,2024wayak,PNW District SunDome Event,SunDome,2024-03-14,2,2024
+2024-04-06,wila,0,Regional,2024wila,Seven Rivers Regional,Seven Rivers,2024-04-03,5,2024
+2024-03-17,wimi,0,Regional,2024wimi,Wisconsin Regional,Wisconsin,2024-03-14,2,2024
+2024-03-23,zhha,0,Regional,2024zhha,China Regional (CHINA TEAMS PLEASE PREFERENCE THIS EVENT),China,2024-03-20,3,2024
