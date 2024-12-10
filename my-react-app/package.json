@@ -13,6 +13,7 @@
     "@types/xlsx": "^0.0.36",
     "chart.js": "^4.4.6",
     "exceljs": "^4.4.0",
+    "file-saver": "^2.0.5",
     "my-react-app": "file:",
     "papaparse": "^5.4.1",
     "react": "^18.3.1",
@@ -49,6 +50,7 @@
     ]
   },
   "devDependencies": {
+    "@types/file-saver": "^2.0.7",
     "@types/papaparse": "^5.3.15",
     "@types/react-router-dom": "^5.3.3"
   }
