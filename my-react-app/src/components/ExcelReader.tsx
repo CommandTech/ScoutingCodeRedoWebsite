@@ -1,21 +1,34 @@
 // src/components/ExcelReader.tsx
 import React, { useState } from 'react';
-import { readExcelFile } from '../utils/readExcel';
+
+const BASE_URL = 'http://localhost:3001';
+//const BASE_URL = 'http://https://96.236.24.79/:3001';
 
 const ExcelReader: React.FC = () => {
   const [data, setData] = useState<{ [key: string]: any[] }>({});
   const [selectedSheet, setSelectedSheet] = useState<string | null>(null);
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
-      try {
-        const sheetsData = await readExcelFile(file);
-        setData(sheetsData);
-        setSelectedSheet(Object.keys(sheetsData)[0]); // Select the first sheet by default
-      } catch (error) {
-        console.error('Error reading Excel file:', error);
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await fetch(`${BASE_URL}/upload`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
       }
+
+      console.log('File uploaded successfully');
+    } catch (error) {
+      console.error('Error uploading file:', error);
     }
   };
 
@@ -23,40 +36,20 @@ const ExcelReader: React.FC = () => {
     setSelectedSheet(event.target.value);
   };
 
+  const handleFileDownload = () => {
+    if (uploadedFile) {
+      const link = document.createElement('a');
+      // Add your file download logic here
+    }
+  };
+
   return (
     <div>
-      <input type="file" accept=".xlsx, .xls" onChange={handleFileUpload} />
-      {Object.keys(data).length > 0 && (
-        <div>
-          <select onChange={handleSheetChange} value={selectedSheet || ''}>
-            {Object.keys(data).map((sheetName) => (
-              <option key={sheetName} value={sheetName}>
-                {sheetName}
-              </option>
-            ))}
-          </select>
-          {selectedSheet && data[selectedSheet] && (
-            <table>
-              <thead>
-                <tr>
-                  {Object.keys(data[selectedSheet][0]).map((key) => (
-                    <th key={key}>{key}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {data[selectedSheet].map((row, index) => (
-                  <tr key={index}>
-                    {Object.values(row).map((value, idx) => (
-                      <td key={idx}>{value as React.ReactNode}</td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </div>
-      )}
+      <input type="file" onChange={handleFileUpload} />
+      <select onChange={handleSheetChange}>
+        {/* Add your options here */}
+      </select>
+      <button onClick={handleFileDownload}>Download File</button>
     </div>
   );
 };
