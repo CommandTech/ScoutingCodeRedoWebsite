@@ -1,7 +1,6 @@
 // src/components/ExcelReader.tsx
 import React, { useState } from 'react';
 import { readExcelFile } from '../utils/readExcel';
-import { saveAs } from 'file-saver';
 
 const ExcelReader: React.FC = () => {
   const [data, setData] = useState<{ [key: string]: any[] }>({});
