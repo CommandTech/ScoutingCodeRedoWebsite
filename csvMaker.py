@@ -4,8 +4,8 @@ import time
 import os
 
 def convert_excel_to_csv():
-    excel_file = r'C:\Users\alexb\Downloads\MPR-8-19-24.xlsx'
-    output_dir = r'C:\Users\alexb\Documents\BackUp\Robotics\Website\ScoutingCodeRedoWebsite\ExcelCSVFiles'
+    excel_file = r'backend\uploads\MPR-8-19-24.xlsx'
+    output_dir = r'ExcelCSVFiles'
     
     # Create the output directory if it doesn't exist
     os.makedirs(output_dir, exist_ok=True)
