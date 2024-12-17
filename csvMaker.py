@@ -37,7 +37,7 @@ def convert_excel_to_csv():
     else:
         print('Error: Sheet "code" does not exist in the Excel file.')
 
-# Loop to keep running the function every minute
+# Loop to keep running the function
 while True:
     convert_excel_to_csv()
     time.sleep(10)
