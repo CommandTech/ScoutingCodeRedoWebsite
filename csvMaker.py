@@ -1,11 +1,15 @@
-import pandas as pd
-import schedule
-import time
 import os
+import pandas as pd
+import time
 
 def convert_excel_to_csv():
     excel_file = r'backend\uploads\ScoutingWebsiteTest.xlsx'
     output_dir = r'ExcelCSVFiles'
+    
+    # Check if the Excel file exists
+    if not os.path.exists(excel_file):
+        print(f'Error: The file {excel_file} does not exist.')
+        return
     
     # Create the output directory if it doesn't exist
     os.makedirs(output_dir, exist_ok=True)
@@ -33,11 +37,7 @@ def convert_excel_to_csv():
     else:
         print('Error: Sheet "code" does not exist in the Excel file.')
 
-# Run the function immediately
-convert_excel_to_csv()
-
-# Schedule the task to run every 1 minute
-schedule.every(1).minutes.do(convert_excel_to_csv)
-
+# Loop to keep running the function every minute
 while True:
-    schedule.run_pending()
+    convert_excel_to_csv()
+    time.sleep(10)
