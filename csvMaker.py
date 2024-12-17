@@ -4,7 +4,7 @@ import time
 
 def convert_excel_to_csv():
     excel_file = r'backend\uploads\ScoutingWebsiteTest.xlsx'
-    output_dir = r'ExcelCSVFiles'
+    output_dir = r'frontend\public\ExcelCSVFiles'
     
     # Check if the Excel file exists
     if not os.path.exists(excel_file):
@@ -40,4 +40,4 @@ def convert_excel_to_csv():
 # Loop to keep running the function
 while True:
     convert_excel_to_csv()
-    time.sleep(10)
+    time.sleep(60)

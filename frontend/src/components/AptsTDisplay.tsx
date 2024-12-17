@@ -4,7 +4,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const AptsTDisplay = ({ selectedTeams }: { selectedTeams: string[] }) => {
+const AptsTDisplay = ({ selectedTeams }: { selectedTeams: any[] }) => {
   const [averageAptsT, setAverageAptsT] = useState<{ [key: string]: number }>({});
 
   useEffect(() => {
@@ -31,7 +31,21 @@ const AptsTDisplay = ({ selectedTeams }: { selectedTeams: string[] }) => {
     }
   }, [selectedTeams]);
 
-  const teams = ['Red0', 'Red1', 'Red2', 'Blue0', 'Blue1', 'Blue2'];
+  console.log('Selected Teams:', selectedTeams); // Debugging log
+
+  // Extract team names from selectedTeams
+  const teams = selectedTeams.flatMap(team => [
+    team['Red0'],
+    team['Red1'],
+    team['Red2'],
+    team['Blue0'],
+    team['Blue1'],
+    team['Blue2']
+  ]).filter(Boolean); // Filter out any undefined or null values
+
+  console.log('Teams:', teams); // Debugging log
+  console.log('Average AptsT:', averageAptsT); // Debugging log
+
   const data = {
     labels: teams,
     datasets: [
