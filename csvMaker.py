@@ -40,4 +40,4 @@ def convert_excel_to_csv():
 # Loop to keep running the function
 while True:
     convert_excel_to_csv()
-    time.sleep(60)
+    time.sleep(60*5)

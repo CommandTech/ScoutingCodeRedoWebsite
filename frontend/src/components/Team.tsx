@@ -1,24 +1,23 @@
-import React, { useState, useEffect } from 'react';
 import { readCSVFile } from '../utils/readCSV';
+import React, { useState, useEffect } from 'react';
 
 const Team = () => {
     const [teams, setTeams] = useState<string[]>([]);
     const [selectedTeam, setSelectedTeam] = useState<string>('');
     const [teamData, setTeamData] = useState<{ [key: string]: string | number }>({});
+    const [filteredData, setFilteredData] = useState<{ [key: string]: string | number }[]>([]);
+    const [showTable, setShowTable] = useState(false);
+    const [delOrigCounts, setDelOrigCounts] = useState<{ [key: string]: number }>({});
 
     useEffect(() => {
         const fetchTeams = async () => {
             try {
                 const response = await fetch('/ExcelCSVFiles/Dyno_Data.csv');
-                console.log('Response URL:', response.url); // Log response URL
-                console.log('Response Status:', response.status); // Log response status
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 const csvData = await response.text();
-                console.log('CSV Data:', csvData); // Log raw CSV data
                 const parsedData = await readCSVFile(new File([csvData], 'Dyno_Data.csv', { type: 'text/csv' }));
-                console.log('Parsed Data:', parsedData); // Log parsed data
 
                 if (!parsedData || !Array.isArray(parsedData)) {
                     throw new Error('Parsed data is not an array or is undefined');
@@ -36,41 +35,54 @@ const Team = () => {
                     return numA - numB;
                 });
 
-                console.log('Sorted Team Names:', uniqueTeamNames); // Log sorted team names
                 setTeams(uniqueTeamNames);
             } catch (error) {
-                console.error('Error fetching or parsing CSV:', error);
+                console.error('Error fetching teams:', error);
             }
         };
 
         fetchTeams();
     }, []);
 
-    const handleTeamChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleTeamChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
         const teamName = event.target.value;
         setSelectedTeam(teamName);
 
-        // Fetch and set the selected team's data
-        const fetchTeamData = async () => {
+        if (teamName) {
             try {
-                const response = await fetch('/Dyno_Data.csv');
-                console.log('Response URL:', response.url); // Log response URL
-                console.log('Response Status:', response.status); // Log response status
+                const response = await fetch('/ExcelCSVFiles/Dyno_Data.csv');
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 const csvData = await response.text();
-                console.log('CSV Data:', csvData); // Log raw CSV data
                 const parsedData = await readCSVFile(new File([csvData], 'Dyno_Data.csv', { type: 'text/csv' }));
-                console.log('Parsed Data:', parsedData); // Log parsed data
+
                 const team = parsedData.find((row: any) => row['Team'] === teamName);
                 setTeamData(team as { [key: string]: string | number });
+                const filtered = parsedData.filter((row: any) => row['Team'] === teamName);
+                setFilteredData(filtered);
+
+                // Count occurrences of DelOrig values
+                const counts: { [key: string]: number } = {};
+                filtered.forEach(d => {
+                    counts[d.DelOrig] = (counts[d.DelOrig] || 0) + 1;
+                });
+                setDelOrigCounts(counts);
+
+                setShowTable(true);
             } catch (error) {
                 console.error('Error fetching team data:', error);
             }
-        };
+        } else {
+            setTeamData({});
+            setFilteredData([]);
+            setDelOrigCounts({});
+            setShowTable(false);
+        }
+    };
 
-        fetchTeamData();
+    const toggleTable = () => {
+        setShowTable(!showTable);
     };
 
     return (
@@ -83,23 +95,49 @@ const Team = () => {
                     </option>
                 ))}
             </select>
-            {selectedTeam && teamData && (
-                <table>
-                    <thead>
-                        <tr>
-                            {Object.keys(teamData).map((key) => (
-                                <th key={key}>{key}</th>
+            {selectedTeam && (
+                <button onClick={toggleTable}>
+                    {showTable ? 'Hide Team Activities' : 'Show Team Activities'}
+                </button>
+            )}
+            {showTable && filteredData.length > 0 && (
+                <div>
+                    <table>
+                        <thead>
+                            <tr>
+                                {Object.keys(filteredData[0]).map((key) => (
+                                    <th key={key}>{key}</th>
+                                ))}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {filteredData.map((data, rowIndex) => (
+                                <tr key={rowIndex}>
+                                    {Object.values(data).map((value, colIndex) => (
+                                        <td key={colIndex}>{value}</td>
+                                    ))}
+                                </tr>
                             ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            {Object.values(teamData).map((value, index) => (
-                                <td key={index}>{value}</td>
+                        </tbody>
+                    </table>
+                    <h3>DelOrig Counts</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>DelOrig</th>
+                                <th>Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {Object.entries(delOrigCounts).map(([key, count], index) => (
+                                <tr key={index}>
+                                    <td>{key}</td>
+                                    <td>{count}</td>
+                                </tr>
                             ))}
-                        </tr>
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             )}
         </div>
     );
