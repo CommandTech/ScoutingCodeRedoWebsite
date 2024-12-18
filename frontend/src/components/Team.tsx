@@ -1,13 +1,16 @@
 import { readCSVFile } from '../utils/readCSV';
 import React, { useState, useEffect } from 'react';
+import TeamActivitiesTable from './TeamData/TeamActivitiesTable';
+import DelOrigCountsTable from './TeamData/DelOrigCountsTable';
 
 const Team = () => {
     const [teams, setTeams] = useState<string[]>([]);
     const [selectedTeam, setSelectedTeam] = useState<string>('');
     const [teamData, setTeamData] = useState<{ [key: string]: string | number }>({});
     const [filteredData, setFilteredData] = useState<{ [key: string]: string | number }[]>([]);
-    const [showTable, setShowTable] = useState(false);
-    const [delOrigCounts, setDelOrigCounts] = useState<{ [key: string]: number }>({});
+    const [showTeamTable, setShowTeamTable] = useState(false);
+    const [showDelOrigTable, setShowDelOrigTable] = useState(false);
+    const [delOrigCounts, setDelOrigCounts] = useState<{ [matchNumber: string]: { [key: string]: number } }>({});
 
     useEffect(() => {
         const fetchTeams = async () => {
@@ -62,14 +65,19 @@ const Team = () => {
                 const filtered = parsedData.filter((row: any) => row['Team'] === teamName);
                 setFilteredData(filtered);
 
-                // Count occurrences of DelOrig values
-                const counts: { [key: string]: number } = {};
+                // Count occurrences of DelOrig values by match number
+                const counts: { [matchNumber: string]: { [key: string]: number } } = {};
                 filtered.forEach(d => {
-                    counts[d.DelOrig] = (counts[d.DelOrig] || 0) + 1;
+                    const matchNumber = d.Match;
+                    if (!counts[matchNumber]) {
+                        counts[matchNumber] = {};
+                    }
+                    counts[matchNumber][d.DelOrig] = (counts[matchNumber][d.DelOrig] || 0) + 1;
                 });
                 setDelOrigCounts(counts);
 
-                setShowTable(true);
+                setShowTeamTable(true);
+                setShowDelOrigTable(true);
             } catch (error) {
                 console.error('Error fetching team data:', error);
             }
@@ -77,12 +85,17 @@ const Team = () => {
             setTeamData({});
             setFilteredData([]);
             setDelOrigCounts({});
-            setShowTable(false);
+            setShowTeamTable(false);
+            setShowDelOrigTable(false);
         }
     };
 
-    const toggleTable = () => {
-        setShowTable(!showTable);
+    const toggleTeamTable = () => {
+        setShowTeamTable(!showTeamTable);
+    };
+
+    const toggleDelOrigTable = () => {
+        setShowDelOrigTable(!showDelOrigTable);
     };
 
     return (
@@ -96,48 +109,20 @@ const Team = () => {
                 ))}
             </select>
             {selectedTeam && (
-                <button onClick={toggleTable}>
-                    {showTable ? 'Hide Team Activities' : 'Show Team Activities'}
-                </button>
-            )}
-            {showTable && filteredData.length > 0 && (
                 <div>
-                    <table>
-                        <thead>
-                            <tr>
-                                {Object.keys(filteredData[0]).map((key) => (
-                                    <th key={key}>{key}</th>
-                                ))}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredData.map((data, rowIndex) => (
-                                <tr key={rowIndex}>
-                                    {Object.values(data).map((value, colIndex) => (
-                                        <td key={colIndex}>{value}</td>
-                                    ))}
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                    <h3>DelOrig Counts</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>DelOrig</th>
-                                <th>Count</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {Object.entries(delOrigCounts).map(([key, count], index) => (
-                                <tr key={index}>
-                                    <td>{key}</td>
-                                    <td>{count}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                    <button onClick={toggleTeamTable}>
+                        {showTeamTable ? 'Hide Team Activities' : 'Show Team Activities'}
+                    </button>
+                    <button onClick={toggleDelOrigTable}>
+                        {showDelOrigTable ? 'Hide DelOrig Counts' : 'Show DelOrig Counts'}
+                    </button>
                 </div>
+            )}
+            {showTeamTable && filteredData.length > 0 && (
+                <TeamActivitiesTable filteredData={filteredData} />
+            )}
+            {showDelOrigTable && Object.keys(delOrigCounts).length > 0 && (
+                <DelOrigCountsTable delOrigCounts={delOrigCounts} />
             )}
         </div>
     );
