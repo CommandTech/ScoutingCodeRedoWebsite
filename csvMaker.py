@@ -25,8 +25,9 @@ def convert_excel_to_csv():
             print('Error: Sheet "Code" is empty.')
             return
         
-        # Check if cell B1 contains the string "test"
-        if df_code.iloc[0, 0] == 'test':
+
+        # Check if cell B1 contains the string
+        if df_code.iloc[0, 0] == 'CHANGE':
             for sheet_name in xls.sheet_names:
                 df = pd.read_excel(excel_file, sheet_name=sheet_name)
                 csv_file = os.path.join(output_dir, f'{sheet_name}.csv')
