@@ -1,11 +1,19 @@
+import schedule
+import time
 import subprocess
 
 def run_command(command):
     process = subprocess.Popen(command, shell=True)
-    process.wait()
+    return process
 
-def start_process(command):
-    return subprocess.Popen(command, shell=True)
+def csvmaker_process():
+    # Run the csvMaker.py script
+    csvmaker_command = "python csvMaker.py"
+    run_command(csvmaker_command)
+    print("Running csvmaker_process...")
+
+# Schedule the csvmaker_process to run every minute
+schedule.every(1).minute.do(csvmaker_process)
 
 if __name__ == "__main__":
     # Commands to install dependencies
@@ -19,20 +27,20 @@ if __name__ == "__main__":
     # Commands to start the processes
     frontend_command = "npm run start --prefix frontend"
     backend_command = "npm run start --prefix backend"
-    csvmaker_command = "python csvmaker.py"
 
     # Start the processes
-    frontend_process = start_process(frontend_command)
-    backend_process = start_process(backend_command)
-    csvmaker_process = start_process(csvmaker_command)
+    frontend_process = run_command(frontend_command)
+    backend_process = run_command(backend_command)
 
     try:
+        # Run csvmaker_process once before entering the loop
+        csvmaker_process()
+
         # Keep the script running while the subprocesses are running
-        frontend_process.wait()
-        backend_process.wait()
-        csvmaker_process.wait()
+        while True:
+            schedule.run_pending()
+            time.sleep(1)
     except KeyboardInterrupt:
         # Terminate all processes if the script is interrupted
         frontend_process.terminate()
         backend_process.terminate()
-        csvmaker_process.terminate()

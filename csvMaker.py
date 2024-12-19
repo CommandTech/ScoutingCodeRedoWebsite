@@ -1,6 +1,5 @@
 import os
 import pandas as pd
-import time
 
 def convert_excel_to_csv():
     excel_file = r'backend\uploads\ScoutingWebsiteTest.xlsx'
@@ -25,7 +24,6 @@ def convert_excel_to_csv():
             print('Error: Sheet "Code" is empty.')
             return
         
-
         # Check if cell B1 contains the string
         if df_code.iloc[0, 0] == 'CHANGE':
             for sheet_name in xls.sheet_names:
@@ -34,11 +32,9 @@ def convert_excel_to_csv():
                 df.to_csv(csv_file, index=False)
                 print(f'Sheet {sheet_name} saved as {csv_file}')
         else:
-            print('Error: Cell B1 in sheet "code" does not contain the string "test".')
+            print('Error: Cell B1 in sheet "code" does not contain the string "CHANGE".')
     else:
         print('Error: Sheet "code" does not exist in the Excel file.')
 
-# Loop to keep running the function
-while True:
+if __name__ == "__main__":
     convert_excel_to_csv()
-    time.sleep(60*5)
