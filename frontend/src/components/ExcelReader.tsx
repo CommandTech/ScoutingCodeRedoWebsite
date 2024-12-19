@@ -7,7 +7,7 @@ const ExcelReader: React.FC = () => {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
   const serverIp = 'http://localhost:3001';
-  //const serverIp = 'https://96.236.24.79:3001';
+  //const serverIp = 'http://96.236.24.79:3001';
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

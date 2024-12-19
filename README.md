@@ -9,3 +9,11 @@ In startAll.py at the top set how long you want it to sleep before updating the 
 # To Start
 
 In the root directory run "python startAll.py"
+
+# To Do
+1. install pyhthon stuff
+2. ini file
+3. chech npm install stuff
+4. get data on upload
+5. delete bad files
+6. make a bat file
