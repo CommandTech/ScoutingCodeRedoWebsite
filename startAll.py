@@ -1,36 +1,41 @@
+import subprocess
 import schedule
 import time
-import subprocess
 
-def run_command(command):
-    process = subprocess.Popen(command, shell=True)
+# Function to run shell commands
+def run_command(command, cwd=None):
+    process = subprocess.Popen(command, shell=True, cwd=cwd)
+    process.wait()
     return process
 
+# Function to be scheduled
 def csvmaker_process():
-    # Run the csvMaker.py script
-    csvmaker_command = "python csvMaker.py"
-    run_command(csvmaker_command)
-    print("Running csvmaker_process...")
+    # Your csvmaker_process implementation here
+    pass
 
 # Schedule the csvmaker_process to run every minute
 schedule.every(1).minute.do(csvmaker_process)
 
 if __name__ == "__main__":
+    # Install Python dependencies
+    python_install_command = "pip install -r requirements.txt"
+    run_command(python_install_command)
+
     # Commands to install dependencies
-    frontend_install_command = "npm install --prefix frontend"
-    backend_install_command = "npm install --prefix backend"
+    frontend_install_command = "npm install"
+    backend_install_command = "npm install"
 
     # Run npm install in frontend and backend
-    run_command(frontend_install_command)
-    run_command(backend_install_command)
+    run_command(frontend_install_command, cwd="frontend")
+    run_command(backend_install_command, cwd="backend")
 
     # Commands to start the processes
-    frontend_command = "npm run start --prefix frontend"
-    backend_command = "npm run start --prefix backend"
+    frontend_command = "npm run start"
+    backend_command = "npm run start"
 
     # Start the processes
-    frontend_process = run_command(frontend_command)
-    backend_process = run_command(backend_command)
+    frontend_process = run_command(frontend_command, cwd="frontend")
+    backend_process = run_command(backend_command, cwd="backend")
 
     try:
         # Run csvmaker_process once before entering the loop
