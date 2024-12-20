@@ -4,8 +4,7 @@ Open config.ini and update the values
 
 # To Start
 
-In the root directory run "python startAll.py"
+Run startBat.bat
 
 # To Do
 1. get data on upload
-2. make a bat file
