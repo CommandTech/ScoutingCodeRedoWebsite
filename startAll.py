@@ -1,57 +1,47 @@
 import subprocess
-import schedule
 import time
+import schedule
 import configparser
 
 # Read configuration
 config = configparser.ConfigParser()
 config.read('config.ini')
-sleep_time = int(config['StartAll']['sleep_time'])
+sleep_time = int(config['StartAll']['sleep_time'].split(';')[0].strip())
 
-# Function to run shell commands
 def run_command(command, cwd=None):
-    process = subprocess.Popen(command, shell=True, cwd=cwd)
+    process = subprocess.Popen(command, cwd=cwd, shell=True)
     process.wait()
-    return process
 
-# Function to be scheduled
 def csvmaker_process():
-    # Your csvmaker_process implementation here
-    pass
+    # Assuming csvMaker.py is the script to run
+    run_command("python csvMaker.py")
 
-# Schedule the csvmaker_process to run every minute
-schedule.every(1).minute.do(csvmaker_process)
+# Commands to install dependencies
+frontend_install_command = "npm install"
+backend_install_command = "npm install"
 
-if __name__ == "__main__":
-    # Install Python dependencies
-    python_install_command = "pip install -r requirements.txt"
-    run_command(python_install_command)
+# Run npm install in frontend and backend
+run_command(frontend_install_command, cwd="frontend")
+run_command(backend_install_command, cwd="backend")
 
-    # Commands to install dependencies
-    frontend_install_command = "npm install"
-    backend_install_command = "npm install"
+# Commands to start the processes
+frontend_command = "npm run start"
+backend_command = "npm run start"
 
-    # Run npm install in frontend and backend
-    run_command(frontend_install_command, cwd="frontend")
-    run_command(backend_install_command, cwd="backend")
+# Start the processes concurrently
+frontend_process = subprocess.Popen(frontend_command, cwd="frontend", shell=True)
+backend_process = subprocess.Popen(backend_command, cwd="backend", shell=True)
 
-    # Commands to start the processes
-    frontend_command = "npm run start"
-    backend_command = "npm run start"
+try:
+    # Run csvmaker_process once before entering the loop
+    csvmaker_process()
 
-    # Start the processes concurrently
-    frontend_process = subprocess.Popen(frontend_command, cwd="frontend", shell=True)
-    backend_process = subprocess.Popen(backend_command, cwd="backend", shell=True)
-
-    try:
-        # Run csvmaker_process once before entering the loop
+    # Keep the script running while the subprocesses are running
+    while True:
+        schedule.run_pending()
         csvmaker_process()
-
-        # Keep the script running while the subprocesses are running
-        while True:
-            schedule.run_pending()
-            time.sleep(sleep_time)
-    except KeyboardInterrupt:
-        # Terminate all processes if the script is interrupted
-        frontend_process.terminate()
-        backend_process.terminate()
+        time.sleep(sleep_time)
+except KeyboardInterrupt:
+    # Terminate all processes if the script is interrupted
+    frontend_process.terminate()
+    backend_process.terminate()
