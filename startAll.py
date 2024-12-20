@@ -1,6 +1,12 @@
 import subprocess
 import schedule
 import time
+import configparser
+
+# Read configuration
+config = configparser.ConfigParser()
+config.read('config.ini')
+sleep_time = int(config['StartAll']['sleep_time'])
 
 # Function to run shell commands
 def run_command(command, cwd=None):
@@ -33,9 +39,9 @@ if __name__ == "__main__":
     frontend_command = "npm run start"
     backend_command = "npm run start"
 
-    # Start the processes
-    frontend_process = run_command(frontend_command, cwd="frontend")
-    backend_process = run_command(backend_command, cwd="backend")
+    # Start the processes concurrently
+    frontend_process = subprocess.Popen(frontend_command, cwd="frontend", shell=True)
+    backend_process = subprocess.Popen(backend_command, cwd="backend", shell=True)
 
     try:
         # Run csvmaker_process once before entering the loop
@@ -44,7 +50,7 @@ if __name__ == "__main__":
         # Keep the script running while the subprocesses are running
         while True:
             schedule.run_pending()
-            time.sleep(1)
+            time.sleep(sleep_time)
     except KeyboardInterrupt:
         # Terminate all processes if the script is interrupted
         frontend_process.terminate()

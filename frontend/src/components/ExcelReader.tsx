@@ -1,13 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { readExcelFile } from '../utils/readExcel';
 
 const ExcelReader: React.FC = () => {
   const [data, setData] = useState<{ [key: string]: any[] }>({});
   const [selectedSheet, setSelectedSheet] = useState<string | null>(null);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [serverIp, setServerIp] = useState<string>('');
 
-  const serverIp = 'http://localhost:3001';
-  //const serverIp = 'http://96.236.24.79:3001';
+  useEffect(() => {
+    const fetchConfig = async () => {
+      try {
+        const response = await fetch('http://localhost:3001/config');
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          const config = await response.json();
+          setServerIp(config.server_ip);
+        } else {
+          const text = await response.text();
+          console.error('Unexpected response format:', text);
+          console.error('Response URL:', response.url);
+          console.error('Response status:', response.status);
+        }
+      } catch (error) {
+        console.error('Error fetching config:', error);
+      }
+    };
+
+    fetchConfig();
+  }, []);
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

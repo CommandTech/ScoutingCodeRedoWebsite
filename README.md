@@ -11,7 +11,6 @@ In startAll.py at the top set how long you want it to sleep before updating the 
 In the root directory run "python startAll.py"
 
 # To Do
-1. ini file
-2. get data on upload
-3. delete bad files
-4. make a bat file
+1. get data on upload
+2. delete bad files
+3. make a bat file

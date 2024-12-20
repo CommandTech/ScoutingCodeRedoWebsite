@@ -3,6 +3,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const cors = require('cors');
+const ini = require('ini');
 
 const app = express();
 const upload = multer({ dest: 'uploads/' });
@@ -11,9 +12,17 @@ app.use(cors()); // Enable CORS for all routes
 
 app.use(express.static('uploads'));
 
+// Read configuration
+const config = ini.parse(fs.readFileSync('../config.ini', 'utf-8'));
+
 // Add a route to handle GET requests to the root URL
 app.get('/', (req, res) => {
   res.send('Server is running');
+});
+
+// Endpoint to get configuration
+app.get('/config', (req, res) => {
+  res.json(config.ExcelReader);
 });
 
 app.post('/upload', upload.single('file'), (req, res) => {
