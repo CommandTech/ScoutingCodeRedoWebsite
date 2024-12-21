@@ -1,12 +1,6 @@
 import subprocess
 import time
 import schedule
-import configparser
-
-# Read configuration
-config = configparser.ConfigParser()
-config.read('config.ini')
-sleep_time = int(config['StartAll']['sleep_time'].split(';')[0].strip())
 
 def run_command(command, cwd=None):
     process = subprocess.Popen(command, cwd=cwd, shell=True)
@@ -15,6 +9,12 @@ def run_command(command, cwd=None):
 def csvmaker_process():
     # Assuming csvMaker.py is the script to run
     run_command("python csvMaker.py")
+
+# Command to install Python dependencies
+python_install_command = "pip install -r requirements.txt"
+
+# Install Python dependencies
+run_command(python_install_command)
 
 # Commands to install dependencies
 frontend_install_command = "npm install"
@@ -35,12 +35,6 @@ backend_process = subprocess.Popen(backend_command, cwd="backend", shell=True)
 try:
     # Run csvmaker_process once before entering the loop
     csvmaker_process()
-
-    # Keep the script running while the subprocesses are running
-    while True:
-        schedule.run_pending()
-        csvmaker_process()
-        time.sleep(sleep_time)
 except KeyboardInterrupt:
     # Terminate all processes if the script is interrupted
     frontend_process.terminate()

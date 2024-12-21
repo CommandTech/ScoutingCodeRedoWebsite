@@ -4,6 +4,8 @@ const path = require('path');
 const fs = require('fs');
 const cors = require('cors');
 const ini = require('ini');
+const { exec } = require('child_process');
+const chokidar = require('chokidar');
 
 const app = express();
 const upload = multer({ dest: 'uploads/' });
@@ -37,6 +39,28 @@ app.post('/upload', upload.single('file'), (req, res) => {
 
 app.get('/upload', (req, res) => {
   res.send('Upload endpoint');
+});
+
+// Watch the uploads directory for new files
+const watcher = chokidar.watch(path.join(__dirname, 'uploads'), {
+  persistent: true,
+  ignoreInitial: true,
+});
+
+watcher.on('add', (filePath) => {
+  console.log(`File added: ${filePath}`);
+  const scriptPath = path.resolve(__dirname, '../csvMaker.py');
+  exec(`python ${scriptPath}`, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Error executing csvMaker.py: ${error.message}`);
+      return;
+    }
+    if (stderr) {
+      console.error(`stderr: ${stderr}`);
+      return;
+    }
+    console.log(`stdout: ${stdout}`);
+  });
 });
 
 app.listen(3001, () => {
