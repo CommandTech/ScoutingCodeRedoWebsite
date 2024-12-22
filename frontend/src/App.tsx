@@ -11,7 +11,7 @@ const App: React.FC = () => {
     <Router>
       <div className="App">
         <header className="App-header">
-          <h1>Welcome to React with TypeScript</h1>
+          <h1>FRC190 Scouting Website</h1>
           <nav>
             <Link to="/"><button>Home</button></Link>
             <Link to="/summary"><button>Summary</button></Link>

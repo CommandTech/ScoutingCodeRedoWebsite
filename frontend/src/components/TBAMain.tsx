@@ -50,7 +50,6 @@ const TBAMain = () => {
     return (
         <div>
             <h1>TBAMain</h1>
-            <p>API Key: {apiKey}</p>
             <Events baseURL={baseURL} />
         </div>
     );
