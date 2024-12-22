@@ -66,3 +66,7 @@ watcher.on('add', (filePath) => {
 app.listen(3001, () => {
   console.log('Server is running on port 3001');
 });
+
+app.get('/api-key', (req, res) => {
+  res.json({ apiKey: config.TBAMain.API_KEY });
+});
