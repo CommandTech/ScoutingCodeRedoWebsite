@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Events from './TBAData/Events';
 
 const TBAMain = () => {
     const [serverIp, setServerIp] = useState('');
     const [apiKey, setApiKey] = useState('');
+    const baseURL = 'https://www.thebluealliance.com/api/v3/events/2024';
+    const eventKey = '2024nytr'; // Example event key, replace with actual event key
 
     useEffect(() => {
         const fetchConfig = async () => {
@@ -46,8 +49,9 @@ const TBAMain = () => {
 
     return (
         <div>
-            <div>TBAMain</div>
+            <h1>TBAMain</h1>
             <p>API Key: {apiKey}</p>
+            <Events baseURL={baseURL} />
         </div>
     );
 };
