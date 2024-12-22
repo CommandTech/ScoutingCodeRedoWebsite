@@ -10,7 +10,7 @@ const ExcelReader: React.FC = () => {
   useEffect(() => {
     const fetchConfig = async () => {
       try {
-        const response = await fetch('http://localhost:3001/config');
+        const response = await fetch('/config');
         const contentType = response.headers.get('content-type');
         if (contentType && contentType.includes('application/json')) {
           const config = await response.json();

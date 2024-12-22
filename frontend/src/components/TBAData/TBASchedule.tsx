@@ -1,25 +1,36 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const TBASchedule = () => {
-    const [apiKey, setApiKey] = useState('')
-    const [jsonData, setJsonData] = useState(null)
+    const [apiKey, setApiKey] = useState('');
+    const [serverIp, setServerIp] = useState('');
 
-    const baseURL = 'https://www.thebluealliance.com/api/v3/event'
-    const eventKey = '2024nytr'
+    const baseURL = 'https://www.thebluealliance.com/api/v3/event';
+    const eventKey = '2024nytr';
 
     useEffect(() => {
-        const fetchApiKey = async () => {
+        const fetchConfig = async () => {
             try {
-                const response = await axios.get('http://localhost:3001/api-key')
-                setApiKey(response.data.apiKey)
+                const response = await axios.get('/config');
+                setServerIp(response.data.server_ip);
             } catch (error) {
-                console.error('Error fetching API key:', error)
+                console.error('Error fetching server IP:', error);
             }
-        }
+        };
 
-        fetchApiKey()
-    }, [])
+        const fetchApiKey = async () => {
+            if (serverIp) {
+                try {
+                    const response = await axios.get(`${serverIp}/api-key`);
+                    setApiKey(response.data.apiKey);
+                } catch (error) {
+                    console.error('Error fetching API key:', error);
+                }
+            }
+        };
+
+        fetchConfig().then(fetchApiKey);
+    }, [serverIp]);
 
     return (
         <div>
@@ -29,7 +40,7 @@ const TBASchedule = () => {
                 {`${baseURL}/${eventKey}/teams?X-TBA-Auth-Key=${apiKey}`}
             </a>
         </div>
-    )
-}
+    );
+};
 
-export default TBASchedule
+export default TBASchedule;

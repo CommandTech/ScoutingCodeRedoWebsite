@@ -6,6 +6,7 @@ const cors = require('cors');
 const ini = require('ini');
 const { exec } = require('child_process');
 const chokidar = require('chokidar');
+const url = require('url');
 
 const app = express();
 const upload = multer({ dest: 'uploads/' });
@@ -16,6 +17,9 @@ app.use(express.static('uploads'));
 
 // Read configuration
 const config = ini.parse(fs.readFileSync('../config.ini', 'utf-8'));
+const serverUrl = new URL(config.ServerIP.server_ip);
+const hostname = serverUrl.hostname;
+const port = serverUrl.port;
 
 // Add a route to handle GET requests to the root URL
 app.get('/', (req, res) => {
@@ -24,7 +28,8 @@ app.get('/', (req, res) => {
 
 // Endpoint to get configuration
 app.get('/config', (req, res) => {
-  res.json(config.ExcelReader);
+  console.log('Config endpoint hit');
+  res.json({ server_ip: config.ServerIP.server_ip });
 });
 
 app.post('/upload', upload.single('file'), (req, res) => {
@@ -63,8 +68,8 @@ watcher.on('add', (filePath) => {
   });
 });
 
-app.listen(3001, () => {
-  console.log('Server is running on port 3001');
+app.listen(port, hostname, () => {
+  console.log(`Server is running on ${hostname}:${port}`);
 });
 
 app.get('/api-key', (req, res) => {
