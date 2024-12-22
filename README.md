@@ -7,4 +7,4 @@ Open config.ini and update the values
 Run startBat.bat
 
 # To Do
-fix code getting server ip from ini file to fix console errors
+Experiment more with TBA API

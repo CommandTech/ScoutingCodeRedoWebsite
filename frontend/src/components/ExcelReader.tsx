@@ -11,6 +11,7 @@ const ExcelReader: React.FC = () => {
     const fetchConfig = async () => {
       try {
         const response = await fetch('/config');
+        console.log('response:', response);
         const contentType = response.headers.get('content-type');
         if (contentType && contentType.includes('application/json')) {
           const config = await response.json();
@@ -25,7 +26,7 @@ const ExcelReader: React.FC = () => {
         console.error('Error fetching config:', error);
       }
     };
-
+  
     fetchConfig();
   }, []);
 

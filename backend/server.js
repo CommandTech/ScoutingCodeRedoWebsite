@@ -18,6 +18,7 @@ app.use(express.static('uploads'));
 // Read configuration
 const config = ini.parse(fs.readFileSync('../config.ini', 'utf-8'));
 const serverUrl = new URL(config.ServerIP.server_ip);
+console.log('Server URL:', serverUrl);
 const hostname = serverUrl.hostname;
 const port = serverUrl.port;
 
