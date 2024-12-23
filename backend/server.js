@@ -19,7 +19,7 @@ app.use(express.static('uploads'));
 const config = ini.parse(fs.readFileSync('../config.ini', 'utf-8'));
 const serverUrl = new URL(config.ServerIP.server_ip);
 console.log('Server URL:', serverUrl);
-const hostname = serverUrl.hostname;
+const hostname = '0.0.0.0';
 const port = serverUrl.port;
 
 // Add a route to handle GET requests to the root URL

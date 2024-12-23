@@ -58,5 +58,6 @@
     "@types/ini": "^4.1.1",
     "@types/papaparse": "^5.3.15",
     "@types/react-router-dom": "^5.3.3"
-  }
+  },
+  "proxy": "http://74.76.162.187:3001"
 }
