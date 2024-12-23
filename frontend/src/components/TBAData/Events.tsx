@@ -40,7 +40,7 @@ const Events: React.FC<EventsProps> = ({ baseURL }) => {
                     const response = await axios.get(`${baseURL}?X-TBA-Auth-Key=${apiKey}`);
                     console.log('Fetched data:', response.data); // Add this line to log the data
                     const formattedData = response.data.map((item: any) => ({
-                        formatted: `${item.first_event_code}/${item.short_name || item.name}`,
+                        formatted: `${item.event_code}: ${item.short_name || item.name}`,
                         ...item
                     }));
                     setData(formattedData);
@@ -59,6 +59,8 @@ const Events: React.FC<EventsProps> = ({ baseURL }) => {
         value: event.formatted,
         label: event.formatted
     }));
+
+    const offseasonEvents = data.filter(event => event.event_type_string === 'Offseason');
 
     return (
         <div>
