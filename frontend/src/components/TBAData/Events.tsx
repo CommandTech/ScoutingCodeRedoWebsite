@@ -8,7 +8,7 @@ interface EventsProps {
 }
 
 const Events: React.FC<EventsProps> = ({ baseURL }) => {
-    const [serverIp, setServerIp] = useState('');
+    const [ServerIP, setServerIP] = useState('');
     const [apiKey, setApiKey] = useState('');
     const [data, setData] = useState<any[]>([]);
     const [selectedEvent, setSelectedEvent] = useState('');
@@ -17,16 +17,16 @@ const Events: React.FC<EventsProps> = ({ baseURL }) => {
         const fetchConfig = async () => {
             try {
                 const response = await axios.get('/config');
-                setServerIp(response.data.server_ip);
+                setServerIP(response.data.server_ip);
             } catch (error) {
                 console.error('Error fetching server IP:', error);
             }
         };
 
         const fetchApiKey = async () => {
-            if (serverIp) {
+            if (ServerIP) {
                 try {
-                    const response = await axios.get(`${serverIp}/api-key`);
+                    const response = await axios.get(`${ServerIP}/api-key`);
                     setApiKey(response.data.apiKey);
                 } catch (error) {
                     console.error('Error fetching API key:', error);
@@ -51,7 +51,7 @@ const Events: React.FC<EventsProps> = ({ baseURL }) => {
         };
 
         fetchConfig().then(fetchApiKey).then(fetchData);
-    }, [serverIp, apiKey]);
+    }, [ServerIP, apiKey]);
 
     const link = `${baseURL}?X-TBA-Auth-Key=${apiKey}`;
 

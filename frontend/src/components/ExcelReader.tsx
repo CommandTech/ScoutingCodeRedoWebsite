@@ -5,7 +5,7 @@ const ExcelReader: React.FC = () => {
   const [data, setData] = useState<{ [key: string]: any[] }>({});
   const [selectedSheet, setSelectedSheet] = useState<string | null>(null);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [serverIp, setServerIp] = useState<string>('');
+  const [ServerIP, setServerIP] = useState<string>('');
 
   useEffect(() => {
     const fetchConfig = async () => {
@@ -15,7 +15,7 @@ const ExcelReader: React.FC = () => {
         const contentType = response.headers.get('content-type');
         if (contentType && contentType.includes('application/json')) {
           const config = await response.json();
-          setServerIp(config.server_ip);
+          setServerIP(config.server_ip);
         } else {
           const text = await response.text();
           console.error('Unexpected response format:', text);
@@ -37,7 +37,7 @@ const ExcelReader: React.FC = () => {
       formData.append('file', file);
 
       try {
-        const response = await fetch(`${serverIp}/upload`, {
+        const response = await fetch(`${ServerIP}/upload`, {
           method: 'POST',
           body: formData,
         });
@@ -62,7 +62,7 @@ const ExcelReader: React.FC = () => {
   const handleFileDownload = () => {
     if (uploadedFile) {
       const link = document.createElement('a');
-      link.href = `${serverIp}/${uploadedFile.name}`;
+      link.href = `${ServerIP}/${uploadedFile.name}`;
       link.download = uploadedFile.name;
       document.body.appendChild(link);
       link.click();

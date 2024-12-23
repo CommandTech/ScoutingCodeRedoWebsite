@@ -7,4 +7,4 @@ Open config.ini and update the values
 Run startBat.bat
 
 # To Do
-Experiment more with TBA API
+Fix working on non localhost
