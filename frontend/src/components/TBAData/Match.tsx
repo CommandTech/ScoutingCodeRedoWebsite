@@ -1,29 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams, useLocation } from 'react-router-dom';
-
-interface MatchParams {
-    matchType: string;
-    matchNumber: string;
-}
+import { Link, useParams } from 'react-router-dom';
 
 const Match: React.FC = () => {
-    const { matchType, matchNumber } = useParams<Record<string, string>>();
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const baseURL = queryParams.get('baseURL') || '';
-    const year = queryParams.get('year') || '';
-    const eventCode = queryParams.get('eventCode') || '';
-    const apiKey = queryParams.get('apiKey') || '';
-    const link = `${baseURL}event/${year}${eventCode}/matches?X-TBA-Auth-Key=${apiKey}`;
-
+    const { eventCode, matchType, matchNumber } = useParams<Record<string, string>>();
     const [matchData, setMatchData] = useState<any>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const [config, setConfig] = useState({ baseURL: '', apiKey: '', year: '' });
+
+    useEffect(() => {
+        const fetchConfig = async () => {
+            try {
+                const response = await axios.get('/config');
+                setConfig(response.data);
+            } catch (error) {
+                setError('Error fetching configuration');
+                console.error(error);
+            }
+        };
+
+        fetchConfig();
+    }, []);
+
+    const link = `${config.baseURL}event/${config.year}${eventCode}/matches?X-TBA-Auth-Key=${config.apiKey}`;
 
     useEffect(() => {
         const fetchMatchData = async () => {
-            if (baseURL && apiKey) {
+            if (config.baseURL && config.apiKey) {
                 try {
                     const response = await axios.get(link);
                     console.log('Match data response:', response.data);
@@ -48,7 +52,7 @@ const Match: React.FC = () => {
         };
 
         fetchMatchData();
-    }, [baseURL, apiKey, matchType, matchNumber]);
+    }, [config, eventCode, matchType, matchNumber]);
 
     const getMatchTitle = () => {
         switch (matchType) {
@@ -66,9 +70,7 @@ const Match: React.FC = () => {
     return (
         <div>
             <h3>{getMatchTitle()}</h3>
-            <a href={link} target="_blank" rel="noopener noreferrer">
-                {link}
-            </a>            
+            <Link to={link}>{link}</Link>
             {loading && <p>Loading...</p>}
             {error && <p>{error}</p>}
             {matchData && (

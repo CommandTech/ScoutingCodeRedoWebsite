@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Select from 'react-select';
+import { useNavigate } from 'react-router-dom';
 import './Events.css';
 
 interface EventsProps {
     baseURL: string;
-    apiKey: string; // Add apiKey prop
+    apiKey: string;
     onEventSelect: (eventCode: string) => void;
 }
 
@@ -21,14 +22,15 @@ const Events: React.FC<EventsProps> = ({ baseURL, apiKey, onEventSelect }) => {
     const [selectedEvent, setSelectedEvent] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-    const [year, setYear] = useState<string>(''); // Add state for year
+    const [year, setYear] = useState<string>('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchConfigAndApiKey = async () => {
             try {
                 const configResponse = await axios.get('/config');
                 const serverIP = configResponse.data.server_ip;
-                setYear(configResponse.data.year); // Set the year from config
+                setYear(configResponse.data.year);
             } catch (error) {
                 setError('Error fetching configuration');
                 console.error(error);
@@ -67,6 +69,7 @@ const Events: React.FC<EventsProps> = ({ baseURL, apiKey, onEventSelect }) => {
         const eventCode = selectedOption?.value || '';
         setSelectedEvent(eventCode);
         onEventSelect(eventCode);
+        navigate(`/TBA/${eventCode}`);
     };
 
     if (loading) {

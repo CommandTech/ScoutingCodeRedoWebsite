@@ -1,25 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
-interface ScheduleProps {
-    baseURL: string;
-    year: string;
-    eventCode: string;
-    apiKey: string;
-}
-
-const Schedule: React.FC<ScheduleProps> = ({ baseURL, year, eventCode, apiKey }) => {
+const Schedule: React.FC = () => {
+    const { eventCode } = useParams<{ eventCode: string }>();
     const [matches, setMatches] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const [config, setConfig] = useState({ baseURL: '', apiKey: '', year: '' });
+
+    useEffect(() => {
+        const fetchConfig = async () => {
+            try {
+                const response = await axios.get('/config');
+                setConfig({
+                    baseURL: response.data.baseURL,
+                    apiKey: response.data.apiKey,
+                    year: response.data.year
+                });
+            } catch (error) {
+                setError('Error fetching configuration');
+                console.error(error);
+            }
+        };
+
+        fetchConfig();
+    }, []);
 
     useEffect(() => {
         const fetchMatches = async () => {
-            if (eventCode) {
+            if (eventCode && config.baseURL && config.apiKey) {
                 setLoading(true);
                 try {
-                    const response = await axios.get(`${baseURL}event/${year}${eventCode}/matches?X-TBA-Auth-Key=${apiKey}`);
+                    const response = await axios.get(`${config.baseURL}event/${config.year}${eventCode}/matches?X-TBA-Auth-Key=${config.apiKey}`);
                     const sortedMatches = response.data.sort((a: any, b: any) => {
                         const order = { 'qm': 1, 'sf': 2, 'f': 3 };
                         const aCode = a.key.match(/(qm|sf|f)/)?.[0] as keyof typeof order;
@@ -40,9 +53,9 @@ const Schedule: React.FC<ScheduleProps> = ({ baseURL, year, eventCode, apiKey })
         };
 
         fetchMatches();
-    }, [baseURL, year, eventCode, apiKey]);
+    }, [eventCode, config]);
 
-    const matchesLink = `${baseURL}event/${year}${eventCode}/matches?X-TBA-Auth-Key=${apiKey}`;
+    const matchesLink = `${config.baseURL}event/${config.year}${eventCode}/matches?X-TBA-Auth-Key=${config.apiKey}`;
 
     if (loading) {
         return <div>Loading...</div>;
@@ -72,10 +85,12 @@ const Schedule: React.FC<ScheduleProps> = ({ baseURL, year, eventCode, apiKey })
         <div>
             <h3>Schedule</h3>
             <p>Selected Event Code: {eventCode}</p>
-            <p>Year: {year}</p>
-            <a href={matchesLink} target="_blank" rel="noopener noreferrer">
-                {matchesLink}
-            </a>
+            <p>Year: {config.year}</p>
+            <Link to={matchesLink}>{matchesLink}</Link>
+            <br />
+            <Link to={`/TBA/${eventCode}/rankings`}>
+                <button>Go to Rankings</button>
+            </Link>
             <div>
                 {Object.keys(groupedMatches).length > 0 ? (
                     Object.keys(groupedMatches).map((level) => (
@@ -84,14 +99,14 @@ const Schedule: React.FC<ScheduleProps> = ({ baseURL, year, eventCode, apiKey })
                             <ul>
                                 {groupedMatches[level].map((match: any, index: number) => (
                                     <li key={index}>
-                                        <Link to={`/TBA/${level === 'qm' ? `QualificationMatch/${match.match_number}` :
-                                                        level === 'sf' ? `SemifinalMatch/${match.match_number}` :
-                                                        level === 'f' ? `FinalMatch/${match.match_number}` :
-                                                        match.key}?baseURL=${baseURL}&year=${year}&eventCode=${eventCode}&apiKey=${apiKey}`}>
+                                        <Link to={`/TBA/${eventCode}/${level === 'qm' ? `QualificationMatch/${match.match_number}` :
+                                            level === 'sf' ? `SemifinalMatch/${match.match_number}` :
+                                                level === 'f' ? `FinalMatch/${match.match_number}` :
+                                                    match.key}`}>
                                             {level === 'qm' ? `Qualification Match ${match.match_number}` :
-                                             level === 'sf' ? `Semifinal Match ${match.match_number}` :
-                                             level === 'f' ? `Final Match ${match.match_number}` :
-                                             match.key}
+                                                level === 'sf' ? `Semifinal Match ${match.match_number}` :
+                                                    level === 'f' ? `Final Match ${match.match_number}` :
+                                                        match.key}
                                         </Link>
                                         <div>Actual Time: {formatDateTime(match.actual_time)}</div>
                                         <div>Post Result Time: {formatDateTime(match.post_result_time)}</div>

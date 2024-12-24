@@ -5,6 +5,8 @@ import Summary from './components/Summary';
 import Team from './components/Team';
 import TBAMain from './components/TBAMain';
 import Match from './components/TBAData/Match';
+import Schedule from './components/TBAData/Schedule';
+import Rankings from './components/TBAData/Rankings';
 
 const App: React.FC = () => {
   const [config, setConfig] = useState({ baseURL: '', apiKey: '' });
@@ -39,7 +41,9 @@ const App: React.FC = () => {
           <Route path="/summary" element={<Summary />} />
           <Route path="/team" element={<Team />} />
           <Route path="/TBA" element={<TBAMain />} />
-          <Route path="/TBA/:matchType/:matchNumber" element={<Match />} />
+          <Route path="/TBA/:eventCode/:matchType/:matchNumber" element={<Match />} />
+          <Route path="/TBA/:eventCode" element={<Schedule />} />
+          <Route path="/TBA/:eventCode/rankings" element={<Rankings />} />
         </Routes>
       </div>
     </Router>
