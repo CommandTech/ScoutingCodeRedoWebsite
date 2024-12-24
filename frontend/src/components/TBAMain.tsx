@@ -8,7 +8,7 @@ const TBAMain = () => {
     const [apiKey, setApiKey] = useState('');
     const [selectedEventCode, setSelectedEventCode] = useState<string>(''); // Add state for selected event code
     const [year, setYear] = useState<string>(''); // Add state for year
-    const baseURL = 'https://www.thebluealliance.com/api/v3/';
+    const [baseURL, setBaseURL] = useState<string>(''); // Add state for baseURL
 
     useEffect(() => {
         const fetchConfig = async () => {
@@ -20,6 +20,7 @@ const TBAMain = () => {
                     console.log('Setting ServerIP:', response.data.server_ip);
                     setServerIP(response.data.server_ip);
                     setYear(response.data.year); // Set the year from config
+                    setBaseURL(response.data.baseURL); // Set the baseURL from config
                 } else {
                     console.error('Server IP not found in config response');
                 }
@@ -36,7 +37,7 @@ const TBAMain = () => {
             console.log('Current ServerIP:', ServerIP);
             if (ServerIP) {
                 try {
-                    const response = await axios.get(`${ServerIP}/api-key`);
+                    const response = await axios.get(`${ServerIP}/config`);
                     console.log('API key response:', response.data);
                     setApiKey(response.data.apiKey);
                 } catch (error) {
@@ -53,7 +54,7 @@ const TBAMain = () => {
     return (
         <div>
             <h1>TBAMain</h1>
-            <Events baseURL={baseURL} onEventSelect={setSelectedEventCode} />
+            <Events baseURL={baseURL} apiKey={apiKey} onEventSelect={setSelectedEventCode} />
             <Schedule baseURL={baseURL} year={year} eventCode={selectedEventCode} apiKey={apiKey} />
         </div>
     );

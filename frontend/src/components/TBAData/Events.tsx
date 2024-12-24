@@ -5,7 +5,8 @@ import './Events.css';
 
 interface EventsProps {
     baseURL: string;
-    onEventSelect: (eventCode: string) => void; // Add prop for event selection callback
+    apiKey: string; // Add apiKey prop
+    onEventSelect: (eventCode: string) => void;
 }
 
 interface EventData {
@@ -15,8 +16,7 @@ interface EventData {
     formatted: string;
 }
 
-const Events: React.FC<EventsProps> = ({ baseURL, onEventSelect }) => {
-    const [apiKey, setApiKey] = useState<string>('');
+const Events: React.FC<EventsProps> = ({ baseURL, apiKey, onEventSelect }) => {
     const [data, setData] = useState<EventData[]>([]);
     const [selectedEvent, setSelectedEvent] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(true);
@@ -29,11 +29,8 @@ const Events: React.FC<EventsProps> = ({ baseURL, onEventSelect }) => {
                 const configResponse = await axios.get('/config');
                 const serverIP = configResponse.data.server_ip;
                 setYear(configResponse.data.year); // Set the year from config
-
-                const apiKeyResponse = await axios.get(`${serverIP}/api-key`);
-                setApiKey(apiKeyResponse.data.apiKey);
             } catch (error) {
-                setError('Error fetching configuration or API key');
+                setError('Error fetching configuration');
                 console.error(error);
             }
         };
@@ -62,14 +59,14 @@ const Events: React.FC<EventsProps> = ({ baseURL, onEventSelect }) => {
     const link = `${baseURL}events/${year}?X-TBA-Auth-Key=${apiKey}`;
 
     const options = data.map((event) => ({
-        value: event.event_code, // Use event_code as the value
+        value: event.event_code,
         label: event.formatted
     }));
 
     const handleEventSelect = (selectedOption: any) => {
         const eventCode = selectedOption?.value || '';
         setSelectedEvent(eventCode);
-        onEventSelect(eventCode); // Call the callback with the selected event code
+        onEventSelect(eventCode);
     };
 
     if (loading) {

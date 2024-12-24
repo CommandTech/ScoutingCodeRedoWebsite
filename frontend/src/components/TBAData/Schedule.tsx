@@ -63,6 +63,11 @@ const Schedule: React.FC<ScheduleProps> = ({ baseURL, year, eventCode, apiKey })
         return acc;
     }, {});
 
+    const formatDateTime = (timestamp: number) => {
+        const date = new Date(timestamp * 1000);
+        return date.toLocaleString();
+    };
+
     return (
         <div>
             <h3>Schedule</h3>
@@ -79,15 +84,17 @@ const Schedule: React.FC<ScheduleProps> = ({ baseURL, year, eventCode, apiKey })
                             <ul>
                                 {groupedMatches[level].map((match: any, index: number) => (
                                     <li key={index}>
-                                        <Link to={`/TBA/${level === 'qm' ? `QualificationMatch${match.match_number}` :
-                                                        level === 'sf' ? `SemifinalMatch${match.match_number}` :
-                                                        level === 'f' ? `FinalMatch${match.match_number}` :
-                                                        match.key}`}>
+                                        <Link to={`/TBA/${level === 'qm' ? `QualificationMatch/${match.match_number}` :
+                                                        level === 'sf' ? `SemifinalMatch/${match.match_number}` :
+                                                        level === 'f' ? `FinalMatch/${match.match_number}` :
+                                                        match.key}?baseURL=${baseURL}&year=${year}&eventCode=${eventCode}&apiKey=${apiKey}`}>
                                             {level === 'qm' ? `Qualification Match ${match.match_number}` :
                                              level === 'sf' ? `Semifinal Match ${match.match_number}` :
                                              level === 'f' ? `Final Match ${match.match_number}` :
                                              match.key}
                                         </Link>
+                                        <div>Actual Time: {formatDateTime(match.actual_time)}</div>
+                                        <div>Post Result Time: {formatDateTime(match.post_result_time)}</div>
                                     </li>
                                 ))}
                             </ul>

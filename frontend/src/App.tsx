@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import ExcelReader from './components/ExcelReader';
 import Summary from './components/Summary';
@@ -7,6 +7,21 @@ import TBAMain from './components/TBAMain';
 import Match from './components/TBAData/Match';
 
 const App: React.FC = () => {
+  const [config, setConfig] = useState({ baseURL: '', apiKey: '' });
+  const [serverIP, setServerIP] = useState('');
+
+  useEffect(() => {
+    fetch('/config')
+      .then(response => response.json())
+      .then(data => {
+        setServerIP(data.server_ip);
+        return fetch(`${data.server_ip}/config`);
+      })
+      .then(response => response.json())
+      .then(data => setConfig({ baseURL: data.baseURL, apiKey: data.apiKey }))
+      .catch(error => console.error('Error fetching config:', error));
+  }, []);
+
   return (
     <Router>
       <div className="App">
@@ -24,7 +39,7 @@ const App: React.FC = () => {
           <Route path="/summary" element={<Summary />} />
           <Route path="/team" element={<Team />} />
           <Route path="/TBA" element={<TBAMain />} />
-          <Route path="/TBA/:matchType:matchNumber" element={<Match />} />
+          <Route path="/TBA/:matchType/:matchNumber" element={<Match />} />
         </Routes>
       </div>
     </Router>

@@ -32,7 +32,9 @@ app.get('/config', (req, res) => {
   console.log('Config endpoint hit');
   res.json({ 
     server_ip: config.ServerIP.server_ip,
-    year: config.YEAR.year
+    year: config.YEAR.year,
+    baseURL: config.BASEURL.base_URL,
+    apiKey: config.APIKEY.API_key
   });
 });
 
@@ -74,8 +76,4 @@ watcher.on('add', (filePath) => {
 
 app.listen(port, hostname, () => {
   console.log(`Server is running on ${hostname}:${port}`);
-});
-
-app.get('/api-key', (req, res) => {
-  res.json({ apiKey: config.TBAMain.API_KEY });
 });
