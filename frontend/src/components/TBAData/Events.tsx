@@ -5,74 +5,92 @@ import './Events.css';
 
 interface EventsProps {
     baseURL: string;
+    onEventSelect: (eventCode: string) => void; // Add prop for event selection callback
 }
 
-const Events: React.FC<EventsProps> = ({ baseURL }) => {
-    const [ServerIP, setServerIP] = useState('');
-    const [apiKey, setApiKey] = useState('');
-    const [data, setData] = useState<any[]>([]);
-    const [selectedEvent, setSelectedEvent] = useState('');
+interface EventData {
+    event_code: string;
+    short_name?: string;
+    name: string;
+    formatted: string;
+}
+
+const Events: React.FC<EventsProps> = ({ baseURL, onEventSelect }) => {
+    const [apiKey, setApiKey] = useState<string>('');
+    const [data, setData] = useState<EventData[]>([]);
+    const [selectedEvent, setSelectedEvent] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
+    const [year, setYear] = useState<string>(''); // Add state for year
 
     useEffect(() => {
-        const fetchConfig = async () => {
+        const fetchConfigAndApiKey = async () => {
             try {
-                const response = await axios.get('/config');
-                setServerIP(response.data.server_ip);
-            } catch (error) {
-                console.error('Error fetching server IP:', error);
-            }
-        };
+                const configResponse = await axios.get('/config');
+                const serverIP = configResponse.data.server_ip;
+                setYear(configResponse.data.year); // Set the year from config
 
-        const fetchApiKey = async () => {
-            if (ServerIP) {
-                try {
-                    const response = await axios.get(`${ServerIP}/api-key`);
-                    setApiKey(response.data.apiKey);
-                } catch (error) {
-                    console.error('Error fetching API key:', error);
-                }
+                const apiKeyResponse = await axios.get(`${serverIP}/api-key`);
+                setApiKey(apiKeyResponse.data.apiKey);
+            } catch (error) {
+                setError('Error fetching configuration or API key');
+                console.error(error);
             }
         };
 
         const fetchData = async () => {
-            if (apiKey) {
+            if (apiKey && year) {
                 try {
-                    const response = await axios.get(`${baseURL}?X-TBA-Auth-Key=${apiKey}`);
-                    console.log('Fetched data:', response.data); // Add this line to log the data
+                    const response = await axios.get(`${baseURL}events/${year}?X-TBA-Auth-Key=${apiKey}`);
                     const formattedData = response.data.map((item: any) => ({
-                        formatted: `${item.event_code}: ${item.short_name || item.name}`,
-                        ...item
+                        ...item,
+                        formatted: `${item.event_code}: ${item.short_name || item.name}`
                     }));
                     setData(formattedData);
                 } catch (error) {
-                    console.error('Error fetching data:', error);
+                    setError('Error fetching data');
+                    console.error(error);
+                } finally {
+                    setLoading(false);
                 }
             }
         };
 
-        fetchConfig().then(fetchApiKey).then(fetchData);
-    }, [ServerIP, apiKey]);
+        fetchConfigAndApiKey().then(fetchData);
+    }, [apiKey, year, baseURL]);
 
-    const link = `${baseURL}?X-TBA-Auth-Key=${apiKey}`;
+    const link = `${baseURL}events/${year}?X-TBA-Auth-Key=${apiKey}`;
 
     const options = data.map((event) => ({
-        value: event.formatted,
+        value: event.event_code, // Use event_code as the value
         label: event.formatted
     }));
 
-    const offseasonEvents = data.filter(event => event.event_type_string === 'Offseason');
+    const handleEventSelect = (selectedOption: any) => {
+        const eventCode = selectedOption?.value || '';
+        setSelectedEvent(eventCode);
+        onEventSelect(eventCode); // Call the callback with the selected event code
+    };
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>{error}</div>;
+    }
 
     return (
         <div>
-            <div>Events:</div>
+            <h2>Events:</h2>
             <a href={link} target="_blank" rel="noopener noreferrer">
                 {link}
             </a>
-            {data && (
+            {data.length > 0 && (
                 <div className="select-container">
                     <Select
                         value={options.find(option => option.value === selectedEvent)}
-                        onChange={(selectedOption) => setSelectedEvent(selectedOption?.value || '')}
+                        onChange={handleEventSelect}
                         options={options}
                         placeholder="Select an event"
                         isClearable

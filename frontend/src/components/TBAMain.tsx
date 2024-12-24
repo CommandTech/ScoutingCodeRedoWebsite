@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Events from './TBAData/Events';
+import Schedule from './TBAData/Schedule';
 
 const TBAMain = () => {
     const [ServerIP, setServerIP] = useState('');
     const [apiKey, setApiKey] = useState('');
-    const baseURL = 'https://www.thebluealliance.com/api/v3/events/2024';
-    const eventKey = '2024nytr'; // Example event key, replace with actual event key
+    const [selectedEventCode, setSelectedEventCode] = useState<string>(''); // Add state for selected event code
+    const [year, setYear] = useState<string>(''); // Add state for year
+    const baseURL = 'https://www.thebluealliance.com/api/v3/';
 
     useEffect(() => {
         const fetchConfig = async () => {
@@ -17,6 +19,7 @@ const TBAMain = () => {
                 if (response.data && response.data.server_ip) {
                     console.log('Setting ServerIP:', response.data.server_ip);
                     setServerIP(response.data.server_ip);
+                    setYear(response.data.year); // Set the year from config
                 } else {
                     console.error('Server IP not found in config response');
                 }
@@ -50,7 +53,8 @@ const TBAMain = () => {
     return (
         <div>
             <h1>TBAMain</h1>
-            <Events baseURL={baseURL} />
+            <Events baseURL={baseURL} onEventSelect={setSelectedEventCode} />
+            <Schedule baseURL={baseURL} year={year} eventCode={selectedEventCode} apiKey={apiKey} />
         </div>
     );
 };

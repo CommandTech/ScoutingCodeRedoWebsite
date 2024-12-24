@@ -30,7 +30,10 @@ app.get('/', (req, res) => {
 // Endpoint to get configuration
 app.get('/config', (req, res) => {
   console.log('Config endpoint hit');
-  res.json({ server_ip: config.ServerIP.server_ip });
+  res.json({ 
+    server_ip: config.ServerIP.server_ip,
+    year: config.YEAR.year
+  });
 });
 
 app.post('/upload', upload.single('file'), (req, res) => {
