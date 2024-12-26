@@ -17,7 +17,7 @@ app.use(express.static('uploads'));
 
 // Read configuration
 const config = ini.parse(fs.readFileSync('../config.ini', 'utf-8'));
-const serverUrl = new URL(config.ServerIP.server_ip);
+const serverUrl = new URL(config.SERVER_IP.ServerIP);
 console.log('Server URL:', serverUrl);
 const hostname = '0.0.0.0';
 const port = serverUrl.port;
@@ -31,10 +31,11 @@ app.get('/', (req, res) => {
 app.get('/config', (req, res) => {
   console.log('Config endpoint hit');
   res.json({ 
-    server_ip: config.ServerIP.server_ip,
+    ServerIP: config.SERVER_IP.ServerIP,
     year: config.YEAR.year,
-    baseURL: config.BASEURL.base_URL,
-    apiKey: config.APIKEY.API_key
+    baseURL: config.BASE_URL.baseURL,
+    apiKey: config.API_KEY.APIkey,
+    EventCode: config.EVENT_CODE.EventCode,
   });
 });
 

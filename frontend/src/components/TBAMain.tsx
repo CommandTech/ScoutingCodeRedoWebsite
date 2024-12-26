@@ -3,7 +3,7 @@ import axios from 'axios';
 import Events from './TBAData/Events';
 
 const TBAMain = () => {
-    const [ServerIP, setServerIP] = useState('');
+    const [SERVER_IP, setServerIP] = useState('');
     const [apiKey, setApiKey] = useState('');
     const [selectedEventCode, setSelectedEventCode] = useState<string>('');
     const [year, setYear] = useState<string>('');
@@ -15,9 +15,9 @@ const TBAMain = () => {
                 console.log('Fetching config...');
                 const response = await axios.get('/config');
                 console.log('Config response:', response.data);
-                if (response.data && response.data.server_ip) {
-                    console.log('Setting ServerIP:', response.data.server_ip);
-                    setServerIP(response.data.server_ip);
+                if (response.data && response.data.ServerIP) {
+                    console.log('Setting SERVER_IP:', response.data.ServerIP);
+                    setServerIP(response.data.ServerIP);
                     setYear(response.data.year);
                     setBaseURL(response.data.baseURL);
                 } else {
@@ -33,10 +33,10 @@ const TBAMain = () => {
 
     useEffect(() => {
         const fetchApiKey = async () => {
-            console.log('Current ServerIP:', ServerIP);
-            if (ServerIP) {
+            console.log('Current SERVER_IP:', SERVER_IP);
+            if (SERVER_IP) {
                 try {
-                    const response = await axios.get(`${ServerIP}/config`);
+                    const response = await axios.get(`${SERVER_IP}/config`);
                     console.log('API key response:', response.data);
                     setApiKey(response.data.apiKey);
                 } catch (error) {
@@ -48,7 +48,7 @@ const TBAMain = () => {
         };
 
         fetchApiKey();
-    }, [ServerIP]);
+    }, [SERVER_IP]);
 
     return (
         <div>

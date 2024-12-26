@@ -16,8 +16,8 @@ const App: React.FC = () => {
     fetch('/config')
       .then(response => response.json())
       .then(data => {
-        setServerIP(data.server_ip);
-        return fetch(`${data.server_ip}/config`);
+        setServerIP(data.ServerIP);
+        return fetch(`${data.ServerIP}/config`);
       })
       .then(response => response.json())
       .then(data => setConfig({ baseURL: data.baseURL, apiKey: data.apiKey }))

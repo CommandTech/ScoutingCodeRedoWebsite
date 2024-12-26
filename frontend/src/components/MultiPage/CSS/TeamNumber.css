@@ -1,0 +1,15 @@
+.team-number span {
+  margin-right: 10px;
+  border: 1px solid #000;
+  padding: 1px;
+  border-radius: 5px;
+  color: white;
+}
+
+.team-number.red span {
+  background-color: red;
+}
+
+.team-number.blue span {
+  background-color: blue;
+}

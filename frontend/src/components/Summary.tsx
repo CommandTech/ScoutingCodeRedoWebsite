@@ -1,77 +1,56 @@
 import React, { useState, useEffect } from 'react';
-import { readCSVFile } from '../utils/readCSV';
-import AptsTDisplay from './AptsTDisplay';
-import './Summary.css';
+import MatchNumberDD from './MultiPage/MatchNumberDD';
+import AllianceColorDD from './MultiPage/AllianceColorDD';
+import TeamNumber from './MultiPage/TeamNumber';
+import axios from 'axios';
+import './CSS/Summary.css';
 
 const Summary: React.FC = () => {
-  const [matchNumbers, setMatchNumbers] = useState<string[]>([]);
   const [selectedMatch, setSelectedMatch] = useState<string>('');
-  const [teamData, setTeamData] = useState<any[]>([]);
+  const [selectedColor, setSelectedColor] = useState<string>('red');
+  const [teams, setTeams] = useState<string[]>([]);
+  const [config, setConfig] = useState({ baseURL: '', apiKey: '', year: '', EventCode: '' });
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchConfig = async () => {
       try {
-        const response = await fetch('/TBASchedule.csv');
-        const csvData = await response.text();
-        const parsedData = await readCSVFile(new File([csvData], 'TBASchedule.csv', { type: 'text/csv' }));
-        console.log('Parsed Data:', parsedData); // Debugging log
-        const matchNumbers = parsedData.map((row: any) => row['match_number']); // Accessing by header name
-        const uniqueMatchNumbers = Array.from(new Set(matchNumbers)).sort((a, b) => a - b);
-        console.log('Unique Match Numbers:', uniqueMatchNumbers); // Debugging log
-        setMatchNumbers(uniqueMatchNumbers);
-        setTeamData(parsedData);
+        const response = await axios.get('/config');
+        setConfig(response.data);
       } catch (error) {
-        console.error('Error reading CSV file:', error);
+        console.error('Error fetching configuration:', error);
       }
     };
 
-    fetchData();
+    fetchConfig();
   }, []);
 
-  const handleMatchChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedMatch(event.target.value);
-  };
+  useEffect(() => {
+    const fetchTeams = async () => {
+      if (!config.baseURL || !config.apiKey || !selectedMatch) return;
 
-  const selectedTeams = teamData.filter(row => row['match_number'] === selectedMatch);
+      try {
+        const response = await axios.get(`${config.baseURL}event/${config.year}${config.EventCode}/matches?X-TBA-Auth-Key=${config.apiKey}`);
+        const matches = response.data;
+        const filteredTeams = matches
+          .filter((match: any) => match.match_number.toString() === selectedMatch && match.comp_level === 'qm')
+          .flatMap((match: any) => selectedColor === 'red' ? match.alliances.red.team_keys : match.alliances.blue.team_keys)
+          .map((teamKey: string) => teamKey.replace('frc', ''));
+        setTeams(filteredTeams);
+      } catch (error) {
+        console.error('Error fetching teams:', error);
+      }
+    };
+
+    fetchTeams();
+  }, [selectedMatch, selectedColor, config]);
 
   return (
     <div>
-      <h2>Summary Page</h2>
-      <select onChange={handleMatchChange} value={selectedMatch}>
-        <option value="">Select a match</option>
-        {matchNumbers.map((matchNumber) => (
-          <option key={matchNumber} value={matchNumber}>
-            {matchNumber}
-          </option>
-        ))}
-      </select>
-      {selectedTeams.length > 0 && (
-        <table>
-          <thead>
-            <tr>
-              <th>Red 0</th>
-              <th>Red 1</th>
-              <th>Red 2</th>
-              <th>Blue 0</th>
-              <th>Blue 1</th>
-              <th>Blue 2</th>
-            </tr>
-          </thead>
-          <tbody>
-            {selectedTeams.map((team, index) => (
-              <tr key={team.id || index}>
-                <td>{team['Red0']}</td>
-                <td>{team['Red1']}</td>
-                <td>{team['Red2']}</td>
-                <td>{team['Blue0']}</td>
-                <td>{team['Blue1']}</td>
-                <td>{team['Blue2']}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-      <AptsTDisplay selectedTeams={selectedTeams} />
+      <MatchNumberDD onMatchChange={setSelectedMatch} />
+      <div className="alliance-team-row">
+        <AllianceColorDD onColorChange={setSelectedColor} />
+        <TeamNumber teams={teams} color={selectedColor} />
+      </div>
     </div>
   );
 };

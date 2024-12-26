@@ -1,0 +1,8 @@
+.alliance-team-row {
+    display: flex;
+    align-items: center;
+  }
+  
+  .alliance-team-row > * {
+    margin-right: 20px;
+  }

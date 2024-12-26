@@ -75,10 +75,9 @@ def convert_excel_to_csv():
                 
                 # Convert each sheet to a CSV file
                 with pd.ExcelFile(excel_file) as xls:
-                    base_name = os.path.splitext(file_name)[0]
                     for sheet_name in xls.sheet_names:
                         df = pd.read_excel(xls, sheet_name=sheet_name)
-                        csv_file = os.path.join(output_dir, f"{base_name}_{sheet_name}.csv")
+                        csv_file = os.path.join(output_dir, f"{sheet_name}.csv")
                         df.to_csv(csv_file, index=False)
                         print(f"Converted {sheet_name} to {csv_file}")
 
