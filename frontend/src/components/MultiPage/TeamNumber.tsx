@@ -17,11 +17,11 @@ const TeamNumber: React.FC<TeamNumberProps> = ({ teams, color, scoutCounts }) =>
         <div key={index} className="team-container">
           <div className="label-scout">
             <span className="team-label">{labels[index]}</span>
-            <span>&nbsp;&nbsp;&nbsp;Scouted:&nbsp;</span>
+            <span className="scouted-label">Scouted:</span>
           </div>
           <div className="scout-count">
-            <span>{team}{scoutCounts[team] || 0}</span>
-            <span>&nbsp;&nbsp;&nbsp;{scoutCounts[team] || 0}</span>
+            <span className="team-name">{team}</span>
+            <span className="scout-number">{scoutCounts[team] || 0}</span>
           </div>
         </div>
       ))}

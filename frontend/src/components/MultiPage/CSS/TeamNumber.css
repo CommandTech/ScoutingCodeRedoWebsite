@@ -14,9 +14,11 @@
   background-color: #f0f0f0;
 }
 
-.team-number .label-scout {
+.team-number .label-scout,
+.team-number .scout-count {
   display: flex;
-  align-items: center;
+  justify-content: left;
+  width: 100%;
 }
 
 .team-number .team-label {
@@ -24,6 +26,19 @@
   margin-bottom: 5px;
   font-size: 0.8em;
   text-align: left;
+}
+
+.team-number .scouted-label {
+  margin-left: 10px;
+  margin-right: 5px;
+}
+
+.team-number .team-name {
+  margin-left: 20px;
+}
+
+.team-number .scout-number {
+  margin-left: 50px;
 }
 
 .team-number span {
