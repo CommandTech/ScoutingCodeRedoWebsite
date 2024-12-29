@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import MatchNumberDD from './MultiPage/MatchNumberDD';
 import AllianceColorDD from './MultiPage/AllianceColorDD';
-import TeamNumber from './MultiPage/TeamNumber';
+import TeamNumber from './MultiPage/Team-Number';
 import NumberScouted from './MultiPage/NumberScouted';
+import ScoutedLabel from './MultiPage/ScoutedLabel';
+import AllianceStation from './MultiPage/AllianceStation';
 import axios from 'axios';
 import './CSS/Summary.css';
 
@@ -70,6 +72,8 @@ const Summary: React.FC = () => {
       {teams.map(team => (
         <NumberScouted key={team} teamNumber={team} />
       ))}
+      <ScoutedLabel />
+      <AllianceStation alliance_station="Red 1" />
     </div>
   );
 };

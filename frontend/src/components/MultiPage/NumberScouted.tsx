@@ -30,6 +30,7 @@ const NumberScouted: React.FC<NumberScoutedProps> = ({ teamNumber }) => {
 
   return (
     <div>
+      {count}
     </div>
   );
 };
