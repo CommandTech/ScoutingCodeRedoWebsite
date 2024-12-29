@@ -15,7 +15,7 @@ const ExcelReader: React.FC = () => {
         const contentType = response.headers.get('content-type');
         if (contentType && contentType.includes('application/json')) {
           const config = await response.json();
-          setServerIP(config.server_ip);
+          setServerIP(config.ServerIP);
         } else {
           const text = await response.text();
           console.error('Unexpected response format:', text);
@@ -26,7 +26,7 @@ const ExcelReader: React.FC = () => {
         console.error('Error fetching config:', error);
       }
     };
-  
+
     fetchConfig();
   }, []);
 
