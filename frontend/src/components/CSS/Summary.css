@@ -1,8 +1,29 @@
 .alliance-team-row {
-    display: flex;
-    align-items: center;
-  }
-  
-  .alliance-team-row > * {
-    margin-right: 20px;
-  }
+  display: flex;
+  align-items: center;
+}
+
+.alliance-team-row>* {
+  margin-right: 20px;
+}
+
+.team-info-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.team-info-table {
+  border-collapse: collapse;
+  text-align: center;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.team-info-table tbody {
+  display: inline-block;
+}
+
+.team-info-table td {
+  border: 1px solid #000000;
+}

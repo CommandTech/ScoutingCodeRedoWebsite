@@ -4,12 +4,12 @@ interface AllianceStationProps {
     alliance_station: string;
 }
 
-const labels = ["Amp Sta.", "Center Sta.", "Source Sta."];
+export const labels = ["Amp Sta.", "Center Sta.", "Source Sta."];
 
 const AllianceStation: React.FC<AllianceStationProps> = ({ alliance_station }) => {
     return (
         <div>
-            <span>{alliance_station}</span>
+            <span>&nbsp;{alliance_station}&nbsp;</span>
         </div>
     );
 };

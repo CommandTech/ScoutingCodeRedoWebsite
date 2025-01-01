@@ -4,7 +4,7 @@ import AllianceColorDD from './MultiPage/AllianceColorDD';
 import TeamNumber from './MultiPage/Team-Number';
 import NumberScouted from './MultiPage/NumberScouted';
 import ScoutedLabel from './MultiPage/ScoutedLabel';
-import AllianceStation from './MultiPage/AllianceStation';
+import AllianceStation, { labels } from './MultiPage/AllianceStation';
 import axios from 'axios';
 import './CSS/Summary.css';
 
@@ -31,7 +31,7 @@ const Summary: React.FC = () => {
   useEffect(() => {
     const fetchTeams = async () => {
       if (!config.baseURL || !config.apiKey || !selectedMatch) return;
-  
+
       try {
         const response = await axios.get(`${config.baseURL}event/${config.year}${config.EventCode}/matches?X-TBA-Auth-Key=${config.apiKey}`);
         const matches = response.data;
@@ -40,7 +40,7 @@ const Summary: React.FC = () => {
           .flatMap((match: any) => selectedColor === 'red' ? match.alliances.red.team_keys : match.alliances.blue.team_keys)
           .map((teamKey: string) => teamKey.replace('frc', ''));
         setTeams(filteredTeams);
-  
+
         // Fetch scout counts for each team
         const counts: { [team: string]: number } = {};
         for (const team of filteredTeams) {
@@ -58,7 +58,7 @@ const Summary: React.FC = () => {
         console.error('Error fetching teams:', error);
       }
     };
-  
+
     fetchTeams();
   }, [selectedMatch, selectedColor, config]);
 
@@ -67,13 +67,22 @@ const Summary: React.FC = () => {
       <MatchNumberDD onMatchChange={setSelectedMatch} />
       <div className="alliance-team-row">
         <AllianceColorDD onColorChange={setSelectedColor} />
-        <TeamNumber teams={teams} color={selectedColor} scoutCounts={scoutCounts} />
       </div>
-      {teams.map(team => (
-        <NumberScouted key={team} teamNumber={team} />
+      <br />
+      {teams.map((team, index) => (
+        <table key={team} className="team-info-table">
+        <tbody>
+          <tr>
+            <td><AllianceStation alliance_station={labels[index % labels.length]} /></td>
+            <td><ScoutedLabel /></td>
+          </tr>
+          <tr>
+            <td><TeamNumber teams={[team]} color={selectedColor} scoutCounts={scoutCounts} /></td>
+            <td><NumberScouted teamNumber={team} /></td>
+          </tr>
+        </tbody>
+      </table>
       ))}
-      <ScoutedLabel />
-      <AllianceStation alliance_station="Red 1" />
     </div>
   );
 };
