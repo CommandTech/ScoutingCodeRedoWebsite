@@ -5,6 +5,8 @@ import TeamNumber from './MultiPage/Team-Number';
 import NumberScouted from './MultiPage/NumberScouted';
 import ScoutedLabel from './MultiPage/ScoutedLabel';
 import AllianceStation, { labels } from './MultiPage/AllianceStation';
+import RankLabel from './MultiPage/RankLabel';
+import Rank from './MultiPage/Rank';
 import axios from 'axios';
 import './CSS/Summary.css';
 
@@ -71,17 +73,19 @@ const Summary: React.FC = () => {
       <br />
       {teams.map((team, index) => (
         <table key={team} className="team-info-table">
-        <tbody>
-          <tr>
-            <td><AllianceStation alliance_station={labels[index % labels.length]} /></td>
-            <td><ScoutedLabel /></td>
-          </tr>
-          <tr>
-            <td><TeamNumber teams={[team]} color={selectedColor} scoutCounts={scoutCounts} /></td>
-            <td><NumberScouted teamNumber={team} /></td>
-          </tr>
-        </tbody>
-      </table>
+          <tbody className={selectedColor}>
+            <tr>
+              <td><AllianceStation alliance_station={labels[index % labels.length]} /></td>
+              <td><ScoutedLabel /></td>
+              <td><RankLabel /></td>
+            </tr>
+            <tr>
+              <td><TeamNumber teams={[team]} scoutCounts={scoutCounts} /></td>
+              <td><NumberScouted teamNumber={team} /></td>
+              <td><Rank teamNumber={team} /></td>
+            </tr>
+          </tbody>
+        </table>
       ))}
     </div>
   );

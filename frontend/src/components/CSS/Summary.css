@@ -18,12 +18,24 @@
   text-align: center;
   display: inline-block;
   vertical-align: top;
+  table-layout: auto;
+  width: auto;
 }
 
 .team-info-table tbody {
   display: inline-block;
+  color: white;
+  margin-right: 10px;
 }
 
 .team-info-table td {
   border: 1px solid #000000;
+}
+
+.team-info-table tbody.red {
+  background-color: red;
+}
+
+.team-info-table tbody.blue {
+  background-color: blue;
 }
