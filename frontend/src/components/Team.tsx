@@ -1,24 +1,16 @@
-import { readCSVFile } from '../utils/readCSV';
 import React, { useState, useEffect } from 'react';
-import TeamActivitiesTable from './TeamData/TeamActivitiesTable';
-import DelOrigCountsTable from './TeamData/DelOrigCountsTable';
+import { Tabs, Tab, Box } from '@mui/material';
+import { readCSVFile } from '../utils/readCSV';
 
 const Team = () => {
     const [teams, setTeams] = useState<string[]>([]);
-    const [selectedTeam, setSelectedTeam] = useState<string>('');
-    const [teamData, setTeamData] = useState<{ [key: string]: string | number }>({});
-    const [filteredData, setFilteredData] = useState<{ [key: string]: string | number }[]>([]);
-    const [showTeamTable, setShowTeamTable] = useState(false);
-    const [showDelOrigTable, setShowDelOrigTable] = useState(false);
-    const [delOrigCounts, setDelOrigCounts] = useState<{ [matchNumber: string]: { [key: string]: number } }>({});
+    const [selectedTeam, setSelectedTeam] = useState('');
+    const [tabIndex, setTabIndex] = useState(0);
 
     useEffect(() => {
         const fetchTeams = async () => {
             try {
                 const response = await fetch('/ExcelCSVFiles/Dyno_Data.csv');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
                 const csvData = await response.text();
                 const parsedData = await readCSVFile(new File([csvData], 'Dyno_Data.csv', { type: 'text/csv' }));
 
@@ -53,49 +45,15 @@ const Team = () => {
 
         if (teamName) {
             try {
-                const response = await fetch('/ExcelCSVFiles/Dyno_Data.csv');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const csvData = await response.text();
-                const parsedData = await readCSVFile(new File([csvData], 'Dyno_Data.csv', { type: 'text/csv' }));
-
-                const team = parsedData.find((row: any) => row['Team'] === teamName);
-                setTeamData(team as { [key: string]: string | number });
-                const filtered = parsedData.filter((row: any) => row['Team'] === teamName);
-                setFilteredData(filtered);
-
-                // Count occurrences of DelOrig values by match number
-                const counts: { [matchNumber: string]: { [key: string]: number } } = {};
-                filtered.forEach(d => {
-                    const matchNumber = d.Match;
-                    if (!counts[matchNumber]) {
-                        counts[matchNumber] = {};
-                    }
-                    counts[matchNumber][d.DelOrig] = (counts[matchNumber][d.DelOrig] || 0) + 1;
-                });
-                setDelOrigCounts(counts);
-
-                setShowTeamTable(true);
-                setShowDelOrigTable(true);
+                // Fetch and set data related to the selected team
             } catch (error) {
                 console.error('Error fetching team data:', error);
             }
-        } else {
-            setTeamData({});
-            setFilteredData([]);
-            setDelOrigCounts({});
-            setShowTeamTable(false);
-            setShowDelOrigTable(false);
         }
     };
 
-    const toggleTeamTable = () => {
-        setShowTeamTable(!showTeamTable);
-    };
-
-    const toggleDelOrigTable = () => {
-        setShowDelOrigTable(!showDelOrigTable);
+    const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+        setTabIndex(newValue);
     };
 
     return (
@@ -108,22 +66,20 @@ const Team = () => {
                     </option>
                 ))}
             </select>
-            {selectedTeam && (
-                <div>
-                    <button onClick={toggleTeamTable}>
-                        {showTeamTable ? 'Hide Team Activities' : 'Show Team Activities'}
-                    </button>
-                    <button onClick={toggleDelOrigTable}>
-                        {showDelOrigTable ? 'Hide DelOrig Counts' : 'Show DelOrig Counts'}
-                    </button>
-                </div>
-            )}
-            {showTeamTable && filteredData.length > 0 && (
-                <TeamActivitiesTable filteredData={filteredData} />
-            )}
-            {showDelOrigTable && Object.keys(delOrigCounts).length > 0 && (
-                <DelOrigCountsTable delOrigCounts={delOrigCounts} />
-            )}
+
+            <Tabs value={tabIndex} onChange={handleTabChange}>
+                <Tab label="Summary" />
+                <Tab label="Auto" />
+                <Tab label="Teleop" />
+                <Tab label="Surfacing" />
+            </Tabs>
+
+            <Box>
+                {tabIndex === 0 && <div>Summary Content</div>}
+                {tabIndex === 1 && <div>Auto Content</div>}
+                {tabIndex === 2 && <div>Teleop Content</div>}
+                {tabIndex === 3 && <div>Surfacing Content</div>}
+            </Box>
         </div>
     );
 };
