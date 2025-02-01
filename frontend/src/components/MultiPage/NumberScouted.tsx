@@ -11,7 +11,7 @@ const NumberScouted: React.FC<NumberScoutedProps> = ({ teamNumber }) => {
   useEffect(() => {
     const fetchCount = async () => {
       try {
-        const response = await axios.get('/ExcelCSVFiles/Dyno_Data.csv');
+        const response = await axios.get('/ExcelCSVFiles/Activities.csv');
         const csvData = response.data;
         const rows = csvData.split('\n').slice(1); // Skip header row
         const filteredRows = rows.filter((row: string) => {

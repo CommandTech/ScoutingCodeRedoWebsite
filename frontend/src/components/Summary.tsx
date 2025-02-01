@@ -46,7 +46,7 @@ const Summary: React.FC = () => {
         // Fetch scout counts for each team
         const counts: { [team: string]: number } = {};
         for (const team of filteredTeams) {
-          const response = await axios.get('/ExcelCSVFiles/Dyno_Data.csv');
+          const response = await axios.get('/ExcelCSVFiles/Activities.csv');
           const csvData = response.data;
           const rows = csvData.split('\n').slice(1); // Skip header row
           const filteredRows = rows.filter((row: string) => {

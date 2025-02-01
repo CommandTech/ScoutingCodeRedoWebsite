@@ -1,8 +1,9 @@
 import React from 'react'
+import TeamList from './PickListPage/TeamList'
 
 const PickList = () => {
   return (
-    <div>PickList</div>
+    <TeamList />
   )
 }
 

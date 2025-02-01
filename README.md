@@ -7,4 +7,4 @@ Open config.ini and update the values
 Run startBat.bat
 
 # To Do
-TBA Experimentation
+Make it so the right excel file is removed when a new one is uploaded

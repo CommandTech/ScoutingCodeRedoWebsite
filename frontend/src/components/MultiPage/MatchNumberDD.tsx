@@ -11,13 +11,13 @@ const MatchNumberDD: React.FC<MatchNumberDDProps> = ({ onMatchChange }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch('/ExcelCSVFiles/Dyno_Data.csv');
+      const response = await fetch('/ExcelCSVFiles/Activities.csv');
       if (!response.ok) {
         console.error('Failed to fetch the CSV file');
         return;
       }
       const csvData = await response.text();
-      const data = await readCSVFile(new File([csvData], 'Dyno_Data.csv', { type: 'text/csv' }));
+      const data = await readCSVFile(new File([csvData], 'Activities.csv', { type: 'text/csv' }));
       const matches = data.map((row: any) => row.Match).filter((match: string | undefined) => match && match.trim() !== '');
       const uniqueMatches = Array.from(new Set(matches)).sort((a, b) => Number(a) - Number(b));
       

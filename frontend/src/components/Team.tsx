@@ -10,9 +10,9 @@ const Team = () => {
     useEffect(() => {
         const fetchTeams = async () => {
             try {
-                const response = await fetch('/ExcelCSVFiles/Dyno_Data.csv');
+                const response = await fetch('/ExcelCSVFiles/Activities.csv');
                 const csvData = await response.text();
-                const parsedData = await readCSVFile(new File([csvData], 'Dyno_Data.csv', { type: 'text/csv' }));
+                const parsedData = await readCSVFile(new File([csvData], 'Activities.csv', { type: 'text/csv' }));
 
                 if (!parsedData || !Array.isArray(parsedData)) {
                     throw new Error('Parsed data is not an array or is undefined');
