@@ -10,7 +10,7 @@ import Schedule from './components/TBAData/Schedule';
 import Rankings from './components/TBAData/Rankings';
 import MPR from './components/MPR';
 import AutoHelp from './components/AutoHelp';
-import PickList from './components/PickList';
+import AllianceSelection from './components/AllianceSelection';
 
 function App() {
   const location = useLocation();
@@ -18,7 +18,7 @@ function App() {
     '/Team': 0,
     '/MPR': 1,
     '/AutoHelp': 2,
-    '/PickList': 3,
+    '/AllianceSelection': 3,
     '/upload': 4,
   };
 
@@ -39,7 +39,7 @@ function App() {
           <Tab label="Team" component={Link} to="/Team" />
           <Tab label="MPR" component={Link} to="/MPR" />
           <Tab label="Auto Help" component={Link} to="/AutoHelp" />
-          <Tab label="Pick List" component={Link} to="/PickList" />
+          <Tab label="Alliance Selection" component={Link} to="/AllianceSelection" />
           <Tab label="Upload" component={Link} to="/upload" />
         </Tabs>
       </header>
@@ -53,7 +53,7 @@ function App() {
         <Route path="/TBA/:eventCode/rankings" element={<Rankings />} />
         <Route path="/MPR" element={<MPR />} />
         <Route path="/AutoHelp" element={<AutoHelp />} />
-        <Route path="/PickList" element={<PickList />} />
+        <Route path="/AllianceSelection" element={<AllianceSelection />} />
         <Route path="/upload" element={<ExcelReader />} />
       </Routes>
     </div>

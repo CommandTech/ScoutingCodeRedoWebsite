@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableSortLabel, TableBody, Paper } from '@mui/material';
+import './CSS/TeamList.css';
 
 const TeamList = () => {
     const [teams, setTeams] = useState<string[]>([]);

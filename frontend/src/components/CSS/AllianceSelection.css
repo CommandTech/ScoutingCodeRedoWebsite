@@ -1,0 +1,9 @@
+.allianceselection-container {
+    display: flex;
+    justify-content: flex-end;
+    height: 100vh;
+}
+
+.teamlist-wrapper {
+    width: 50%;
+}
