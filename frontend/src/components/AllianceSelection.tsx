@@ -1,15 +1,14 @@
-import React from 'react'
-import TeamList from './AllianceSelectionPage/TeamList'
 import './CSS/AllianceSelection.css';
+import PickList from './AllianceSelectionPage/PickList';
 
 const AllianceSelection = () => {
   return (
     <div className="allianceselection-container">
-      <div className="teamlist-wrapper">
-        <TeamList />
+      <div className="picklist-wrapper">
+        <PickList />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AllianceSelection
+export default AllianceSelection;
