@@ -1,4 +1,4 @@
-export const fetchTeams = async () => {
+export const fetchTeams = async (selectedTeams: string[] = []) => {
     try {
         const response = await fetch('/ExcelCSVFiles/Activities.csv');
         const text = await response.text();
@@ -113,7 +113,8 @@ export const fetchTeams = async () => {
         const sortedTeams = Object.keys(teamAverageAutoPoints)
             .map(team => team.replace('frc', ''))
             .sort((a, b) => parseInt(a) - parseInt(b))
-            .map(team => `frc${team}`);
+            .map(team => `frc${team}`)
+            .filter(team => !selectedTeams.includes(team)); // Filter out selected teams
 
         return {
             teams: sortedTeams,

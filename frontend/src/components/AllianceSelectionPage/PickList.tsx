@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, Select, MenuItem, SelectChangeEvent } from '@mui/material';
 import { fetchTeams } from '../../utils/fetchTeams';
-import TeamList from './TeamList'; // Import TeamList component
 
-const PickList = () => {
+interface PickListProps {
+  setSelectedTeams: (teams: string[]) => void;
+}
+
+const PickList: React.FC<PickListProps> = ({ setSelectedTeams }) => {
   const [rows, setRows] = useState([{ id: 1, name: '', autoPoints: '', algaePoints: '', coralPoints: '', surfacingPoints: '', overall: '' }]);
   const [teams, setTeams] = useState<string[]>([]);
   const [teamData, setTeamData] = useState<any>({});
@@ -42,6 +45,7 @@ const PickList = () => {
     const newRows = rows.filter(row => row.id !== id);
     setRows(newRows);
     saveToCookies(newRows);
+    setSelectedTeams(newRows.map(row => row.name).filter(name => name));
   };
 
   const handleInputChange = (id: number, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | { name?: string; value: unknown }> | SelectChangeEvent<string>) => {
@@ -63,9 +67,8 @@ const PickList = () => {
     });
     setRows(newRows);
     saveToCookies(newRows);
+    setSelectedTeams(newRows.map(row => row.name).filter(name => name));
   };
-
-  const selectedTeams = rows.map(row => row.name).filter(name => name);
 
   return (
     <div className="allianceselection-container">
@@ -147,9 +150,6 @@ const PickList = () => {
             Add Row
           </Button>
         </TableContainer>
-      </div>
-      <div className="teamlist-wrapper">
-        <TeamList selectedTeams={selectedTeams} /> {/* Pass selected teams to TeamList */}
       </div>
     </div>
   );

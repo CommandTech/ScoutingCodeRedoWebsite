@@ -20,7 +20,7 @@ const TeamList: React.FC<TeamListProps> = ({ selectedTeams }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await fetchTeams();
+        const data = await fetchTeams(selectedTeams);
         setTeams(data.teams);
         setTeamAverageAutoPoints(data.teamAverageAutoPoints);
         setTeamAverageAlgaePoints(data.teamAverageAlgaePoints);
@@ -33,7 +33,7 @@ const TeamList: React.FC<TeamListProps> = ({ selectedTeams }) => {
     };
 
     fetchData();
-  }, []);
+  }, [selectedTeams]);
 
   const handleSort = (property: 'team' | 'avgAutoPoints' | 'avgAlgaePoints' | 'avgCoralPoints' | 'avgSurfacingPoints' | 'avgPoints') => {
     const isAsc = orderBy === property && order === 'asc';
@@ -78,8 +78,6 @@ const TeamList: React.FC<TeamListProps> = ({ selectedTeams }) => {
 
     setTeams(sortedTeams);
   };
-
-  const filteredTeams = teams.filter(team => !selectedTeams.includes(team));
 
   return (
     <TableContainer component={Paper}>
@@ -143,7 +141,7 @@ const TeamList: React.FC<TeamListProps> = ({ selectedTeams }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {filteredTeams.map((team, index) => (
+          {teams.map((team, index) => (
             <TableRow key={index}>
               <TableCell>{team}</TableCell>
               <TableCell>{teamAverageAutoPoints[team]?.toFixed(2) || 'N/A'}</TableCell>
