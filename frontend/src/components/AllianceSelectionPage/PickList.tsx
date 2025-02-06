@@ -4,19 +4,19 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import { fetchTeams } from '../../utils/fetchTeams';
 
 interface PickListProps {
+  allTeams: string[];
+  selectedTeams: string[];
   setSelectedTeams: (teams: string[]) => void;
 }
 
-const PickList: React.FC<PickListProps> = ({ setSelectedTeams }) => {
+const PickList: React.FC<PickListProps> = ({ allTeams, selectedTeams, setSelectedTeams }) => {
   const [rows, setRows] = useState([{ id: 1, name: '', autoPoints: '', algaePoints: '', coralPoints: '', surfacingPoints: '', overall: '' }]);
-  const [teams, setTeams] = useState<string[]>([]);
   const [teamData, setTeamData] = useState<any>({});
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await fetchTeams();
-        setTeams(data.teams);
         setTeamData(data);
       } catch (error) {
         console.error('Error fetching teams:', error);
@@ -33,6 +33,7 @@ const PickList: React.FC<PickListProps> = ({ setSelectedTeams }) => {
 
   const saveToCookies = (rows: any) => {
     Cookies.set('picklist', JSON.stringify(rows), { expires: 7 });
+    Cookies.set('selectedTeams', JSON.stringify(rows.map((row: { name: any; }) => row.name).filter((name: any) => name)), { expires: 7 });
   };
 
   const addRow = () => {
@@ -97,7 +98,7 @@ const PickList: React.FC<PickListProps> = ({ setSelectedTeams }) => {
                       displayEmpty
                     >
                       <MenuItem value="" disabled>Select Team</MenuItem>
-                      {teams.map((team, index) => (
+                      {allTeams.map((team, index) => (
                         <MenuItem key={index} value={team}>{team}</MenuItem>
                       ))}
                     </Select>

@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableSortLabel, TableBody, Paper } from '@mui/material';
+import Cookies from 'js-cookie'; // Import js-cookie
 import { fetchTeams } from '../../utils/fetchTeams';
 import './CSS/TeamList.css';
 
 interface TeamListProps {
+  allTeams: string[];
   selectedTeams: string[];
 }
 
-const TeamList: React.FC<TeamListProps> = ({ selectedTeams }) => {
+const TeamList: React.FC<TeamListProps> = ({ allTeams, selectedTeams }) => {
   const [teams, setTeams] = useState<string[]>([]);
   const [teamAverageAutoPoints, setTeamAverageAutoPoints] = useState<{ [key: string]: number }>({});
   const [teamAverageAlgaePoints, setTeamAverageAlgaePoints] = useState<{ [key: string]: number }>({});
@@ -27,6 +29,7 @@ const TeamList: React.FC<TeamListProps> = ({ selectedTeams }) => {
         setTeamAverageCoralPoints(data.teamAverageCoralPoints);
         setTeamAverageSurfacingPoints(data.teamAverageSurfacingPoints);
         setTeamAveragePoints(data.teamAveragePoints);
+        saveToCookies(data); // Save data to cookies
       } catch (error) {
         console.error('Error fetching teams:', error);
       }
@@ -34,6 +37,10 @@ const TeamList: React.FC<TeamListProps> = ({ selectedTeams }) => {
 
     fetchData();
   }, [selectedTeams]);
+
+  const saveToCookies = (data: any) => {
+    Cookies.set('teamList', JSON.stringify(data), { expires: 7 });
+  };
 
   const handleSort = (property: 'team' | 'avgAutoPoints' | 'avgAlgaePoints' | 'avgCoralPoints' | 'avgSurfacingPoints' | 'avgPoints') => {
     const isAsc = orderBy === property && order === 'asc';
@@ -79,6 +86,8 @@ const TeamList: React.FC<TeamListProps> = ({ selectedTeams }) => {
     setTeams(sortedTeams);
   };
 
+  const filteredTeams = teams.filter(team => !selectedTeams.includes(team));
+
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -93,11 +102,11 @@ const TeamList: React.FC<TeamListProps> = ({ selectedTeams }) => {
                 Team
               </TableSortLabel>
             </TableCell>
-            <TableCell sortDirection={orderBy === 'avgPoints' ? order : false}>
+            <TableCell sortDirection={orderBy === 'avgAutoPoints' ? order : false}>
               <TableSortLabel
-                active={orderBy === 'avgPoints'}
-                direction={orderBy === 'avgPoints' ? order : 'asc'}
-                onClick={() => handleSort('avgPoints')}
+                active={orderBy === 'avgAutoPoints'}
+                direction={orderBy === 'avgAutoPoints' ? order : 'asc'}
+                onClick={() => handleSort('avgAutoPoints')}
               >
                 Avg: Auto Points
               </TableSortLabel>
@@ -141,7 +150,7 @@ const TeamList: React.FC<TeamListProps> = ({ selectedTeams }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {teams.map((team, index) => (
+          {filteredTeams.map((team, index) => (
             <TableRow key={index}>
               <TableCell>{team}</TableCell>
               <TableCell>{teamAverageAutoPoints[team]?.toFixed(2) || 'N/A'}</TableCell>
