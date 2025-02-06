@@ -6,6 +6,7 @@ const ExcelReader: React.FC = () => {
   const [selectedSheet, setSelectedSheet] = useState<string | null>(null);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [ServerIP, setServerIP] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchConfig = async () => {
@@ -31,80 +32,43 @@ const ExcelReader: React.FC = () => {
   }, []);
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault(); // Prevent default form submission behavior
     const file = event.target.files?.[0];
     if (file) {
+      // Clear previous file and data
+      setUploadedFile(null);
+      setData({});
+      setSelectedSheet(null);
+  
+      setLoading(true);
       const formData = new FormData();
       formData.append('file', file);
-
+  
       try {
         const response = await fetch(`${ServerIP}/upload`, {
           method: 'POST',
           body: formData,
         });
-
+  
         if (response.ok) {
           const sheetsData = await readExcelFile(file);
           setData(sheetsData);
           setSelectedSheet(Object.keys(sheetsData)[0]);
+          setUploadedFile(file);
         } else {
           console.error('Error uploading file');
         }
       } catch (error) {
         console.error('Error uploading file:', error);
+      } finally {
+        setLoading(false);
       }
-    }
-  };
-
-  const handleSheetChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedSheet(event.target.value);
-  };
-
-  const handleFileDownload = () => {
-    if (uploadedFile) {
-      const link = document.createElement('a');
-      link.href = `${ServerIP}/${uploadedFile.name}`;
-      link.download = uploadedFile.name;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
     }
   };
 
   return (
     <div>
       <input type="file" accept=".xlsx, .xls" onChange={handleFileUpload} />
-      {data && Object.keys(data).length > 0 && (
-        <div>
-          <select onChange={handleSheetChange} value={selectedSheet || ''}>
-            {data && Object.keys(data).map((sheetName) => (
-              <option key={sheetName} value={sheetName}>
-                {sheetName}
-              </option>
-            ))}
-          </select>
-          <button onClick={handleFileDownload}>Download Data</button>
-          {selectedSheet && data[selectedSheet] && (
-            <table>
-              <thead>
-                <tr>
-                  {data[selectedSheet] && data[selectedSheet][0] && Object.keys(data[selectedSheet][0]).map((key) => (
-                    <th key={key}>{key}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {data[selectedSheet] && data[selectedSheet].map((row, index) => (
-                  <tr key={index}>
-                    {Object.values(row).map((value, idx) => (
-                      <td key={idx}>{value as React.ReactNode}</td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </div>
-      )}
     </div>
   );
 };
