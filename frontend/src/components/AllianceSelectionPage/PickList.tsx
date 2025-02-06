@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, Select, MenuItem, SelectChangeEvent } from '@mui/material';
 import { fetchTeams } from '../../utils/fetchTeams';
+import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 
 interface PickListProps {
   allTeams: string[];
@@ -9,8 +10,18 @@ interface PickListProps {
   setSelectedTeams: (teams: string[]) => void;
 }
 
+interface RowData {
+  id: number;
+  name: string;
+  autoPoints: string;
+  algaePoints: string;
+  coralPoints: string;
+  surfacingPoints: string;
+  overall: string;
+}
+
 const PickList: React.FC<PickListProps> = ({ allTeams, selectedTeams, setSelectedTeams }) => {
-  const [rows, setRows] = useState([{ id: 1, name: '', autoPoints: '', algaePoints: '', coralPoints: '', surfacingPoints: '', overall: '' }]);
+  const [rows, setRows] = useState<RowData[]>([{ id: 1, name: '', autoPoints: '', algaePoints: '', coralPoints: '', surfacingPoints: '', overall: '' }]);
   const [teamData, setTeamData] = useState<any>({});
 
   useEffect(() => {
@@ -31,9 +42,9 @@ const PickList: React.FC<PickListProps> = ({ allTeams, selectedTeams, setSelecte
     }
   }, []);
 
-  const saveToCookies = (rows: any) => {
+  const saveToCookies = (rows: RowData[]) => {
     Cookies.set('picklist', JSON.stringify(rows), { expires: 7 });
-    Cookies.set('selectedTeams', JSON.stringify(rows.map((row: { name: any; }) => row.name).filter((name: any) => name)), { expires: 7 });
+    Cookies.set('selectedTeams', JSON.stringify(rows.map((row: RowData) => row.name).filter((name: string) => name)), { expires: 7 });
   };
 
   const addRow = () => {
@@ -71,82 +82,114 @@ const PickList: React.FC<PickListProps> = ({ allTeams, selectedTeams, setSelecte
     setSelectedTeams(newRows.map(row => row.name).filter(name => name));
   };
 
+  const onDragEnd = (result: DropResult) => {
+    if (!result.destination) {
+      return;
+    }
+
+    const items = Array.from(rows);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+
+    // Update the id's after reordering
+    const updatedRows = items.map((row, index) => ({ ...row, id: index + 1 }));
+
+    setRows(updatedRows);
+    saveToCookies(updatedRows);
+  };
+
   return (
     <div className="allianceselection-container">
       <div className="picklist-wrapper">
         <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Team</TableCell>
-                <TableCell>Avg: Auto Points</TableCell>
-                <TableCell>Avg: Algae Points</TableCell>
-                <TableCell>Avg: Coral Points</TableCell>
-                <TableCell>Avg: Surfacing Points</TableCell>
-                <TableCell>Avg: Overall</TableCell>
-                <TableCell>Actions</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map(row => (
-                <TableRow key={row.id}>
-                  <TableCell>
-                    <Select
-                      name="name"
-                      value={row.name}
-                      onChange={(event) => handleInputChange(row.id, event)}
-                      displayEmpty
-                    >
-                      <MenuItem value="" disabled>Select Team</MenuItem>
-                      {allTeams.map((team, index) => (
-                        <MenuItem key={index} value={team}>{team}</MenuItem>
-                      ))}
-                    </Select>
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      name="autoPoints"
-                      value={row.autoPoints}
-                      InputProps={{ readOnly: true }}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      name="algaePoints"
-                      value={row.algaePoints}
-                      InputProps={{ readOnly: true }}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      name="coralPoints"
-                      value={row.coralPoints}
-                      InputProps={{ readOnly: true }}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      name="surfacingPoints"
-                      value={row.surfacingPoints}
-                      InputProps={{ readOnly: true }}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      name="overall"
-                      value={row.overall}
-                      InputProps={{ readOnly: true }}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Button variant="contained" color="secondary" onClick={() => removeRow(row.id)}>
-                      Remove
-                    </Button>
-                  </TableCell>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Team</TableCell>
+                  <TableCell>Avg: Auto Points</TableCell>
+                  <TableCell>Avg: Algae Points</TableCell>
+                  <TableCell>Avg: Coral Points</TableCell>
+                  <TableCell>Avg: Surfacing Points</TableCell>
+                  <TableCell>Avg: Overall</TableCell>
+                  <TableCell>Actions</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHead>
+              <Droppable droppableId="picklist-table">
+                {(provided) => (
+                  <TableBody {...provided.droppableProps} ref={provided.innerRef}>
+                    {rows.map((row, index) => (
+                      <Draggable key={row.id.toString()} draggableId={row.id.toString()} index={index}>
+                        {(provided) => (
+                          <TableRow
+                            key={row.id}
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                          >
+                            <TableCell>
+                              <Select
+                                name="name"
+                                value={row.name}
+                                onChange={(event) => handleInputChange(row.id, event)}
+                                displayEmpty
+                              >
+                                <MenuItem value="" disabled>Select Team</MenuItem>
+                                {allTeams.filter(team => !selectedTeams.includes(team) || team === row.name).map((team, index) => (
+                                  <MenuItem key={index} value={team}>{team}</MenuItem>
+                                ))}
+                              </Select>
+                            </TableCell>
+                            <TableCell>
+                              <TextField
+                                name="autoPoints"
+                                value={row.autoPoints}
+                                InputProps={{ readOnly: true }}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <TextField
+                                name="algaePoints"
+                                value={row.algaePoints}
+                                InputProps={{ readOnly: true }}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <TextField
+                                name="coralPoints"
+                                value={row.coralPoints}
+                                InputProps={{ readOnly: true }}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <TextField
+                                name="surfacingPoints"
+                                value={row.surfacingPoints}
+                                InputProps={{ readOnly: true }}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <TextField
+                                name="overall"
+                                value={row.overall}
+                                InputProps={{ readOnly: true }}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Button variant="contained" color="secondary" onClick={() => removeRow(row.id)}>
+                                Remove
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </TableBody>
+                )}
+              </Droppable>
+            </Table>
+          </DragDropContext>
           <Button variant="contained" color="primary" onClick={addRow}>
             Add Row
           </Button>
