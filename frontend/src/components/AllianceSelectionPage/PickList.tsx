@@ -8,6 +8,8 @@ interface PickListProps {
   allTeams: string[];
   selectedTeams: string[];
   setSelectedTeams: (teams: string[]) => void;
+  rows: RowData[];
+  setRows: (rows: RowData[]) => void;
 }
 
 interface RowData {
@@ -20,8 +22,7 @@ interface RowData {
   overall: string;
 }
 
-const PickList: React.FC<PickListProps> = ({ allTeams, selectedTeams, setSelectedTeams }) => {
-  const [rows, setRows] = useState<RowData[]>([{ id: 1, name: '', autoPoints: '', algaePoints: '', coralPoints: '', surfacingPoints: '', overall: '' }]);
+const PickList: React.FC<PickListProps> = ({ allTeams, selectedTeams, setSelectedTeams, rows, setRows }) => {
   const [teamData, setTeamData] = useState<any>({});
 
   useEffect(() => {
@@ -40,7 +41,7 @@ const PickList: React.FC<PickListProps> = ({ allTeams, selectedTeams, setSelecte
     if (savedRows) {
       setRows(JSON.parse(savedRows));
     }
-  }, []);
+  }, [setRows]);
 
   const saveToCookies = (rows: RowData[]) => {
     Cookies.set('picklist', JSON.stringify(rows), { expires: 7 });
