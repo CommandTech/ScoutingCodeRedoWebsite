@@ -86,6 +86,37 @@ const TeamList: React.FC<TeamListProps> = ({ allTeams, selectedTeams }) => {
     setTeams(sortedTeams);
   };
 
+  const getBackgroundColor = (value: number, min: number, max: number) => {
+    if (value === max) return 'green';
+    if (value === min) return 'red';
+    const mid = (min + max) / 2;
+    if (value === mid) return 'yellow';
+  
+    if (value > mid) {
+      const ratio = (value - mid) / (max - mid);
+      const green = 255;
+      const red = Math.round(255 * (1 - ratio));
+      return `rgb(${red},255,0)`;
+    } else {
+      const ratio = (value - min) / (mid - min);
+      const green = Math.round(255 * ratio);
+      return `rgb(255,${green},0)`;
+    }
+  };
+  
+  const getMinMax = (points: { [key: string]: number }) => {
+    const values = Object.values(points);
+    return {
+      min: Math.min(...values),
+      max: Math.max(...values),
+    };
+  };
+  const autoPointsMinMax = getMinMax(teamAverageAutoPoints);
+  const algaePointsMinMax = getMinMax(teamAverageAlgaePoints);
+  const coralPointsMinMax = getMinMax(teamAverageCoralPoints);
+  const surfacingPointsMinMax = getMinMax(teamAverageSurfacingPoints);
+  const overallPointsMinMax = getMinMax(teamAveragePoints);
+
   const filteredTeams = teams.filter(team => !selectedTeams.includes(team));
 
   return (
@@ -153,11 +184,21 @@ const TeamList: React.FC<TeamListProps> = ({ allTeams, selectedTeams }) => {
           {filteredTeams.map((team, index) => (
             <TableRow key={index}>
               <TableCell>{team}</TableCell>
-              <TableCell>{teamAverageAutoPoints[team]?.toFixed(2) || 'N/A'}</TableCell>
-              <TableCell>{teamAverageAlgaePoints[team]?.toFixed(2) || 'N/A'}</TableCell>
-              <TableCell>{teamAverageCoralPoints[team]?.toFixed(2) || 'N/A'}</TableCell>
-              <TableCell>{teamAverageSurfacingPoints[team]?.toFixed(2) || 'N/A'}</TableCell>
-              <TableCell>{teamAveragePoints[team]?.toFixed(2) || 'N/A'}</TableCell>
+              <TableCell style={{ backgroundColor: getBackgroundColor(teamAverageAutoPoints[team], autoPointsMinMax.min, autoPointsMinMax.max) }}>
+                {teamAverageAutoPoints[team]?.toFixed(2) || 'N/A'}
+              </TableCell>
+              <TableCell style={{ backgroundColor: getBackgroundColor(teamAverageAlgaePoints[team], algaePointsMinMax.min, algaePointsMinMax.max) }}>
+                {teamAverageAlgaePoints[team]?.toFixed(2) || 'N/A'}
+              </TableCell>
+              <TableCell style={{ backgroundColor: getBackgroundColor(teamAverageCoralPoints[team], coralPointsMinMax.min, coralPointsMinMax.max) }}>
+                {teamAverageCoralPoints[team]?.toFixed(2) || 'N/A'}
+              </TableCell>
+              <TableCell style={{ backgroundColor: getBackgroundColor(teamAverageSurfacingPoints[team], surfacingPointsMinMax.min, surfacingPointsMinMax.max) }}>
+                {teamAverageSurfacingPoints[team]?.toFixed(2) || 'N/A'}
+              </TableCell>
+              <TableCell style={{ backgroundColor: getBackgroundColor(teamAveragePoints[team], overallPointsMinMax.min, overallPointsMinMax.max) }}>
+                {teamAveragePoints[team]?.toFixed(2) || 'N/A'}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
