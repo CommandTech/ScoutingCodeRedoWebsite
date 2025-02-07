@@ -7,6 +7,7 @@ const ExcelReader: React.FC = () => {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [ServerIP, setServerIP] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null); // New state variable for success message
 
   useEffect(() => {
     const fetchConfig = async () => {
@@ -39,22 +40,25 @@ const ExcelReader: React.FC = () => {
       setUploadedFile(null);
       setData({});
       setSelectedSheet(null);
-  
+      setSuccessMessage(null); // Clear previous success message
+
       setLoading(true);
       const formData = new FormData();
       formData.append('file', file);
-  
+
       try {
         const response = await fetch(`${ServerIP}/upload`, {
           method: 'POST',
           body: formData,
         });
-  
+
         if (response.ok) {
           const sheetsData = await readExcelFile(file);
           setData(sheetsData);
           setSelectedSheet(Object.keys(sheetsData)[0]);
           setUploadedFile(file);
+          const successText = await response.text();
+          setSuccessMessage(successText); // Set success message from server response
         } else {
           console.error('Error uploading file');
         }
@@ -69,6 +73,8 @@ const ExcelReader: React.FC = () => {
   return (
     <div>
       <input type="file" accept=".xlsx, .xls" onChange={handleFileUpload} />
+      {loading && <p>Loading...</p>}
+      {successMessage && <p>{successMessage}</p>} {/* Display success message */}
     </div>
   );
 };

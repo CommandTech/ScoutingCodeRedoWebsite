@@ -43,9 +43,49 @@ app.post('/upload', upload.single('file'), (req, res) => {
   const file = req.file;
   const targetPath = path.join(__dirname, 'uploads', file.originalname);
 
-  fs.rename(file.path, targetPath, (err) => {
-    if (err) return res.sendStatus(500);
-    res.sendStatus(200);
+  // Delete all files in the uploads directory except for the current one
+  fs.readdir(path.join(__dirname, 'uploads'), (err, files) => {
+    if (err) {
+      console.error(`Error reading uploads directory: ${err.message}`);
+      return res.sendStatus(500);
+    }
+
+    files.forEach((existingFile) => {
+      if (existingFile !== file.filename) {
+        fs.unlink(path.join(__dirname, 'uploads', existingFile), (err) => {
+          if (err) {
+            console.error(`Error deleting file: ${existingFile} - ${err.message}`);
+          }
+        });
+      }
+    });
+
+    // Rename the uploaded file
+    fs.rename(file.path, targetPath, (err) => {
+      if (err) {
+        console.error(`Error renaming file: ${err.message}`);
+        return res.sendStatus(500);
+      }
+
+      // Execute the csvMaker.py script with the original filename
+      const scriptPath = path.resolve(__dirname, '../csvMaker.py');
+      exec(`python ${scriptPath} ${targetPath}`, (error, stdout, stderr) => {
+        if (error) {
+          console.error(`Error executing csvMaker.py: ${error.message}`);
+          return res.sendStatus(500);
+        }
+        if (stderr) {
+          console.error(`stderr: ${stderr}`);
+          return res.sendStatus(500);
+        }
+        console.log(`stdout: ${stdout}`);
+        if (stdout.includes("All CSVs have been successfully created.")) {
+          res.status(200).send("Success: All CSVs have been successfully created.");
+        } else {
+          res.sendStatus(500);
+        }
+      });
+    });
   });
 });
 
@@ -62,7 +102,7 @@ const watcher = chokidar.watch(path.join(__dirname, 'uploads'), {
 watcher.on('add', (filePath) => {
   console.log(`File added: ${filePath}`);
   const scriptPath = path.resolve(__dirname, '../csvMaker.py');
-  exec(`python ${scriptPath}`, (error, stdout, stderr) => {
+  exec(`python ${scriptPath} ${filePath}`, (error, stdout, stderr) => {
     if (error) {
       console.error(`Error executing csvMaker.py: ${error.message}`);
       return;

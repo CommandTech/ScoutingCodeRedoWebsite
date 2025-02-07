@@ -1,9 +1,10 @@
 import os
+import sys
 import pandas as pd
 import configparser
 import warnings
 
-def convert_excel_to_csv():
+def convert_excel_to_csv(file_path):
     # Suppress specific warnings
     warnings.filterwarnings("ignore", category=UserWarning, module='openpyxl')
 
@@ -28,7 +29,6 @@ def convert_excel_to_csv():
         print('Error: Missing "CSVmaker" section or "code" key in config.ini')
         return
     
-    input_dir = os.path.join(script_dir, 'backend', 'uploads')
     output_dir = os.path.join(script_dir, 'frontend', 'public', 'ExcelCSVFiles')
     code = config['CSVmaker']['code'].split(';')[0].strip()  # Get the code value from the config file and strip the comment
     
@@ -37,49 +37,55 @@ def convert_excel_to_csv():
     # Create the output directory if it doesn't exist
     os.makedirs(output_dir, exist_ok=True)
     
-    # Iterate over all Excel files in the input directory
-    for file_name in os.listdir(input_dir):
-        if file_name.endswith('.xlsx') or file_name.endswith('.xls'):
-            excel_file = os.path.join(input_dir, file_name)
-            
-            remove_file = False
-            with pd.ExcelFile(excel_file) as xls:
-                # Check if the sheet "Code" exists
-                if 'Code' not in xls.sheet_names:
-                    print(f'Error: Sheet "Code" does not exist in file {file_name}. Marking for removal.')
-                    remove_file = True
-                else:
-                    df_code = pd.read_excel(xls, sheet_name='Code')
-                    
-                    # Check if df_code is empty
-                    if df_code.empty:
-                        print(f'Error: Sheet "Code" in file {file_name} is empty. Marking for removal.')
-                        remove_file = True
-                    # Check if the value in cell A2 matches the code from the config
-                    elif df_code.iloc[0, 0] != code:
-                        print(f'Error: Cell A2 in sheet "Code" of file {file_name} does not match the code value. Marking for removal.')
-                        remove_file = True
-            
-            if remove_file:
-                # Ensure the file is closed before attempting to remove it
-                try:
-                    os.remove(excel_file)
-                    print(f"Removed file: {file_name}")
-                except PermissionError as e:
-                    print(f"Error removing file {file_name}: {e}")
+    file_name = os.path.basename(file_path)
+    print(f"Processing file: {file_name}")
+    if file_name.endswith('.xlsx') or file_name.endswith('.xls'):
+        print(f"Converting {file_name} to CSV files")
+        remove_file = False
+        with pd.ExcelFile(file_path) as xls:
+            # Check if the sheet "Code" exists
+            if 'Code' not in xls.sheet_names:
+                print(f'Error: Sheet "Code" does not exist in file {file_name}. Marking for removal.')
+                remove_file = True
             else:
-                # Delete old CSV files in the output directory
-                for csv_file_name in os.listdir(output_dir):
-                    if csv_file_name.endswith('.csv'):
-                        os.remove(os.path.join(output_dir, csv_file_name))
+                df_code = pd.read_excel(xls, sheet_name='Code')
                 
-                # Convert each sheet to a CSV file
-                with pd.ExcelFile(excel_file) as xls:
-                    for sheet_name in xls.sheet_names:
-                        df = pd.read_excel(xls, sheet_name=sheet_name)
-                        csv_file = os.path.join(output_dir, f"{sheet_name}.csv")
-                        df.to_csv(csv_file, index=False)
-                        print(f"Converted {sheet_name} to {csv_file}")
+                # Check if df_code is empty
+                if df_code.empty:
+                    print(f'Error: Sheet "Code" in file {file_name} is empty. Marking for removal.')
+                    remove_file = True
+                # Check if the value in cell A2 matches the code from the config
+                elif df_code.iloc[0, 0] != code:
+                    print(f'Error: Cell A2 in sheet "Code" of file {file_name} does not match the code value. Marking for removal.')
+                    remove_file = True
+        
+        if remove_file:
+            # Ensure the file is closed before attempting to remove it
+            try:
+                os.remove(file_path)
+                print(f"Removed file: {file_name}")
+            except PermissionError as e:
+                print(f"Error removing file {file_name}: {e}")
+        else:
+            # Delete old CSV files in the output directory
+            for csv_file_name in os.listdir(output_dir):
+                csv_file_path = os.path.join(output_dir, csv_file_name)
+                if csv_file_name.endswith('.csv') and os.path.exists(csv_file_path):
+                    os.remove(csv_file_path)
+            
+            # Convert each sheet to a CSV file
+        with pd.ExcelFile(file_path) as xls:
+            for sheet_name in xls.sheet_names:
+                df = pd.read_excel(xls, sheet_name=sheet_name)
+                csv_file = os.path.join(output_dir, f"{sheet_name}.csv")
+                df.to_csv(csv_file, index=False)
+                print(f"Converted {sheet_name} to {csv_file}")
+        
+        # Print success message
+        print("All CSVs have been successfully created.")
 
 if __name__ == "__main__":
-    convert_excel_to_csv()
+    if len(sys.argv) != 2:
+        print("Usage: python csvMaker.py <file_path>")
+    else:
+        convert_excel_to_csv(sys.argv[1])
