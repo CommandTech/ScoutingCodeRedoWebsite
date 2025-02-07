@@ -1,9 +1,9 @@
-import React from 'react'
+import GetNoAutoTeams from './AutoHelpPage/GetNoAutoTeams'
 
 const AutoHelp = () => {
   return (
     <div>
-      Auto Help
+      <GetNoAutoTeams />
     </div>
   )
 }
