@@ -8,7 +8,7 @@ const MPR = () => {
   const [selectedTeam, setSelectedTeam] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
   const [tabIndex, setTabIndex] = useState(0);
-  
+
   useEffect(() => {
     const fetchTeams = async () => {
       try {
@@ -67,11 +67,35 @@ const MPR = () => {
       </select>
 
       <select className="select-spacing" onChange={handleColorChange} value={selectedColor}>
-        <option value="">Select Color</option>
+        <option value="">All</option>
         <option value="Red">Red</option>
         <option value="Blue">Blue</option>
       </select>
-      <OneTeamReport />
+      <div>
+        {selectedColor === 'All' ? (
+          <div className="report-container">
+            <div className="report-column">
+              <OneTeamReport matchNumber={selectedTeam} color="Blue" />
+              <OneTeamReport matchNumber={selectedTeam} color="Blue" />
+              <OneTeamReport matchNumber={selectedTeam} color="Blue" />
+            </div>
+            <div className="report-column">
+              <OneTeamReport matchNumber={selectedTeam} color="Red" />
+              <OneTeamReport matchNumber={selectedTeam} color="Red" />
+              <OneTeamReport matchNumber={selectedTeam} color="Red" />
+            </div>
+          </div>
+        ) : (
+          <>
+            <OneTeamReport matchNumber={selectedTeam} color={selectedColor} />
+            <OneTeamReport matchNumber={selectedTeam} color={selectedColor} />
+            <OneTeamReport matchNumber={selectedTeam} color={selectedColor} />
+            <OneTeamReport matchNumber={selectedTeam} color={selectedColor} />
+            <OneTeamReport matchNumber={selectedTeam} color={selectedColor} />
+            <OneTeamReport matchNumber={selectedTeam} color={selectedColor} />
+          </>
+        )}
+      </div>
     </div>
   );
 };

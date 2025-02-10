@@ -1,0 +1,7 @@
+.one-team-report {
+    display: inline-block; /* Make the element shrink to fit its content */
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-sizing: border-box;
+}
