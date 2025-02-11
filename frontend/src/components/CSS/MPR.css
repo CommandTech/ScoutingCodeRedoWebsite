@@ -5,11 +5,11 @@
 .report-container {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start; /* Align items to the start of the container */
+    align-items: flex-start;
 }
 
 .report-column {
     flex: 1;
-    padding: 10px; /* Add padding to the columns */
-    box-sizing: border-box; /* Ensure padding is included in the width */
+    padding: 10px;
+    box-sizing: border-box;
 }

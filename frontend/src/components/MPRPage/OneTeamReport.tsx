@@ -2,15 +2,16 @@ import React from 'react';
 import './CSS/OneTeamReport.css';
 
 interface OneTeamReportProps {
-    matchNumber: string;
     color: string;
+    robotNumber: string;
 }
 
-const OneTeamReport: React.FC<OneTeamReportProps> = ({ matchNumber }) => {
+const OneTeamReport: React.FC<OneTeamReportProps> = ({color, robotNumber }) => {
   return (
-    <div className="one-team-report">
+    <div className={`one-team-report`}>
       <h2>One Team Report</h2>
-      <p>Match Number: {matchNumber}</p>
+      <p>Color: {color}</p>
+      <p>Robot Number: {robotNumber}</p>
     </div>
   );
 };
