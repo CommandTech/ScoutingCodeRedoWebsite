@@ -1,5 +1,24 @@
 .one-team-report {
-    border: 1px solid #000;
     padding: 10px;
     margin-bottom: 10px;
+}
+
+.one-team-report .robot-number-cell.red {
+    background-color: #d26e69;
+}
+
+.one-team-report .robot-number-cell.blue {
+    background-color: #769ee6;
+}
+
+.table-row-bordered {
+    border: 2px solid #000;
+}
+
+.leave-location-cell.yes {
+    background-color: #59f64e;
+}
+
+.leave-location-cell.no {
+    background-color: #f64b4b;
 }
