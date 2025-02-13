@@ -11,6 +11,7 @@ interface OneTeamReportProps {
 const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber }) => {
     const [startingLocations, setStartingLocations] = useState<string[]>([]);
     const [leaveLocations, setLeaveLocations] = useState<string[]>([]);
+    const [coralCounts, setCoralCounts] = useState<number[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -21,8 +22,12 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber }) => 
             const filteredData = data.filter((row: any) => row.RecordType === 'EndAuto' && row.Team === robotNumber);
             const startingLocs = filteredData.map((row: any) => row.Starting_Loc);
             const leaveLocs = filteredData.map((row: any) => row.Leave);
+            const coralCounts = filteredData.map((row: any) => 
+                parseInt(row.DelCoralL1) + parseInt(row.DelCoralL2) + parseInt(row.DelCoralL3) + parseInt(row.DelCoralL4)
+            );
             setStartingLocations(startingLocs);
             setLeaveLocations(leaveLocs);
+            setCoralCounts(coralCounts);
         };
 
         fetchData();
@@ -68,6 +73,12 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber }) => 
                                 <TableCell key={index} className={`leave-location-cell ${loc === 'Y' ? 'yes' : 'no'}`}>
                                     {loc}
                                 </TableCell>
+                            ))}
+                        </TableRow>
+                        <TableRow className="table-row-bordered">
+                            <TableCell>Number of Coral</TableCell>
+                            {coralCounts.map((count, index) => (
+                                <TableCell key={index}>{count}</TableCell>
                             ))}
                         </TableRow>
                     </TableBody>

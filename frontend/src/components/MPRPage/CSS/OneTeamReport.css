@@ -16,9 +16,10 @@
 }
 
 .leave-location-cell.yes {
-    background-color: #59f64e;
+    background-color: #00ff00;
 }
 
 .leave-location-cell.no {
-    background-color: #f64b4b;
+    background-color: red;
 }
+
