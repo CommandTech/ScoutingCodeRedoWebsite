@@ -62,9 +62,17 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, coral
         fetchData();
     }, [robotNumber, coralCounts]);
 
-    const columns = [
-        'Matches:', 'Match 1', 'Match 2', 'Match 3', 'Match 4', 'Match 5', 'Match 6', 'Match 7', 'Match 8', 'Match 9', 'Match 10', 'Match 11', 'Match 12', 'Match 13'
-    ];
+    const maxMatches = Math.max(
+        startingLocations.length,
+        leaveLocations.length,
+        filteredCoralCounts.length,
+        delCoralL4Diffs.length,
+        delCoralL3Diffs.length,
+        delCoralL2Diffs.length,
+        delCoralL1Diffs.length
+    );
+
+    const columns = ['Matches:', ...Array.from({ length: maxMatches }, (_, i) => `Match ${i + 1}`)];
 
     const cellClass = color === 'Red' ? 'robot-number-cell red' : 'robot-number-cell blue';
 
