@@ -9,9 +9,6 @@ const MPR = () => {
   const [selectedColor, setSelectedColor] = useState('All');
   const [tabIndex, setTabIndex] = useState(0);
   const [teamNumbers, setTeamNumbers] = useState<string[]>(['', '', '', '', '', '']);
-  const [coralCounts, setCoralCounts] = useState<number[][]>([[], [], [], [], [], []]);
-  const [minCoralCount, setMinCoralCount] = useState<number>(0);
-  const [maxCoralCount, setMaxCoralCount] = useState<number>(0);
 
   useEffect(() => {
     const fetchTeams = async () => {
@@ -72,19 +69,6 @@ const MPR = () => {
           });
           console.log('teamNumbers:', teamNumbers);
           setTeamNumbers(teamNumbers);
-
-          const coralCounts = teamNumbers.map((teamNumber) => {
-            const teamData = parsedData.filter((row: any) => row['Team'] === teamNumber && row['RecordType'] === 'EndAuto');
-            console.log(teamData);
-            return teamData.map((row: any) =>
-              parseInt(row.DelCoralL1) + parseInt(row.DelCoralL2) + parseInt(row.DelCoralL3) + parseInt(row.DelCoralL4)
-            );
-          });
-
-          const allCoralCounts = coralCounts.flat();
-          setMinCoralCount(Math.min(...allCoralCounts));
-          setMaxCoralCount(Math.max(...allCoralCounts));
-          setCoralCounts(coralCounts);
         }
       } catch (error) {
         console.error('Error fetching team data:', error);
@@ -120,14 +104,14 @@ const MPR = () => {
         {selectedColor === 'All' ? (
           <div className="report-container">
             <div className="report-column">
-              <OneTeamReport color="Blue" robotNumber={teamNumbers[0]} coralCounts={coralCounts[0]} minCoralCount={minCoralCount} maxCoralCount={maxCoralCount} />
-              <OneTeamReport color="Blue" robotNumber={teamNumbers[1]} coralCounts={coralCounts[1]} minCoralCount={minCoralCount} maxCoralCount={maxCoralCount} />
-              <OneTeamReport color="Blue" robotNumber={teamNumbers[2]} coralCounts={coralCounts[2]} minCoralCount={minCoralCount} maxCoralCount={maxCoralCount} />
+              <OneTeamReport color="Blue" robotNumber={teamNumbers[0]} />
+              <OneTeamReport color="Blue" robotNumber={teamNumbers[1]} />
+              <OneTeamReport color="Blue" robotNumber={teamNumbers[2]} />
             </div>
             <div className="report-column">
-              <OneTeamReport color="Red" robotNumber={teamNumbers[3]} coralCounts={coralCounts[3]} minCoralCount={minCoralCount} maxCoralCount={maxCoralCount} />
-              <OneTeamReport color="Red" robotNumber={teamNumbers[4]} coralCounts={coralCounts[4]} minCoralCount={minCoralCount} maxCoralCount={maxCoralCount} />
-              <OneTeamReport color="Red" robotNumber={teamNumbers[5]} coralCounts={coralCounts[5]} minCoralCount={minCoralCount} maxCoralCount={maxCoralCount} />
+              <OneTeamReport color="Red" robotNumber={teamNumbers[3]} />
+              <OneTeamReport color="Red" robotNumber={teamNumbers[4]} />
+              <OneTeamReport color="Red" robotNumber={teamNumbers[5]} />
             </div>
           </div>
         ) : (

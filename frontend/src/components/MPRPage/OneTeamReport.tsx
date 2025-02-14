@@ -6,12 +6,9 @@ import { readCSVFile } from '../../utils/readCSV';
 interface OneTeamReportProps {
     color: string;
     robotNumber: string;
-    coralCounts: number[];
-    minCoralCount: number;
-    maxCoralCount: number;
 }
 
-const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, coralCounts, minCoralCount, maxCoralCount }) => {
+const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber }) => {
     const [startingLocations, setStartingLocations] = useState<string[]>([]);
     const [leaveLocations, setLeaveLocations] = useState<string[]>([]);
     const [filteredCoralCounts, setFilteredCoralCounts] = useState<number[]>([]);
@@ -70,7 +67,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, coral
         };
 
         fetchData();
-    }, [robotNumber, coralCounts]);
+    }, [robotNumber]);
 
     const maxMatches = Math.max(
         startingLocations.length,
@@ -87,12 +84,28 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, coral
 
     const cellClass = color === 'Red' ? 'robot-number-cell red' : 'robot-number-cell blue';
 
-    const getBackgroundColor = (value: number, max: number, min: number) => {
+    const getColor = (value: number, min: number, max: number) => {
+        if (value === max) return '#00FF00';
+        if (value === min) return 'red';
+    
         const ratio = (value - min) / (max - min);
-        const red = Math.round(255 * (1 - ratio));
         const green = Math.round(255 * ratio);
+        const red = Math.round(255 * (1 - ratio));
         return `rgb(${red}, ${green}, 0)`;
     };
+
+    const minCoralCount = Math.min(...filteredCoralCounts);
+    const maxCoralCount = Math.max(...filteredCoralCounts);
+    const minDelCoralL4Diff = Math.min(...delCoralL4Diffs);
+    const maxDelCoralL4Diff = Math.max(...delCoralL4Diffs);
+    const minDelCoralL3Diff = Math.min(...delCoralL3Diffs);
+    const maxDelCoralL3Diff = Math.max(...delCoralL3Diffs);
+    const minDelCoralL2Diff = Math.min(...delCoralL2Diffs);
+    const maxDelCoralL2Diff = Math.max(...delCoralL2Diffs);
+    const minDelCoralL1Diff = Math.min(...delCoralL1Diffs);
+    const maxDelCoralL1Diff = Math.max(...delCoralL1Diffs);
+    const minDelCoralFDiff = Math.min(...delCoralFDiffs);
+    const maxDelCoralFDiff = Math.max(...delCoralFDiffs);
 
     return (
         <div className="one-team-report">
@@ -133,7 +146,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, coral
                         <TableRow className="table-row-bordered">
                             <TableCell>Number of Coral</TableCell>
                             {filteredCoralCounts.map((count, index) => (
-                                <TableCell key={index} style={{ backgroundColor: getBackgroundColor(count, maxCoralCount, minCoralCount) }}>
+                                <TableCell key={index} style={{ backgroundColor: getColor(count, minCoralCount, maxCoralCount) }}>
                                     {count}
                                 </TableCell>
                             ))}
@@ -146,7 +159,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, coral
                         <TableRow className="table-row-bordered">
                             <TableCell>L4</TableCell>
                             {delCoralL4Diffs.map((diff, index) => (
-                                <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, maxCoralCount, minCoralCount) }}>
+                                <TableCell key={index} style={{ backgroundColor: getColor(diff, minDelCoralL4Diff, maxDelCoralL4Diff) }}>
                                     {diff}
                                 </TableCell>
                             ))}
@@ -154,7 +167,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, coral
                         <TableRow className="table-row-bordered">
                             <TableCell>L3</TableCell>
                             {delCoralL3Diffs.map((diff, index) => (
-                                <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, maxCoralCount, minCoralCount) }}>
+                                <TableCell key={index} style={{ backgroundColor: getColor(diff, minDelCoralL3Diff, maxDelCoralL3Diff) }}>
                                     {diff}
                                 </TableCell>
                             ))}
@@ -162,7 +175,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, coral
                         <TableRow className="table-row-bordered">
                             <TableCell>L2</TableCell>
                             {delCoralL2Diffs.map((diff, index) => (
-                                <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, maxCoralCount, minCoralCount) }}>
+                                <TableCell key={index} style={{ backgroundColor: getColor(diff, minDelCoralL2Diff, maxDelCoralL2Diff) }}>
                                     {diff}
                                 </TableCell>
                             ))}
@@ -170,7 +183,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, coral
                         <TableRow className="table-row-bordered">
                             <TableCell>L1</TableCell>
                             {delCoralL1Diffs.map((diff, index) => (
-                                <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, maxCoralCount, minCoralCount) }}>
+                                <TableCell key={index} style={{ backgroundColor: getColor(diff, minDelCoralL1Diff, maxDelCoralL1Diff) }}>
                                     {diff}
                                 </TableCell>
                             ))}
@@ -178,7 +191,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, coral
                         <TableRow className="table-row-bordered">
                             <TableCell>Floor/Drop</TableCell>
                             {delCoralFDiffs.map((diff, index) => (
-                                <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, maxCoralCount, minCoralCount) }}>
+                                <TableCell key={index} style={{ backgroundColor: getColor(diff, minDelCoralFDiff, maxDelCoralFDiff) }}>
                                     {diff}
                                 </TableCell>
                             ))}
