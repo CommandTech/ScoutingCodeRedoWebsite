@@ -87,7 +87,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber }) => 
     const getColor = (value: number, min: number, max: number) => {
         if (value === max) return '#00FF00';
         if (value === min) return 'red';
-    
+
         const ratio = (value - min) / (max - min);
         const green = Math.round(255 * ratio);
         const red = Math.round(255 * (1 - ratio));
@@ -195,6 +195,9 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber }) => 
                                     {diff}
                                 </TableCell>
                             ))}
+                        </TableRow>
+                        <TableRow className="table-row-bordered" style={{ borderTop: '4px solid black' }}>
+                            <TableCell>test</TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>
