@@ -19,6 +19,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, coral
     const [delCoralL3Diffs, setDelCoralL3Diffs] = useState<number[]>([]);
     const [delCoralL2Diffs, setDelCoralL2Diffs] = useState<number[]>([]);
     const [delCoralL1Diffs, setDelCoralL1Diffs] = useState<number[]>([]);
+    const [delCoralFDiffs, setDelCoralFDiffs] = useState<number[]>([]);
     const [hasAcqCoralF, setHasAcqCoralF] = useState<boolean>(false);
 
     useEffect(() => {
@@ -59,6 +60,11 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, coral
             const delCoralL1Diff = delCoralL1Match.map((value, index) => value - delCoralL1Auto[index]);
             setDelCoralL1Diffs(delCoralL1Diff);
 
+            const delCoralFAuto = filteredData.filter((row: any) => row.RecordType === 'EndAuto').map((row: any) => parseInt(row.DelCoralF));
+            const delCoralFMatch = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => parseInt(row.DelCoralF));
+            const delCoralFDiff = delCoralFMatch.map((value, index) => value - delCoralFAuto[index]);
+            setDelCoralFDiffs(delCoralFDiff);
+
             const hasNonZeroAcqCoralF = filteredData.some((row: any) => parseInt(row.AcqCoralF) !== 0);
             setHasAcqCoralF(hasNonZeroAcqCoralF);
         };
@@ -73,7 +79,8 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, coral
         delCoralL4Diffs.length,
         delCoralL3Diffs.length,
         delCoralL2Diffs.length,
-        delCoralL1Diffs.length
+        delCoralL1Diffs.length,
+        delCoralFDiffs.length
     );
 
     const columns = ['Matches:', ...Array.from({ length: maxMatches }, (_, i) => `Match ${i + 1}`)];
@@ -163,6 +170,14 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, coral
                         <TableRow className="table-row-bordered">
                             <TableCell>L1</TableCell>
                             {delCoralL1Diffs.map((diff, index) => (
+                                <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, maxCoralCount, minCoralCount) }}>
+                                    {diff}
+                                </TableCell>
+                            ))}
+                        </TableRow>
+                        <TableRow className="table-row-bordered">
+                            <TableCell>Floor/Drop</TableCell>
+                            {delCoralFDiffs.map((diff, index) => (
                                 <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, maxCoralCount, minCoralCount) }}>
                                     {diff}
                                 </TableCell>
