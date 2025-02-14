@@ -19,6 +19,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, coral
     const [delCoralL3Diffs, setDelCoralL3Diffs] = useState<number[]>([]);
     const [delCoralL2Diffs, setDelCoralL2Diffs] = useState<number[]>([]);
     const [delCoralL1Diffs, setDelCoralL1Diffs] = useState<number[]>([]);
+    const [hasAcqCoralF, setHasAcqCoralF] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -57,6 +58,9 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, coral
             const delCoralL1Match = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => parseInt(row.DelCoralL1));
             const delCoralL1Diff = delCoralL1Match.map((value, index) => value - delCoralL1Auto[index]);
             setDelCoralL1Diffs(delCoralL1Diff);
+
+            const hasNonZeroAcqCoralF = filteredData.some((row: any) => parseInt(row.AcqCoralF) !== 0);
+            setHasAcqCoralF(hasNonZeroAcqCoralF);
         };
 
         fetchData();
@@ -127,7 +131,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, coral
                                 </TableCell>
                             ))}
                         </TableRow>
-                        <TableRow className="table-row-bordered">
+                        <TableRow className="table-row-bordered" style={{ backgroundColor: hasAcqCoralF ? 'yellow' : 'inherit' }}>
                             <TableCell colSpan={columns.length} align="center">
                                 TELEOP
                             </TableCell>
