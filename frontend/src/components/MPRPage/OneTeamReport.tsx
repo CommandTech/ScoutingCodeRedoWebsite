@@ -6,9 +6,10 @@ import { readCSVFile } from '../../utils/readCSV';
 interface OneTeamReportProps {
     color: string;
     robotNumber: string;
+    colorValues: Array<number>;
 }
 
-const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber }) => {
+const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, colorValues }) => {
     const [startingLocations, setStartingLocations] = useState<string[]>([]);
     const [leaveLocations, setLeaveLocations] = useState<string[]>([]);
     const [filteredCoralCounts, setFilteredCoralCounts] = useState<number[]>([]);
@@ -20,6 +21,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber }) => 
     const [hasAcqCoralF, setHasAcqCoralF] = useState<boolean>(false);
 
     useEffect(() => {
+        console.log(colorValues);
         const fetchData = async () => {
             const response = await fetch('/ExcelCSVFiles/Activities.csv');
             const csvData = await response.text();
@@ -146,7 +148,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber }) => 
                         <TableRow className="table-row-bordered">
                             <TableCell>Number of Coral</TableCell>
                             {filteredCoralCounts.map((count, index) => (
-                                <TableCell key={index} style={{ backgroundColor: getColor(count, minCoralCount, maxCoralCount) }}>
+                                <TableCell key={index} style={{ backgroundColor: getBackgroundColor(count, colorValues[0], colorValues[1]) }}>
                                     {count}
                                 </TableCell>
                             ))}
@@ -159,7 +161,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber }) => 
                         <TableRow className="table-row-bordered">
                             <TableCell>L4</TableCell>
                             {delCoralL4Diffs.map((diff, index) => (
-                                <TableCell key={index} style={{ backgroundColor: getColor(diff, minDelCoralL4Diff, maxDelCoralL4Diff) }}>
+                                <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[2], colorValues[3]) }}>
                                     {diff}
                                 </TableCell>
                             ))}
@@ -167,7 +169,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber }) => 
                         <TableRow className="table-row-bordered">
                             <TableCell>L3</TableCell>
                             {delCoralL3Diffs.map((diff, index) => (
-                                <TableCell key={index} style={{ backgroundColor: getColor(diff, minDelCoralL3Diff, maxDelCoralL3Diff) }}>
+                                <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[4], colorValues[5]) }}>
                                     {diff}
                                 </TableCell>
                             ))}
@@ -175,7 +177,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber }) => 
                         <TableRow className="table-row-bordered">
                             <TableCell>L2</TableCell>
                             {delCoralL2Diffs.map((diff, index) => (
-                                <TableCell key={index} style={{ backgroundColor: getColor(diff, minDelCoralL2Diff, maxDelCoralL2Diff) }}>
+                                <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[6], colorValues[7]) }}>
                                     {diff}
                                 </TableCell>
                             ))}
@@ -183,15 +185,23 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber }) => 
                         <TableRow className="table-row-bordered">
                             <TableCell>L1</TableCell>
                             {delCoralL1Diffs.map((diff, index) => (
-                                <TableCell key={index} style={{ backgroundColor: getColor(diff, minDelCoralL1Diff, maxDelCoralL1Diff) }}>
+                                <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[8], colorValues[9]) }}>
+                                    {diff}
+                                </TableCell>
+                            ))}
+                        </TableRow>
+                        <TableRow className="table-row-bordered" style={{ borderBottom: '4px solid black' }}>
+                            <TableCell>Floor/Drop</TableCell>
+                            {delCoralFDiffs.map((diff, index) => (
+                                <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[10], colorValues[11]) }}>
                                     {diff}
                                 </TableCell>
                             ))}
                         </TableRow>
                         <TableRow className="table-row-bordered">
-                            <TableCell>Floor/Drop</TableCell>
+                            <TableCell>Net</TableCell>
                             {delCoralFDiffs.map((diff, index) => (
-                                <TableCell key={index} style={{ backgroundColor: getColor(diff, minDelCoralFDiff, maxDelCoralFDiff) }}>
+                                <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[10], colorValues[11]) }}>
                                     {diff}
                                 </TableCell>
                             ))}

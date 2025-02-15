@@ -1,6 +1,18 @@
 export const fetchTeams = async (selectedTeams: string[] = []) => {
     try {
-        const response = await fetch('/ExcelCSVFiles/Activities.csv');
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 seconds timeout
+
+        const response = await fetch('/ExcelCSVFiles/Activities.csv', {
+            signal: controller.signal,
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         const text = await response.text();
         const rows = text.split('\n').slice(1); // Skip header row
         const teamAutoPoints: { [key: string]: number[] } = {};
