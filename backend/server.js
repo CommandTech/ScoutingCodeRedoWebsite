@@ -17,7 +17,7 @@ app.use(express.static('uploads'));
 
 // Read configuration
 const config = ini.parse(fs.readFileSync('../config.ini', 'utf-8'));
-const serverUrl = new URL(config.SERVER_IP.ServerIP);
+const serverUrl = new URL('http://96.236.24.79:3000');
 console.log('Server URL:', serverUrl);
 const hostname = '0.0.0.0';
 const port = serverUrl.port;
