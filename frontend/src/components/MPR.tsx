@@ -24,6 +24,7 @@ const MPR = () => {
   });
   const [colorArray, setColorArray] = useState<number[]>([]);
 
+
   useEffect(() => {
     const fetchTeams = async () => {
       try {
@@ -58,8 +59,28 @@ const MPR = () => {
       const csvData = await response.text();
       const parsedData = await readCSVFile(new File([csvData], 'Activities.csv', { type: 'text/csv' }));
 
-      if (!parsedData || !Array.isArray(parsedData)) {
-        throw new Error('Parsed data is not an array or is undefined');
+        if (!parsedData || !Array.isArray(parsedData)) {
+          throw new Error('Parsed data is not an array or is undefined');
+        }
+
+        const matchData = parsedData.filter((row: any) => row['Match'] === matchNumber);
+        if (matchData.length > 0) {
+          const teamNumbers = [
+            'blue0',
+            'blue1',
+            'blue2',
+            'red0',
+            'red1',
+            'red2',
+          ].map((driveSta: string) => {
+            const teamData = matchData.find((row: any) => row['DriveSta'] === driveSta);
+            return teamData ? teamData['Team'] : '';
+          });
+          console.log('teamNumbers:', teamNumbers);
+          setTeamNumbers(teamNumbers);
+        }
+      } catch (error) {
+        console.error('Error fetching team data:', error);
       }
 
       const teamNumbers = ['blue0', 'blue1', 'blue2', 'red0', 'red1', 'red2'].map((driveSta: string) => {

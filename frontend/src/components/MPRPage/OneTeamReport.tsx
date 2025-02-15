@@ -86,12 +86,28 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
 
     const cellClass = color === 'Red' ? 'robot-number-cell red' : 'robot-number-cell blue';
 
-    const getBackgroundColor = (value: number, max: number, min: number) => {
+    const getColor = (value: number, min: number, max: number) => {
+        if (value === max) return '#00FF00';
+        if (value === min) return 'red';
+
         const ratio = (value - min) / (max - min);
-        const red = Math.round(255 * (1 - ratio));
         const green = Math.round(255 * ratio);
+        const red = Math.round(255 * (1 - ratio));
         return `rgb(${red}, ${green}, 0)`;
     };
+
+    const minCoralCount = Math.min(...filteredCoralCounts);
+    const maxCoralCount = Math.max(...filteredCoralCounts);
+    const minDelCoralL4Diff = Math.min(...delCoralL4Diffs);
+    const maxDelCoralL4Diff = Math.max(...delCoralL4Diffs);
+    const minDelCoralL3Diff = Math.min(...delCoralL3Diffs);
+    const maxDelCoralL3Diff = Math.max(...delCoralL3Diffs);
+    const minDelCoralL2Diff = Math.min(...delCoralL2Diffs);
+    const maxDelCoralL2Diff = Math.max(...delCoralL2Diffs);
+    const minDelCoralL1Diff = Math.min(...delCoralL1Diffs);
+    const maxDelCoralL1Diff = Math.max(...delCoralL1Diffs);
+    const minDelCoralFDiff = Math.min(...delCoralFDiffs);
+    const maxDelCoralFDiff = Math.max(...delCoralFDiffs);
 
     return (
         <div className="one-team-report">
@@ -189,6 +205,9 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
                                     {diff}
                                 </TableCell>
                             ))}
+                        </TableRow>
+                        <TableRow className="table-row-bordered" style={{ borderTop: '4px solid black' }}>
+                            <TableCell>test</TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>
