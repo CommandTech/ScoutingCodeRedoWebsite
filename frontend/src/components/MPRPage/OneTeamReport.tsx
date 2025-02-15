@@ -109,6 +109,13 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
     const minDelCoralFDiff = Math.min(...delCoralFDiffs);
     const maxDelCoralFDiff = Math.max(...delCoralFDiffs);
 
+    const getBackgroundColor = (value: number, max: number, min: number) => {
+        const ratio = (value - min) / (max - min);
+        const red = Math.round(255 * (1 - ratio));
+        const green = Math.round(255 * ratio);
+        return `rgb(${red}, ${green}, 0)`;
+    };
+
     return (
         <div className="one-team-report">
             <TableContainer component={Paper}>
@@ -205,9 +212,6 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
                                     {diff}
                                 </TableCell>
                             ))}
-                        </TableRow>
-                        <TableRow className="table-row-bordered" style={{ borderTop: '4px solid black' }}>
-                            <TableCell>test</TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>
