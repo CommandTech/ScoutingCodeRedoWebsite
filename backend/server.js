@@ -99,24 +99,21 @@ const watcher = chokidar.watch(path.join(__dirname, 'uploads'), {
   ignoreInitial: true,
 });
 
-watcher.on('add', async (filePath) => {
-  try {
-    console.log(`File added: ${filePath}`);
-    const scriptPath = path.resolve(__dirname, '../csvMaker.py');
-    const { stdout, stderr } = await execPromise(`python ${scriptPath} ${filePath}`);
+watcher.on('add', (filePath) => {
+  console.log(`File added: ${filePath}`);
+  const scriptPath = path.resolve(__dirname, '../csvMaker.py');
+  exec(`python ${scriptPath} ${filePath}`, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Error executing csvMaker.py: ${error.message}`);
+      return;
+    }
     if (stderr) {
       console.error(`stderr: ${stderr}`);
       return;
     }
     console.log(`stdout: ${stdout}`);
-  } catch (error) {
-    console.error(`Error executing csvMaker.py: ${error.message}`);
-  }
+  });
 });
-
-// Utility function to use exec with promises
-const util = require('util');
-const execPromise = util.promisify(exec);
 
 app.listen(port, hostname, () => {
   console.log(`Server is running on ${hostname}:${port}`);
