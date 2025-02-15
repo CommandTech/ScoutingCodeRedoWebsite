@@ -17,7 +17,7 @@ app.use(express.static('uploads'));
 
 // Read configuration
 const config = ini.parse(fs.readFileSync('../config.ini', 'utf-8'));
-const serverUrl = new URL('http://96.236.24.79:3000');
+const serverUrl = new URL(config.SERVER_IP.ServerIP);
 console.log('Server URL:', serverUrl);
 const hostname = '0.0.0.0';
 const port = serverUrl.port;
@@ -50,30 +50,26 @@ app.post('/upload', upload.single('file'), (req, res) => {
       return res.sendStatus(500);
     }
 
-    files.forEach((existingFile) => {
+    const deletePromises = files.map((existingFile) => {
       if (existingFile !== file.filename) {
-        fs.unlink(path.join(__dirname, 'uploads', existingFile), (err) => {
-          if (err) {
+        return fs.promises.unlink(path.join(__dirname, 'uploads', existingFile))
+          .catch((err) => {
             console.error(`Error deleting file: ${existingFile} - ${err.message}`);
-          }
-        });
+          });
       }
     });
 
-    // Rename the uploaded file
-    fs.rename(file.path, targetPath, (err) => {
-      if (err) {
-        console.error(`Error renaming file: ${err.message}`);
-        return res.sendStatus(500);
-      }
-
-      // Execute the csvMaker.py script with the original filename
-      const scriptPath = path.resolve(__dirname, '../csvMaker.py');
-      exec(`python ${scriptPath} ${targetPath}`, (error, stdout, stderr) => {
-        if (error) {
-          console.error(`Error executing csvMaker.py: ${error.message}`);
-          return res.sendStatus(500);
-        }
+    Promise.all(deletePromises)
+      .then(() => {
+        // Rename the uploaded file
+        return fs.promises.rename(file.path, targetPath);
+      })
+      .then(() => {
+        // Execute the csvMaker.py script with the original filename
+        const scriptPath = path.resolve(__dirname, '../csvMaker.py');
+        return execPromise(`python ${scriptPath} ${targetPath}`);
+      })
+      .then(({ stdout, stderr }) => {
         if (stderr) {
           console.error(`stderr: ${stderr}`);
           return res.sendStatus(500);
@@ -84,8 +80,11 @@ app.post('/upload', upload.single('file'), (req, res) => {
         } else {
           res.sendStatus(500);
         }
+      })
+      .catch((err) => {
+        console.error(`Error processing upload: ${err.message}`);
+        res.sendStatus(500);
       });
-    });
   });
 });
 
