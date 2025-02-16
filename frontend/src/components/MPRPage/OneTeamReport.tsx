@@ -261,28 +261,30 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
                                 const state = climbStates[index];
                                 if (state === 'Deep') {
                                     return (
-                                        <TableCell key={index} style={{ backgroundColor: getBackgroundColor(time, colorValues[18], colorValues[19]) }}>
+                                        <TableCell key={index} style={{ backgroundColor: getBackgroundColor(time, colorValues[19], colorValues[18]) }}>
                                             {time}
                                         </TableCell>
                                     );
                                 }
                                 if (state === 'Shallow') {
                                     return (
-                                        <TableCell key={index} style={{ backgroundColor: getBackgroundColor(time, colorValues[20], colorValues[21]) }}>
+                                        <TableCell key={index} style={{ backgroundColor: getBackgroundColor(time, colorValues[21], colorValues[20]) }}>
                                             {time}
                                         </TableCell>
                                     );
                                 }
                                 if (state === 'Park') {
+                                    const backgroundColor = time > 0 ? 'red' : getBackgroundColor(time, colorValues[23], colorValues[22]);
                                     return (
-                                        <TableCell key={index} style={{ backgroundColor: getBackgroundColor(time, colorValues[22], colorValues[23]) }}>
+                                        <TableCell key={index} style={{ backgroundColor }}>
                                             {time}
                                         </TableCell>
                                     );
                                 }
                                 if (state === 'Elsewhere') {
+                                    const backgroundColor = time > 0 ? 'red' : getBackgroundColor(time, colorValues[25], colorValues[24]);
                                     return (
-                                        <TableCell key={index} style={{ backgroundColor: getBackgroundColor(time, colorValues[24], colorValues[25]) }}>
+                                        <TableCell key={index} style={{ backgroundColor }}>
                                             {time}
                                         </TableCell>
                                     );
