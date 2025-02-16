@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import MatchNumberDD from './MultiPage/MatchNumberDD';
-import AllianceColorDD from './MultiPage/AllianceColorDD';
-import TeamNumber from './MultiPage/Team-Number';
-import NumberScouted from './MultiPage/NumberScouted';
-import ScoutedLabel from './MultiPage/ScoutedLabel';
-import AllianceStation, { labels } from './MultiPage/AllianceStation';
-import RankLabel from './MultiPage/RankLabel';
-import Rank from './MultiPage/Rank';
+// import MatchNumberDD from '../MultiPage/MatchNumberDD';
+// import AllianceColorDD from '../MultiPage/AllianceColorDD';
+// import TeamNumber from '../MultiPage/Team-Number';
+// import NumberScouted from '../MultiPage/NumberScouted';
+// import ScoutedLabel from '../MultiPage/ScoutedLabel';
+// import AllianceStation, { labels } from '../MultiPage/AllianceStation';
+// import RankLabel from '../MultiPage/RankLabel';
+// import Rank from '../MultiPage/Rank';
 import axios from 'axios';
 import './CSS/Summary.css';
 
@@ -66,7 +66,7 @@ const Summary: React.FC = () => {
 
   return (
     <div>
-      <MatchNumberDD onMatchChange={setSelectedMatch} />
+      {/* <MatchNumberDD onMatchChange={setSelectedMatch} />
       <div className="alliance-team-row">
         <AllianceColorDD onColorChange={setSelectedColor} />
       </div>
@@ -86,7 +86,7 @@ const Summary: React.FC = () => {
             </tr>
           </tbody>
         </table>
-      ))}
+      ))} */}
     </div>
   );
 };

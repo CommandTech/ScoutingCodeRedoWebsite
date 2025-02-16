@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Events from './TBAData/Events';
+import Events from '../TBAData/Events';
 
 const TBAMain = () => {
     const [SERVER_IP, setServerIP] = useState('');

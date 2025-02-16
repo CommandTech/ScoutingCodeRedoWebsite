@@ -2,9 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link, useLocation } from 'react-router-dom';
 import { Tabs, Tab } from '@mui/material';
 import ExcelReader from './components/ExcelReader';
-import Summary from './components/Summary';
 import Team from './components/Team';
-import TBAMain from './components/TBAMain';
+import TBAMain from './components/Old/TBAMain';
 import Match from './components/TBAData/Match';
 import Schedule from './components/TBAData/Schedule';
 import Rankings from './components/TBAData/Rankings';
@@ -45,7 +44,6 @@ function App() {
       </header>
       <Routes>
         <Route path="/" element={<Team />} />
-        <Route path="/summary" element={<Summary />} />
         <Route path="/team" element={<Team />} />
         <Route path="/TBA" element={<TBAMain />} />
         <Route path="/TBA/:eventCode/:matchType/:matchNumber" element={<Match />} />
