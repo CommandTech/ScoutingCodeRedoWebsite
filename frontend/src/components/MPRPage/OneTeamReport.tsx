@@ -18,6 +18,12 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
     const [delCoralL2Diffs, setDelCoralL2Diffs] = useState<number[]>([]);
     const [delCoralL1Diffs, setDelCoralL1Diffs] = useState<number[]>([]);
     const [delCoralFDiffs, setDelCoralFDiffs] = useState<number[]>([]);
+    const [delAlgaeNDiffs, setDelAlgaeNDiffs] = useState<number[]>([]);
+    const [delAlgaePDiffs, setDelAlgaePDiffs] = useState<number[]>([]);
+    const [delAlgaeFDiffs, setDelAlgaeFDiffs] = useState<number[]>([]);
+    const [climbStates, setClimbStates] = useState<string[]>([]);
+    const [climbTimes, setClimbTimes] = useState<number[]>([]);
+
     const [hasAcqCoralF, setHasAcqCoralF] = useState<boolean>(false);
 
     useEffect(() => {
@@ -64,8 +70,29 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
             const delCoralFDiff = delCoralFMatch.map((value, index) => value - delCoralFAuto[index]);
             setDelCoralFDiffs(delCoralFDiff);
 
+            const delAlgaeNAuto = filteredData.filter((row: any) => row.RecordType === 'EndAuto').map((row: any) => parseInt(row.DelAlgaeN));
+            const delAlgaeNMatch = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => parseInt(row.DelAlgaeN));
+            const delAlgaeNDiff = delAlgaeNMatch.map((value, index) => value - delAlgaeNAuto[index]);
+            setDelAlgaeNDiffs(delAlgaeNDiff);
+
+            const delAlgaePAuto = filteredData.filter((row: any) => row.RecordType === 'EndAuto').map((row: any) => parseInt(row.DelAlgaeP));
+            const delAlgaePMatch = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => parseInt(row.DelAlgaeP));
+            const delAlgaePDiff = delAlgaePMatch.map((value, index) => value - delAlgaePAuto[index]);
+            setDelAlgaePDiffs(delAlgaePDiff);
+
+            const delAlgaeFAuto = filteredData.filter((row: any) => row.RecordType === 'EndAuto').map((row: any) => parseInt(row.DelAlgaeF));
+            const delAlgaeFMatch = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => parseInt(row.DelAlgaeF));
+            const delAlgaeFDiff = delAlgaeFMatch.map((value, index) => value - delAlgaeFAuto[index]);
+            setDelAlgaeFDiffs(delAlgaeFDiff);
+
             const hasNonZeroAcqCoralF = filteredData.some((row: any) => parseInt(row.AcqCoralF) !== 0);
             setHasAcqCoralF(hasNonZeroAcqCoralF);
+
+            const climbStatesData = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => row.EndState);
+            setClimbStates(climbStatesData);
+
+            const climbTimesData = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => parseFloat(row.ClimbT));
+            setClimbTimes(climbTimesData.map(time => parseFloat(time.toFixed(2))));
         };
 
         fetchData();
@@ -79,41 +106,29 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
         delCoralL3Diffs.length,
         delCoralL2Diffs.length,
         delCoralL1Diffs.length,
-        delCoralFDiffs.length
+        delCoralFDiffs.length,
+        delAlgaeNDiffs.length,
+        delAlgaePDiffs.length,
+        climbStates.length,
+        climbTimes.length
     );
 
     const columns = ['Matches:', ...Array.from({ length: maxMatches }, (_, i) => `Match ${i + 1}`)];
 
     const cellClass = color === 'Red' ? 'robot-number-cell red' : 'robot-number-cell blue';
 
-    const getColor = (value: number, min: number, max: number) => {
-        if (value === max) return '#00FF00';
-        if (value === min) return 'red';
-
-        const ratio = (value - min) / (max - min);
-        const green = Math.round(255 * ratio);
-        const red = Math.round(255 * (1 - ratio));
-        return `rgb(${red}, ${green}, 0)`;
-    };
-
-    const minCoralCount = Math.min(...filteredCoralCounts);
-    const maxCoralCount = Math.max(...filteredCoralCounts);
-    const minDelCoralL4Diff = Math.min(...delCoralL4Diffs);
-    const maxDelCoralL4Diff = Math.max(...delCoralL4Diffs);
-    const minDelCoralL3Diff = Math.min(...delCoralL3Diffs);
-    const maxDelCoralL3Diff = Math.max(...delCoralL3Diffs);
-    const minDelCoralL2Diff = Math.min(...delCoralL2Diffs);
-    const maxDelCoralL2Diff = Math.max(...delCoralL2Diffs);
-    const minDelCoralL1Diff = Math.min(...delCoralL1Diffs);
-    const maxDelCoralL1Diff = Math.max(...delCoralL1Diffs);
-    const minDelCoralFDiff = Math.min(...delCoralFDiffs);
-    const maxDelCoralFDiff = Math.max(...delCoralFDiffs);
-
     const getBackgroundColor = (value: number, max: number, min: number) => {
         const ratio = (value - min) / (max - min);
         const red = Math.round(255 * (1 - ratio));
         const green = Math.round(255 * ratio);
         return `rgb(${red}, ${green}, 0)`;
+    };
+
+    const climbStateColors: { [key: string]: [number, number] } = {
+        'Deep': [colorValues[18], colorValues[19]],
+        'Shallow': [colorValues[20], colorValues[21]],
+        'Park': [colorValues[22], colorValues[23]],
+        'Elsewhere': [colorValues[24], colorValues[25]],
     };
 
     return (
@@ -207,11 +222,73 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
                         </TableRow>
                         <TableRow className="table-row-bordered">
                             <TableCell>Net</TableCell>
-                            {delCoralFDiffs.map((diff, index) => (
-                                <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[10], colorValues[11]) }}>
+                            {delAlgaeNDiffs.map((diff, index) => (
+                                <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[12], colorValues[13]) }}>
                                     {diff}
                                 </TableCell>
                             ))}
+                        </TableRow>
+                        <TableRow className="table-row-bordered">
+                            <TableCell>Processor</TableCell>
+                            {delAlgaePDiffs.map((diff, index) => (
+                                <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[14], colorValues[15]) }}>
+                                    {diff}
+                                </TableCell>
+                            ))}
+                        </TableRow>
+                        <TableRow className="table-row-bordered">
+                            <TableCell>Floor/Drop</TableCell>
+                            {delAlgaeFDiffs.map((diff, index) => (
+                                <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[16], colorValues[17]) }}>
+                                    {diff}
+                                </TableCell>
+                            ))}
+                        </TableRow>
+                        <TableRow className="table-row-bordered">
+                            <TableCell colSpan={columns.length} align="center">
+                                SURFACING
+                            </TableCell>
+                        </TableRow>
+                        <TableRow className="table-row-bordered">
+                            <TableCell>Climb State</TableCell>
+                            {climbStates.map((state, index) => (
+                                <TableCell key={index}>{state}</TableCell>
+                            ))}
+                        </TableRow>
+                        <TableRow className="table-row-bordered">
+                            <TableCell>Climb Time</TableCell>
+                            {climbTimes.map((time, index) => {
+                                const state = climbStates[index];
+                                if (state === 'Deep') {
+                                    return (
+                                        <TableCell key={index} style={{ backgroundColor: getBackgroundColor(time, colorValues[18], colorValues[19]) }}>
+                                            {time}
+                                        </TableCell>
+                                    );
+                                }
+                                if (state === 'Shallow') {
+                                    return (
+                                        <TableCell key={index} style={{ backgroundColor: getBackgroundColor(time, colorValues[20], colorValues[21]) }}>
+                                            {time}
+                                        </TableCell>
+                                    );
+                                }
+                                if (state === 'Park') {
+                                    return (
+                                        <TableCell key={index} style={{ backgroundColor: getBackgroundColor(time, colorValues[22], colorValues[23]) }}>
+                                            {time}
+                                        </TableCell>
+                                    );
+                                }
+                                if (state === 'Elsewhere') {
+                                    return (
+                                        <TableCell key={index} style={{ backgroundColor: getBackgroundColor(time, colorValues[24], colorValues[25]) }}>
+                                            {time}
+                                        </TableCell>
+                                    );
+                                }
+                                return <TableCell key={index}>{time}</TableCell>;
+                            })}
                         </TableRow>
                     </TableBody>
                 </Table>
