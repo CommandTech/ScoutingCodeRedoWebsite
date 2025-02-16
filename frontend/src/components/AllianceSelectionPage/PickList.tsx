@@ -68,11 +68,11 @@ const PickList: React.FC<PickListProps> = ({ allTeams, selectedTeams, setSelecte
         const updatedRow = { ...row, [name as string]: value };
         if (name === 'name') {
           const team = value as string;
-          updatedRow.autoPoints = teamData.teamAverageAutoPoints[team] || '';
-          updatedRow.algaePoints = teamData.teamAverageAlgaePoints[team] || '';
-          updatedRow.coralPoints = teamData.teamAverageCoralPoints[team] || '';
-          updatedRow.surfacingPoints = teamData.teamAverageSurfacingPoints[team] || '';
-          updatedRow.overall = teamData.teamAveragePoints[team] || '';
+          updatedRow.autoPoints = (teamData.teamAverageAutoPoints[team] || 0).toFixed(2);
+          updatedRow.algaePoints = (teamData.teamAverageAlgaePoints[team] || 0).toFixed(2);
+          updatedRow.coralPoints = (teamData.teamAverageCoralPoints[team] || 0).toFixed(2);
+          updatedRow.surfacingPoints = (teamData.teamAverageSurfacingPoints[team] || 0).toFixed(2);
+          updatedRow.overall = (teamData.teamAveragePoints[team] || 0).toFixed(2);
         }
         return updatedRow;
       }
