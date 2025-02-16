@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import OneTeamReport from './MPRPage/OneTeamReport';
 import { readCSVFile } from '../utils/readCSV';
+import { calculateDifferences, calculateClimbTimes, calculateCoralCounts } from '../utils/reportingFunctions';
 import './CSS/MPR.css';
 
 const MPR = () => {
@@ -56,28 +57,6 @@ const MPR = () => {
     setSelectedColor('All');
   }, []);
 
-  const calculateClimbTimes = (teamNumbers: string[], parsedData: any[]) => {
-    const climbTimes: { [key: string]: { min: number, max: number } } = {};
-
-    teamNumbers.forEach((teamNumber) => {
-      const teamData = parsedData.filter((row: any) => row['Team'] === teamNumber);
-      teamData.forEach((row: any) => {
-        const endState = row['EndState'];
-        const climbT = parseFloat(row['ClimbT']);
-        if (!isNaN(climbT)) {
-          if (!climbTimes[endState]) {
-            climbTimes[endState] = { min: climbT, max: climbT };
-          } else {
-            climbTimes[endState].min = Math.min(climbTimes[endState].min, climbT);
-            climbTimes[endState].max = Math.max(climbTimes[endState].max, climbT);
-          }
-        }
-      });
-    });
-    console.log('climbTimes:', climbTimes);
-    return climbTimes;
-  };
-
   const handleTeamChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     const matchNumber = event.target.value;
     setSelectedMatch(matchNumber);
@@ -107,61 +86,39 @@ const MPR = () => {
         console.log('teamNumbers:', teamNumbers);
         setTeamNumbers(teamNumbers);
 
-        const coralCounts = teamNumbers.map((teamNumber) => {
-          const teamData = parsedData.filter((row: any) => row['Team'] === teamNumber && row['RecordType'] === 'EndAuto');
-          return teamData.map((row: any) =>
-            parseInt(row.DelCoralL1) + parseInt(row.DelCoralL2) + parseInt(row.DelCoralL3) + parseInt(row.DelCoralL4)
-          );
-        });
-
-        const allCoralCounts = coralCounts.flat().filter((count) => !isNaN(count));
-        const maxCoralCount = Math.max(...allCoralCounts);
-        const minCoralCount = Math.min(...allCoralCounts);
-
-        const calculateDifferences = (column: string) => {
-          return teamNumbers.map((teamNumber) => {
-            const endAutoData = parsedData.filter((row: any) => row['Team'] === teamNumber && row['RecordType'] === 'EndAuto');
-            const endMatchData = parsedData.filter((row: any) => row['Team'] === teamNumber && row['RecordType'] === 'EndMatch');
-        
-            const endAutoValues = endAutoData.map((row: any) => parseInt(row[`${column}`])).filter((value) => !isNaN(value));
-            const endMatchValues = endMatchData.map((row: any) => parseInt(row[`${column}`])).filter((value) => !isNaN(value));
-            const differences = endMatchValues.map((value, index) => value - (endAutoValues[index] || 0));
-            const minEndAuto = endAutoValues.length > 0 ? Math.min(...endAutoValues) : 0;
-            return [Math.max(...differences), minEndAuto];
-          });
-        };
-
-        const coralL4Differences = calculateDifferences('DelCoralL4');
+        const coralL4Differences = calculateDifferences(teamNumbers, parsedData, 'DelCoralL4');
         const maxCoralL4Difference = Math.max(...coralL4Differences.map(diff => diff[0]));
         const minCoralL4Difference = Math.min(...coralL4Differences.map(diff => diff[1]));
 
-        const coralL3Differences = calculateDifferences('DelCoralL3');
+        const coralL3Differences = calculateDifferences(teamNumbers, parsedData, 'DelCoralL3');
         const maxCoralL3Difference = Math.max(...coralL3Differences.map(diff => diff[0]));
         const minCoralL3Difference = Math.min(...coralL3Differences.map(diff => diff[1]));
 
-        const coralL2Differences = calculateDifferences('DelCoralL2');
+        const coralL2Differences = calculateDifferences(teamNumbers, parsedData, 'DelCoralL2');
         const maxCoralL2Difference = Math.max(...coralL2Differences.map(diff => diff[0]));
         const minCoralL2Difference = Math.min(...coralL2Differences.map(diff => diff[1]));
 
-        const coralL1Differences = calculateDifferences('DelCoralL1');
+        const coralL1Differences = calculateDifferences(teamNumbers, parsedData, 'DelCoralL1');
         const maxCoralL1Difference = Math.max(...coralL1Differences.map(diff => diff[0]));
         const minCoralL1Difference = Math.min(...coralL1Differences.map(diff => diff[1]));
 
-        const coralFDifferences = calculateDifferences('DelCoralF');
+        const coralFDifferences = calculateDifferences(teamNumbers, parsedData, 'DelCoralF');
         const maxCoralFDifference = Math.max(...coralFDifferences.map(diff => diff[0]));
         const minCoralFDifference = Math.min(...coralFDifferences.map(diff => diff[1]));
 
-        const algaeNDifferences = calculateDifferences('DelAlgaeN');
+        const algaeNDifferences = calculateDifferences(teamNumbers, parsedData, 'DelAlgaeN');
         const maxAlgaeNDifference = Math.max(...algaeNDifferences.map(diff => diff[0]));
         const minAlgaeNDifference = Math.min(...algaeNDifferences.map(diff => diff[1]));
 
-        const algaePDifferences = calculateDifferences('DelAlgaeP');
+        const algaePDifferences = calculateDifferences(teamNumbers, parsedData, 'DelAlgaeP');
         const maxAlgaePDifference = Math.max(...algaePDifferences.map(diff => diff[0]));
         const minAlgaePDifference = Math.min(...algaePDifferences.map(diff => diff[1]));
 
-        const algaeFDifferences = calculateDifferences('DelAlgaeF');
+        const algaeFDifferences = calculateDifferences(teamNumbers, parsedData, 'DelAlgaeF');
         const maxAlgaeFDifference = Math.max(...algaeFDifferences.map(diff => diff[0]));
         const minAlgaeFDifference = Math.min(...algaeFDifferences.map(diff => diff[1]));
+
+        const { maxCoralCount, minCoralCount } = calculateCoralCounts(teamNumbers, parsedData);
 
         setCoralStats({
           maxCoralCount,
@@ -189,7 +146,7 @@ const MPR = () => {
 
         setColorArray([maxCoralCount, minCoralCount, maxCoralL4Difference, minCoralL4Difference, maxCoralL3Difference, minCoralL3Difference,
           maxCoralL2Difference, minCoralL2Difference, maxCoralL1Difference, minCoralL1Difference, maxCoralFDifference, minCoralFDifference, maxAlgaeNDifference, minAlgaeNDifference,
-          maxAlgaePDifference, minAlgaePDifference, maxAlgaeFDifference, minAlgaeFDifference, climbTimes['Deep']['max'], climbTimes['Deep']['min'], 
+          maxAlgaePDifference, minAlgaePDifference, maxAlgaeFDifference, minAlgaeFDifference, climbTimes['Deep']['max'], climbTimes['Deep']['min'],
           climbTimes['Shallow']['max'], climbTimes['Shallow']['min'], climbTimes['Park']['max'], climbTimes['Park']['min'], climbTimes['Elsewhere']['max'], climbTimes['Elsewhere']['min']]);
       }
     } catch (error) {
