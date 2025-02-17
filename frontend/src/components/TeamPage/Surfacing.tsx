@@ -96,7 +96,6 @@ const Surfacing: React.FC<SurfacingProps> = ({ selectedTeam }) => {
                     setAverageDZTimes(averageDZTimes.map(time => parseFloat(time)));
                     setTeamData(teamData);
                     setStrategyCounts(strategyCounts);
-                    console.log('teamData:', teamData);
                 } catch (error) {
                     console.error('Error fetching team data:', error);
                 }

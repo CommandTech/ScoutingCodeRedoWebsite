@@ -52,7 +52,6 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                         max: Math.max(...values)
                     };
                 });
-                console.log('minMax:', minMax);
                 setMinMaxValues(minMax);
             } catch (error) {
                 console.error('Error fetching global data:', error);
@@ -84,7 +83,6 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                         return teamDataEndMatch.map((endMatchRow: any) => {
                             const endAutoRow = teamDataEndAuto.find((endAutoRow: any) => endAutoRow['Match'] === endMatchRow['Match']);
                             if (endAutoRow) {
-                                console.log('endMatchRow:', endMatchRow);
                                 return parseFloat(endMatchRow[column]) - parseFloat(endAutoRow[column]);
                             }
                             return null;

@@ -79,9 +79,9 @@ const Team = () => {
             </Tabs>
 
             <Box>
-                {tabIndex === 0 && <Summary />}
-                {tabIndex === 1 && <Auto selectedTeam={selectedTeam}/>}
-                {tabIndex === 2 && <Teleop selectedTeam={selectedTeam}/>}
+                {tabIndex === 0 && <Summary selectedTeam={selectedTeam} />}
+                {tabIndex === 1 && <Auto selectedTeam={selectedTeam} />}
+                {tabIndex === 2 && <Teleop selectedTeam={selectedTeam} />}
                 {tabIndex === 3 && <Surfacing selectedTeam={selectedTeam} />}
             </Box>
         </div>

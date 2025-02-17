@@ -52,7 +52,6 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                         max: Math.max(...values)
                     };
                 });
-                console.log('minMax:', minMax);
                 setMinMaxValues(minMax);
             } catch (error) {
                 console.error('Error fetching global data:', error);
@@ -138,11 +137,6 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                             {startingLocData.map((loc, index) => (
                                 <TableCell key={index}>{loc}</TableCell>
                             ))}
-                            <TableCell
-                                style={{ backgroundColor: getBackgroundColor(calculateAverage(startingLocData), minMaxValues['Starting_Loc']?.max, minMaxValues['Starting_Loc']?.min) }}
-                            >
-                                {calculateAverage(startingLocData).toFixed(2)}
-                            </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>Leave</TableCell>
@@ -154,11 +148,6 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                     {leave}
                                 </TableCell>
                             ))}
-                            <TableCell
-                                style={{ backgroundColor: getBackgroundColor(calculateAverage(leaveData), minMaxValues['Leave']?.max, minMaxValues['Leave']?.min) }}
-                            >
-                                {calculateAverage(leaveData).toFixed(2)}
-                            </TableCell>
                         </TableRow>
                         <TableRow className="table-row-bordered">
                             <TableCell colSpan={columns.length} align="center">
