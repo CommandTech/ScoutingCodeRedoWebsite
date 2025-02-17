@@ -52,7 +52,7 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                         max: Math.max(...values)
                     };
                 });
-
+                console.log('minMax:', minMax);
                 setMinMaxValues(minMax);
             } catch (error) {
                 console.error('Error fetching global data:', error);
@@ -118,7 +118,7 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
     const calculateAverage = (data: any[]) => {
         const numericData = data.map(value => parseFloat(value)).filter(value => !isNaN(value));
         const sum = numericData.reduce((acc, value) => acc + value, 0);
-        return (sum / numericData.length).toFixed(2);
+        return sum / numericData.length;
     };
 
     return (
@@ -138,7 +138,11 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                             {startingLocData.map((loc, index) => (
                                 <TableCell key={index}>{loc}</TableCell>
                             ))}
-                            <TableCell>{calculateAverage(startingLocData)}</TableCell>
+                            <TableCell
+                                style={{ backgroundColor: getBackgroundColor(calculateAverage(startingLocData), minMaxValues['Starting_Loc']?.max, minMaxValues['Starting_Loc']?.min) }}
+                            >
+                                {calculateAverage(startingLocData).toFixed(2)}
+                            </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>Leave</TableCell>
@@ -150,7 +154,11 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                     {leave}
                                 </TableCell>
                             ))}
-                            <TableCell>{calculateAverage(leaveData)}</TableCell>
+                            <TableCell
+                                style={{ backgroundColor: getBackgroundColor(calculateAverage(leaveData), minMaxValues['Leave']?.max, minMaxValues['Leave']?.min) }}
+                            >
+                                {calculateAverage(leaveData).toFixed(2)}
+                            </TableCell>
                         </TableRow>
                         <TableRow className="table-row-bordered">
                             <TableCell colSpan={columns.length} align="center">
@@ -167,7 +175,11 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                     {data}
                                 </TableCell>
                             ))}
-                            <TableCell>{calculateAverage(acqCoralSData)}</TableCell>
+                            <TableCell
+                                style={{ backgroundColor: getBackgroundColor(calculateAverage(acqCoralSData), minMaxValues['AcqCoralS']?.max, minMaxValues['AcqCoralS']?.min) }}
+                            >
+                                {calculateAverage(acqCoralSData).toFixed(2)}
+                            </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>Coral Floor</TableCell>
@@ -179,7 +191,11 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                     {data}
                                 </TableCell>
                             ))}
-                            <TableCell>{calculateAverage(acqCoralFData)}</TableCell>
+                            <TableCell
+                                style={{ backgroundColor: getBackgroundColor(calculateAverage(acqCoralFData), minMaxValues['AcqCoralF']?.max, minMaxValues['AcqCoralF']?.min) }}
+                            >
+                                {calculateAverage(acqCoralFData).toFixed(2)}
+                            </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>Algae Reef</TableCell>
@@ -191,7 +207,11 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                     {data}
                                 </TableCell>
                             ))}
-                            <TableCell>{calculateAverage(acqAlgaeRData)}</TableCell>
+                            <TableCell
+                                style={{ backgroundColor: getBackgroundColor(calculateAverage(acqAlgaeRData), minMaxValues['AcqAlgaeR']?.max, minMaxValues['AcqAlgaeR']?.min) }}
+                            >
+                                {calculateAverage(acqAlgaeRData).toFixed(2)}
+                            </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>Algae Floor</TableCell>
@@ -203,7 +223,11 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                     {data}
                                 </TableCell>
                             ))}
-                            <TableCell>{calculateAverage(acqAlgaeFData)}</TableCell>
+                            <TableCell
+                                style={{ backgroundColor: getBackgroundColor(calculateAverage(acqAlgaeFData), minMaxValues['AcqAlgaeF']?.max, minMaxValues['AcqAlgaeF']?.min) }}
+                            >
+                                {calculateAverage(acqAlgaeFData).toFixed(2)}
+                            </TableCell>
                         </TableRow>
                         <TableRow className="table-row-bordered">
                             <TableCell colSpan={columns.length} align="center">
@@ -220,7 +244,11 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                     {data}
                                 </TableCell>
                             ))}
-                            <TableCell>{calculateAverage(delCoralL1Data)}</TableCell>
+                            <TableCell
+                                style={{ backgroundColor: getBackgroundColor(calculateAverage(delCoralL1Data), minMaxValues['DelCoralL1']?.max, minMaxValues['DelCoralL1']?.min) }}
+                            >
+                                {calculateAverage(delCoralL1Data).toFixed(2)}
+                            </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>L2</TableCell>
@@ -232,7 +260,11 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                     {data}
                                 </TableCell>
                             ))}
-                            <TableCell>{calculateAverage(delCoralL2Data)}</TableCell>
+                            <TableCell
+                                style={{ backgroundColor: getBackgroundColor(calculateAverage(delCoralL2Data), minMaxValues['DelCoralL2']?.max, minMaxValues['DelCoralL2']?.min) }}
+                            >
+                                {calculateAverage(delCoralL2Data).toFixed(2)}
+                            </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>L3</TableCell>
@@ -244,7 +276,11 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                     {data}
                                 </TableCell>
                             ))}
-                            <TableCell>{calculateAverage(delCoralL3Data)}</TableCell>
+                            <TableCell
+                                style={{ backgroundColor: getBackgroundColor(calculateAverage(delCoralL3Data), minMaxValues['DelCoralL3']?.max, minMaxValues['DelCoralL3']?.min) }}
+                            >
+                                {calculateAverage(delCoralL3Data).toFixed(2)}
+                            </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>L4</TableCell>
@@ -256,7 +292,11 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                     {data}
                                 </TableCell>
                             ))}
-                            <TableCell>{calculateAverage(delCoralL4Data)}</TableCell>
+                            <TableCell
+                                style={{ backgroundColor: getBackgroundColor(calculateAverage(delCoralL4Data), minMaxValues['DelCoralL4']?.max, minMaxValues['DelCoralL4']?.min) }}
+                            >
+                                {calculateAverage(delCoralL4Data).toFixed(2)}
+                            </TableCell>
                         </TableRow>
                         <TableRow style={{ borderBottom: '4px solid black' }}>
                             <TableCell>Floor/Drop</TableCell>
@@ -268,7 +308,11 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                     {data}
                                 </TableCell>
                             ))}
-                            <TableCell>{calculateAverage(delCoralFData)}</TableCell>
+                            <TableCell
+                                style={{ backgroundColor: getBackgroundColor(calculateAverage(delCoralFData), minMaxValues['DelCoralF']?.min, minMaxValues['DelCoralF']?.max) }}
+                            >
+                                {calculateAverage(delCoralFData).toFixed(2)}
+                            </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>Processor</TableCell>
@@ -280,7 +324,11 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                     {data}
                                 </TableCell>
                             ))}
-                            <TableCell>{calculateAverage(delAlgaePData)}</TableCell>
+                            <TableCell
+                                style={{ backgroundColor: getBackgroundColor(calculateAverage(delAlgaePData), minMaxValues['DelAlgaeP']?.max, minMaxValues['DelAlgaeP']?.min) }}
+                            >
+                                {calculateAverage(delAlgaePData).toFixed(2)}
+                            </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>Net</TableCell>
@@ -292,7 +340,11 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                     {data}
                                 </TableCell>
                             ))}
-                            <TableCell>{calculateAverage(delAlgaeNData)}</TableCell>
+                            <TableCell
+                                style={{ backgroundColor: getBackgroundColor(calculateAverage(delAlgaeNData), minMaxValues['DelAlgaeN']?.max, minMaxValues['DelAlgaeN']?.min) }}
+                            >
+                                {calculateAverage(delAlgaeNData).toFixed(2)}
+                            </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>Floor/Drop</TableCell>
@@ -304,19 +356,11 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                     {data}
                                 </TableCell>
                             ))}
-                            <TableCell>{calculateAverage(delAlgaeFData)}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell>Disrupted Algae</TableCell>
-                            {disAlgaeData.map((data, index) => (
-                                <TableCell
-                                    key={index}
-                                    style={{ backgroundColor: getBackgroundColor(parseFloat(data), minMaxValues['DisAlgae']?.max, minMaxValues['DisAlgae']?.min) }}
-                                >
-                                    {data}
-                                </TableCell>
-                            ))}
-                            <TableCell>{calculateAverage(disAlgaeData)}</TableCell>
+                            <TableCell
+                                style={{ backgroundColor: getBackgroundColor(calculateAverage(delAlgaeFData), minMaxValues['DelAlgaeF']?.min, minMaxValues['DelAlgaeF']?.max) }}
+                            >
+                                {calculateAverage(delAlgaeFData).toFixed(2)}
+                            </TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>
