@@ -4,6 +4,7 @@ import { readCSVFile } from '../utils/readCSV';
 import Summary from './TeamPage/Summary';
 import Surfacing from './TeamPage/Surfacing';
 import Auto from './TeamPage/Auto';
+import Teleop from './TeamPage/Teleop';
 
 const Team = () => {
     const [teams, setTeams] = useState<string[]>([]);
@@ -80,7 +81,7 @@ const Team = () => {
             <Box>
                 {tabIndex === 0 && <Summary />}
                 {tabIndex === 1 && <Auto selectedTeam={selectedTeam}/>}
-                {tabIndex === 2 && <div>Teleop Content</div>}
+                {tabIndex === 2 && <Teleop selectedTeam={selectedTeam}/>}
                 {tabIndex === 3 && <Surfacing selectedTeam={selectedTeam} />}
             </Box>
         </div>
