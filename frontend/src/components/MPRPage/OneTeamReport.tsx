@@ -215,7 +215,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
                         <TableRow className="table-row-bordered" style={{ borderBottom: '4px solid black' }}>
                             <TableCell>Floor/Drop</TableCell>
                             {delCoralFDiffs.map((diff, index) => (
-                                <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[10], colorValues[11]) }}>
+                                <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[11], colorValues[10]) }}>
                                     {diff}
                                 </TableCell>
                             ))}
@@ -239,7 +239,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
                         <TableRow className="table-row-bordered">
                             <TableCell>Floor/Drop</TableCell>
                             {delAlgaeFDiffs.map((diff, index) => (
-                                <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[16], colorValues[17]) }}>
+                                <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[17], colorValues[16]) }}>
                                     {diff}
                                 </TableCell>
                             ))}

@@ -3,6 +3,7 @@ import { Tabs, Tab, Box } from '@mui/material';
 import { readCSVFile } from '../utils/readCSV';
 import Summary from './TeamPage/Summary';
 import Surfacing from './TeamPage/Surfacing';
+import Auto from './TeamPage/Auto';
 
 const Team = () => {
     const [teams, setTeams] = useState<string[]>([]);
@@ -78,7 +79,7 @@ const Team = () => {
 
             <Box>
                 {tabIndex === 0 && <Summary />}
-                {tabIndex === 1 && <div>Auto Content</div>}
+                {tabIndex === 1 && <Auto selectedTeam={selectedTeam}/>}
                 {tabIndex === 2 && <div>Teleop Content</div>}
                 {tabIndex === 3 && <Surfacing selectedTeam={selectedTeam} />}
             </Box>
