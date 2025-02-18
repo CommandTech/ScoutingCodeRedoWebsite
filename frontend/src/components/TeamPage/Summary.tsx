@@ -15,6 +15,9 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
   const [driveStaAverages, setDriveStaAverages] = useState<{ [key: string]: number }>({});
   const [teamAverages, setTeamAverages] = useState<number[]>([]);
   const [minMaxAverages, setMinMaxAverages] = useState<{ min: number; max: number }>({ min: 0, max: 0 });
+  const [driveStaCoralAverages, setDriveStaCoralAverages] = useState<{ [key: string]: number }>({});
+  const [driveStaAlgaeAverages, setDriveStaAlgaeAverages] = useState<{ [key: string]: number }>({});
+  const [matchEventCounts, setMatchEventCounts] = useState<{ [key: string]: number }>({});
 
   useEffect(() => {
     const fetchGlobalData = async () => {
@@ -41,6 +44,27 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
             max: Math.max(...values)
           };
         });
+
+        // Calculate global min and max for the sum of DelCoralL1, DelCoralL2, DelCoralL3, DelCoralL4
+        const coralSums = parsedData
+          .filter((row: any) => row['RecordType'] === 'EndMatch')
+          .map((row: any) => parseFloat(row['DelCoralL1']) + parseFloat(row['DelCoralL2']) + parseFloat(row['DelCoralL3']) + parseFloat(row['DelCoralL4']))
+          .filter((value: number) => !isNaN(value));
+
+        const algaeSums = parsedData
+          .filter((row: any) => row['RecordType'] === 'EndMatch')
+          .map((row: any) => parseFloat(row['DelAlgaeP']) + parseFloat(row['DelAlgaeN'])).filter((value: number) => !isNaN(value));
+
+
+        minMax['CoralSum'] = {
+          min: Math.min(...coralSums),
+          max: Math.max(...coralSums)
+        };
+        minMax['AlgaeSum'] = {
+          min: Math.min(...coralSums),
+          max: Math.max(...coralSums)
+        };
+
         setMinMaxValues(minMax);
       } catch (error) {
         console.error('Error fetching global data:', error);
@@ -84,12 +108,28 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
           setDriveStaValues(driveSta);
 
           const driveStaAvg: { [key: string]: number } = {};
+          const driveStaCoralAvg: { [key: string]: number } = {};
+          const driveStaAlgaeAvg: { [key: string]: number } = {};
           driveSta.forEach((driveStaValue) => {
             const filteredData = teamDataEndMatch.filter((row: any) => row['DriveSta'] === driveStaValue);
             const avg = filteredData.reduce((acc: number, row: any) => acc + parseFloat(row['PointScored']), 0) / filteredData.length;
             driveStaAvg[driveStaValue] = avg;
+
+            const coralSum = filteredData.reduce((acc: number, row: any) => {
+              const coralScore = parseFloat(row['DelCoralL1']) + parseFloat(row['DelCoralL2']) + parseFloat(row['DelCoralL3']) + parseFloat(row['DelCoralL4']);
+              return acc + (isNaN(coralScore) ? 0 : coralScore);
+            }, 0);
+            driveStaCoralAvg[driveStaValue] = coralSum / filteredData.length;
+
+            const algaeSum = filteredData.reduce((acc: number, row: any) => {
+              const algaeScore = parseFloat(row['DelAlgaeP']) + parseFloat(row['DelAlgaeN']);
+              return acc + (isNaN(algaeScore) ? 0 : algaeScore);
+            }, 0);
+            driveStaAlgaeAvg[driveStaValue] = algaeSum / filteredData.length;
           });
           setDriveStaAverages(driveStaAvg);
+          setDriveStaCoralAverages(driveStaCoralAvg);
+          setDriveStaAlgaeAverages(driveStaAlgaeAvg);
 
           const teamAverages = parsedData
             .filter((row: any) => row['RecordType'] === 'EndMatch')
@@ -125,6 +165,38 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
     fetchTeamData();
   }, [selectedTeam]);
 
+  useEffect(() => {
+    const fetchMatchEventData = async () => {
+      if (selectedTeam) {
+        try {
+          const response = await fetch('/ExcelCSVFiles/Activities.csv');
+          const csvData = await response.text();
+          const parsedData = await readCSVFile(new File([csvData], 'Activities.csv', { type: 'text/csv' }));
+
+          if (!parsedData || !Array.isArray(parsedData)) {
+            throw new Error('Parsed data is not an array or is undefined');
+          }
+
+          const teamMatchEvents = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'MatchEvent');
+          const eventCounts: { [key: string]: number } = {};
+
+          teamMatchEvents.forEach((row: any) => {
+            const event = row['Match_event'];
+            if (event) {
+              eventCounts[event] = (eventCounts[event] || 0) + 1;
+            }
+          });
+
+          setMatchEventCounts(eventCounts);
+        } catch (error) {
+          console.error('Error fetching match event data:', error);
+        }
+      }
+    };
+
+    fetchMatchEventData();
+  }, [selectedTeam]);
+
   const columns = ['Matches:', ...Array.from({ length: matchCount }, (_, i) => `Match ${i + 1}`), 'Average'];
 
   const getBackgroundColor = (value: number, max: number, min: number) => {
@@ -153,7 +225,7 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow>
+            <TableRow className="table-row-bordered">
               <TableCell className="fixed-width">Points Scored</TableCell>
               {pointScoredData.map((point, index) => (
                 <TableCell
@@ -179,7 +251,7 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
             </TableRow>
           </TableBody>
         </Table>
-</TableContainer>
+      </TableContainer>
       <div>&nbsp;</div>
       <TableContainer component={Paper}>
         <Table>
@@ -192,7 +264,7 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow>
+            <TableRow className="table-row-bordered">
               <TableCell className="fixed-width">Average Points Scored</TableCell>
               {driveStaValues.map((value, index) => (
                 <TableCell
@@ -205,6 +277,57 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
                 >
                   {isNaN(driveStaAverages[value]) ? 'NaN' : driveStaAverages[value]?.toFixed(2)}
                 </TableCell>
+              ))}
+            </TableRow>
+            <TableRow className="table-row-bordered">
+              <TableCell className="fixed-width">Average Coral Scored</TableCell>
+              {driveStaValues.map((value, index) => (
+                <TableCell
+                  key={index}
+                  style={{
+                    backgroundColor: minMaxValues['CoralSum']
+                      ? getBackgroundColor(driveStaCoralAverages[value], minMaxValues['CoralSum'].max, minMaxValues['CoralSum'].min)
+                      : 'transparent'
+                  }}
+                >
+                  {isNaN(driveStaCoralAverages[value]) ? 'NaN' : driveStaCoralAverages[value]?.toFixed(2)}
+                </TableCell>
+              ))}
+            </TableRow>
+            <TableRow className="table-row-bordered">
+              <TableCell className="fixed-width">Average Algae Scored</TableCell>
+              {driveStaValues.map((value, index) => (
+                <TableCell
+                  key={index}
+                  style={{
+                    backgroundColor: minMaxValues['AlgaeSum']
+                      ? getBackgroundColor(driveStaAlgaeAverages[value], minMaxValues['AlgaeSum'].max, minMaxValues['AlgaeSum'].min)
+                      : 'transparent'
+                  }}
+                >
+                  {isNaN(driveStaAlgaeAverages[value]) ? 'NaN' : driveStaAlgaeAverages[value]?.toFixed(2)}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <div>&nbsp;</div>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow className="table-row-bordered">
+              <TableCell className="fixed-width">Match Event</TableCell>
+              {Object.keys(matchEventCounts).map((event, index) => (
+                <TableCell key={index}>{event}</TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            <TableRow className="table-row-bordered">
+              <TableCell className="fixed-width">Count</TableCell>
+              {Object.values(matchEventCounts).map((count, index) => (
+                <TableCell key={index}>{count}</TableCell>
               ))}
             </TableRow>
           </TableBody>
