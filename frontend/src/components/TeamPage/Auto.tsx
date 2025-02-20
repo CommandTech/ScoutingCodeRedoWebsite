@@ -31,6 +31,10 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
     const [Chart2, setSelectedChart2] = useState<string>('StartingLocation');
     const [Chart3, setSelectedChart3] = useState<string>('StartingLocation');
 
+    const chartOptions = [
+        { value: 'StartingLocation', label: 'Starting Location' },
+        { value: 'PointsPerStartLocation', label: 'Points Per Start Location' },
+    ];
 
     useEffect(() => {
         const fetchGlobalData = async () => {
@@ -381,7 +385,11 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                     onChange={handleChange1}
                     label="Select Value"
                 >
-                    <MenuItem value={'StartingLocation'}>Starting Location</MenuItem>
+                    {chartOptions.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                        </MenuItem>
+                    ))}
                 </Select>
                 <GraphsInterface chart={Chart1} selectedTeam={selectedTeam} />
             </FormControl>
@@ -394,8 +402,11 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                     onChange={handleChange2}
                     label="Select Value"
                 >
-                    <MenuItem value={'StartingLocation'}>Starting Location</MenuItem>
-                </Select>
+                    {chartOptions.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                        </MenuItem>
+                    ))}                </Select>
                 <GraphsInterface chart={Chart2} selectedTeam={selectedTeam} />
             </FormControl>
             <FormControl variant="outlined" style={{ marginBottom: '20px', minWidth: 120 }}>
@@ -407,8 +418,11 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                     onChange={handleChange3}
                     label="Select Value"
                 >
-                    <MenuItem value={'StartingLocation'}>Starting Location</MenuItem>
-                </Select>
+                    {chartOptions.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                        </MenuItem>
+                    ))}                </Select>
                 <GraphsInterface chart={Chart3} selectedTeam={selectedTeam} />
             </FormControl>
         </div>

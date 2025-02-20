@@ -1,5 +1,6 @@
 import React from 'react'
 import StartingLocation from './StartingLocation';
+import PointsPerStartLocation from './PointsPerStartLocation';
 
 interface GraphsInterfaceProps {
     chart: string;
@@ -11,6 +12,8 @@ const GraphsInterface: React.FC<GraphsInterfaceProps> = ({ chart, selectedTeam }
         switch (chart) {
             case 'StartingLocation':
                 return <StartingLocation chart={chart} selectedTeam={selectedTeam} />;
+            case 'PointsPerStartLocation':
+                return <PointsPerStartLocation chart={chart} selectedTeam={selectedTeam} />;
             default:
                 return <div>No Defined Graph</div>;
         }
