@@ -1,8 +1,8 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Select, MenuItem, FormControl, InputLabel, SelectChangeEvent } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import './CSS/Auto.css';
 import { readCSVFile } from '../../utils/readCSV';
-import StartingLocation from '../Graphs/StartingLocation';
+import GraphsInterface from '../Graphs/GraphsInterface';
 
 interface AutoProps {
     selectedTeam: string;
@@ -25,8 +25,12 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
     const [delAlgaeNData, setDelAlgaeNData] = useState<any[]>([]);
     const [delAlgaeFData, setDelAlgaeFData] = useState<any[]>([]);
     const [disAlgaeData, setDisAlgaeData] = useState<any[]>([]);
-
     const [minMaxValues, setMinMaxValues] = useState<any>({});
+
+    const [Chart1, setSelectedChart1] = useState<string>('StartingLocation');
+    const [Chart2, setSelectedChart2] = useState<string>('StartingLocation');
+    const [Chart3, setSelectedChart3] = useState<string>('StartingLocation');
+
 
     useEffect(() => {
         const fetchGlobalData = async () => {
@@ -119,6 +123,18 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
         const numericData = data.map(value => parseFloat(value)).filter(value => !isNaN(value));
         const sum = numericData.reduce((acc, value) => acc + value, 0);
         return sum / numericData.length;
+    };
+
+    const handleChange1 = (event: SelectChangeEvent<string>) => {
+        setSelectedChart1(event.target.value as string);
+    };
+
+    const handleChange2 = (event: SelectChangeEvent<string>) => {
+        setSelectedChart2(event.target.value as string);
+    };
+
+    const handleChange3 = (event: SelectChangeEvent<string>) => {
+        setSelectedChart3(event.target.value as string);
     };
 
     return (
@@ -355,7 +371,46 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <StartingLocation data={startingLocData.join(', ')} />
+            <div>&nbsp;</div>
+            <FormControl variant="outlined" style={{ marginBottom: '20px', minWidth: 120 }}>
+                <InputLabel id="demo-simple-select-outlined-label">Selected Chart</InputLabel>
+                <Select
+                    labelId="demo-simple-select-outlined-label"
+                    id="demo-simple-select-outlined"
+                    value={Chart1}
+                    onChange={handleChange1}
+                    label="Select Value"
+                >
+                    <MenuItem value={'StartingLocation'}>Starting Location</MenuItem>
+                </Select>
+                <GraphsInterface chart={Chart1} selectedTeam={selectedTeam} />
+            </FormControl>
+            <FormControl variant="outlined" style={{ marginBottom: '20px', minWidth: 120 }}>
+                <InputLabel id="demo-simple-select-outlined-label">Selected Chart</InputLabel>
+                <Select
+                    labelId="demo-simple-select-outlined-label"
+                    id="demo-simple-select-outlined"
+                    value={Chart2}
+                    onChange={handleChange2}
+                    label="Select Value"
+                >
+                    <MenuItem value={'StartingLocation'}>Starting Location</MenuItem>
+                </Select>
+                <GraphsInterface chart={Chart2} selectedTeam={selectedTeam} />
+            </FormControl>
+            <FormControl variant="outlined" style={{ marginBottom: '20px', minWidth: 120 }}>
+                <InputLabel id="demo-simple-select-outlined-label">Selected Chart</InputLabel>
+                <Select
+                    labelId="demo-simple-select-outlined-label"
+                    id="demo-simple-select-outlined"
+                    value={Chart3}
+                    onChange={handleChange3}
+                    label="Select Value"
+                >
+                    <MenuItem value={'StartingLocation'}>Starting Location</MenuItem>
+                </Select>
+                <GraphsInterface chart={Chart3} selectedTeam={selectedTeam} />
+            </FormControl>
         </div>
     );
 }
