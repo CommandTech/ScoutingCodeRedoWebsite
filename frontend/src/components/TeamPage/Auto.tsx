@@ -2,6 +2,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import React, { useEffect, useState } from 'react';
 import './CSS/Auto.css';
 import { readCSVFile } from '../../utils/readCSV';
+import StartingLocation from '../Graphs/StartingLocation';
 
 interface AutoProps {
     selectedTeam: string;
@@ -133,7 +134,7 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                     </TableHead>
                     <TableBody>
                         <TableRow>
-                            <TableCell>Starting Loc</TableCell>
+                            <TableCell>Starting Location</TableCell>
                             {startingLocData.map((loc, index) => (
                                 <TableCell key={index}>{loc}</TableCell>
                             ))}
@@ -354,6 +355,7 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                     </TableBody>
                 </Table>
             </TableContainer>
+            <StartingLocation data={startingLocData.join(', ')} />
         </div>
     );
 }
