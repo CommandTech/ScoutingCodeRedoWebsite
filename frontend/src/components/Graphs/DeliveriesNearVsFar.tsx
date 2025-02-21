@@ -30,12 +30,16 @@ const DeliveriesNearVsFar: React.FC<DeliveriesNearVsFarProps> = ({ chart, select
             row['Mode'] === 'Auto'
           );
 
+          const matchCount = teamData.length;
           const nearDeliveries = teamData.filter((row: any) => row['Del_Near_Far'] === 'Near').length;
           const farDeliveries = teamData.filter((row: any) => row['Del_Near_Far'] === 'Far').length;
 
+          const averageNearDeliveries = matchCount > 0 ? (nearDeliveries / matchCount).toFixed(2) : '0';
+          const averageFarDeliveries = matchCount > 0 ? (farDeliveries / matchCount).toFixed(2) : '0';
+
           const pointsColumnData = [
-            { name: 'Near Deliveries', value: nearDeliveries },
-            { name: 'Far Deliveries', value: farDeliveries }
+            { name: 'Average Near Deliveries', value: parseFloat(averageNearDeliveries) },
+            { name: 'Average Far Deliveries', value: parseFloat(averageFarDeliveries) }
           ];
 
           setPointsData(pointsColumnData);

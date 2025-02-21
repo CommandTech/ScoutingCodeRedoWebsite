@@ -34,9 +34,12 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
     const chartOptions = [
         { value: 'StartingLocation', label: 'Starting Location' },
         { value: 'PointsPerStartLocation', label: 'Points Per Start Location' },
-        { value: 'PointsPerMatch', label: 'Points Per Match' },
-        { value: 'AcquireAlgaePerLocation', label: 'Acquire Algae Per Location' },
-        { value: 'DeliveriesNearVsFar', label: 'Deliveries Near Vs Far' }
+        { value: 'PointsPerMatchAuto', label: 'Points Per Match' },
+        { value: 'AcquireAlgaePerLocation', label: 'Acquire Algae Per Location Average' },
+        { value: 'AcquireCoralPerLocation', label: 'Acquire Coral Per Location Average' },
+        { value: 'AlgaeSuccessRate', label: 'Algae Success Rate Average' },
+        { value: 'CoralSuccessRate', label: 'Coral Success Rate Average' },
+        { value: 'DeliveriesNearVsFar', label: 'Deliveries Near Vs Far' },
     ];
 
     useEffect(() => {

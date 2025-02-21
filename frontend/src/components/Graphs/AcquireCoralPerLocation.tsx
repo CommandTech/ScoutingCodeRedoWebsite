@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 import { readCSVFile } from '../../utils/readCSV';
 
-interface PointsPerMatchProps {
+interface AcquireCoralPerLocationProps {
   chart: string;
   selectedTeam: string;
 }
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#A28DFF', '#FF6F61', '#6B8E23', '#FF4500', '#DA70D6', '#32CD32'];
 
-const PointsPerMatch: React.FC<PointsPerMatchProps> = ({ chart, selectedTeam }) => {
+const AcquireCoralPerLocation: React.FC<AcquireCoralPerLocationProps> = ({ chart, selectedTeam }) => {
   const [pointsData, setPointsData] = useState<any[]>([]);
 
   useEffect(() => {
@@ -24,12 +24,21 @@ const PointsPerMatch: React.FC<PointsPerMatchProps> = ({ chart, selectedTeam }) 
             throw new Error('Parsed data is not an array or is undefined');
           }
 
-          const teamData = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'EndMatch');
+          const teamData = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'EndAuto');
 
-          const pointsColumnData = teamData.map((row: any) => ({
-            name: row['Match'],
-            value: parseInt(row['PointScored'], 10)
-          }));
+          const matchCount = teamData.length;
+
+          const aggregatedData = teamData.reduce((acc: any, row: any) => {
+            acc['AcqCoralS'] = (acc['AcqCoralS'] || 0) + parseInt(row['AcqCoralS'], 10);
+            acc['AcqCoralF'] = (acc['AcqCoralF'] || 0) + parseInt(row['AcqCoralF'], 10);
+            return acc;
+          }, {});
+
+          const pointsColumnData = [
+            { name: 'Acquire Coral Station', value: parseFloat((aggregatedData['AcqCoralS'] / matchCount).toFixed(2)) },
+            { name: 'Acquire Coral Floor', value: parseFloat((aggregatedData['AcqCoralF'] / matchCount).toFixed(2)) }
+          ];
+          
           setPointsData(pointsColumnData);
         } catch (error) {
           console.error('Error fetching team data:', error);
@@ -63,4 +72,4 @@ const PointsPerMatch: React.FC<PointsPerMatchProps> = ({ chart, selectedTeam }) 
   );
 };
 
-export default PointsPerMatch;
+export default AcquireCoralPerLocation;

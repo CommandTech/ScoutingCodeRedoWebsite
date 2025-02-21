@@ -38,9 +38,12 @@ const MPR = () => {
   const chartOptions = [
     { value: 'StartingLocation', label: 'Starting Location (Auto)' },
     { value: 'PointsPerStartLocation', label: 'Points Per Start Location (Auto)' },
-    { value: 'PointsPerMatch', label: 'Points Per Match (Auto)' },
-    { value: 'AcquireAlgaePerLocation', label: 'Acquire Algae Per Location (Auto)' },
-    { value: 'DeliveriesNearVsFar', label: 'Deliveries Near Vs Far (Auto)' }
+    { value: 'PointsPerMatchAuto', label: 'Points Per Match (Auto)' },
+    { value: 'AcquireAlgaePerLocation', label: 'Acquire Algae Per Location Average (Auto)' },
+    { value: 'AcquireCoralPerLocation', label: 'Acquire Coral Per Location Average (Auto)' },
+    { value: 'AlgaeSuccessRate', label: 'Algae Success Rate Average (Auto)' },
+    { value: 'CoralSuccessRate', label: 'Coral Success Rate Average (Auto)' },
+    { value: 'DeliveriesNearVsFar', label: 'Deliveries Near Vs Far (Auto)' },
   ];
 
   useEffect(() => {
@@ -190,6 +193,22 @@ const MPR = () => {
         <option value="Blue">Blue</option>
       </select>
       <div>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <InputLabel id="demo-simple-select-outlined-label">Selected Chart</InputLabel>
+          <Select
+            labelId="demo-simple-select-outlined-label"
+            id="demo-simple-select-outlined"
+            value={Chart1}
+            onChange={handleChange1}
+            label="Select Value"
+          >
+            {chartOptions.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </div>
         {selectedColor === 'All' ? (
           <div className="report-container">
             <div className="report-column">
@@ -197,20 +216,6 @@ const MPR = () => {
               <OneTeamReport color="Blue" robotNumber={teamNumbers[1]} colorValues={colorArray} chart={Chart1} />
               <OneTeamReport color="Blue" robotNumber={teamNumbers[2]} colorValues={colorArray} chart={Chart1} />
             </div>
-            <InputLabel id="demo-simple-select-outlined-label">Selected Chart</InputLabel>
-            <Select
-              labelId="demo-simple-select-outlined-label"
-              id="demo-simple-select-outlined"
-              value={Chart1}
-              onChange={handleChange1}
-              label="Select Value"
-            >
-              {chartOptions.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </Select>
             <div className="report-column">
               <OneTeamReport color="Red" robotNumber={teamNumbers[3]} colorValues={colorArray} chart={Chart1} />
               <OneTeamReport color="Red" robotNumber={teamNumbers[4]} colorValues={colorArray} chart={Chart1} />

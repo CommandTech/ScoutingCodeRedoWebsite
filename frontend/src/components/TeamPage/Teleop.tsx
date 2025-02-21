@@ -1,7 +1,8 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import './CSS/Teleop.css';
 import { readCSVFile } from '../../utils/readCSV';
+import GraphsInterface from '../Graphs/GraphsInterface';
 
 interface TeleopProps {
     selectedTeam: string;
@@ -26,6 +27,14 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
     const [disAlgaeData, setDisAlgaeData] = useState<any[]>([]);
 
     const [minMaxValues, setMinMaxValues] = useState<any>({});
+
+    const [Chart1, setSelectedChart1] = useState<string>('StartingLocation');
+    const [Chart2, setSelectedChart2] = useState<string>('StartingLocation');
+    const [Chart3, setSelectedChart3] = useState<string>('StartingLocation');
+
+    const chartOptions = [
+        { value: 'StartingLocation', label: 'Starting Location' },
+    ];
 
     useEffect(() => {
         const fetchGlobalData = async () => {
@@ -126,6 +135,18 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
         const numericData = data.map(value => parseFloat(value)).filter(value => !isNaN(value));
         const sum = numericData.reduce((acc, value) => acc + value, 0);
         return sum / numericData.length;
+    };
+
+    const handleChange1 = (event: SelectChangeEvent<string>) => {
+        setSelectedChart1(event.target.value as string);
+    };
+
+    const handleChange2 = (event: SelectChangeEvent<string>) => {
+        setSelectedChart2(event.target.value as string);
+    };
+
+    const handleChange3 = (event: SelectChangeEvent<string>) => {
+        setSelectedChart3(event.target.value as string);
     };
 
     return (
@@ -345,6 +366,56 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                     </TableBody>
                 </Table>
             </TableContainer>
+            <div>&nbsp;</div>
+            <FormControl variant="outlined" style={{ marginBottom: '20px', minWidth: 120 }}>
+                <InputLabel id="demo-simple-select-outlined-label">Selected Chart</InputLabel>
+                <Select
+                    labelId="demo-simple-select-outlined-label"
+                    id="demo-simple-select-outlined"
+                    value={Chart1}
+                    onChange={handleChange1}
+                    label="Select Value"
+                >
+                    {chartOptions.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                        </MenuItem>
+                    ))}
+                </Select>
+                <GraphsInterface chart={Chart1} selectedTeam={selectedTeam} />
+            </FormControl>
+            <FormControl variant="outlined" style={{ marginBottom: '20px', minWidth: 120 }}>
+                <InputLabel id="demo-simple-select-outlined-label">Selected Chart</InputLabel>
+                <Select
+                    labelId="demo-simple-select-outlined-label"
+                    id="demo-simple-select-outlined"
+                    value={Chart2}
+                    onChange={handleChange2}
+                    label="Select Value"
+                >
+                    {chartOptions.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                        </MenuItem>
+                    ))}                </Select>
+                <GraphsInterface chart={Chart2} selectedTeam={selectedTeam} />
+            </FormControl>
+            <FormControl variant="outlined" style={{ marginBottom: '20px', minWidth: 120 }}>
+                <InputLabel id="demo-simple-select-outlined-label">Selected Chart</InputLabel>
+                <Select
+                    labelId="demo-simple-select-outlined-label"
+                    id="demo-simple-select-outlined"
+                    value={Chart3}
+                    onChange={handleChange3}
+                    label="Select Value"
+                >
+                    {chartOptions.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                        </MenuItem>
+                    ))}                </Select>
+                <GraphsInterface chart={Chart3} selectedTeam={selectedTeam} />
+            </FormControl>
         </div>
     );
 }

@@ -115,7 +115,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
         climbTimes.length
     );
 
-    const columns = ['Matches:', ...Array.from({ length: maxMatches }, (_, i) => `Match ${i + 1}`)];
+    const columns = ['Matches:', ...Array.from({ length: maxMatches }, (_, i) => `${i + 1}`)];
 
     const cellClass = color === 'Red' ? 'robot-number-cell red' : 'robot-number-cell blue';
 
@@ -304,7 +304,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
                     </Table>
                 </TableContainer>
                 {color === 'Blue' && (
-                    <FormControl variant="outlined">
+                    <FormControl variant="outlined" style={{ marginRight: '100px' }}>
                         <GraphsInterface chart={chart} selectedTeam={robotNumber} />
                     </FormControl>
                 )}

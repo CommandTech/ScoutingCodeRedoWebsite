@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 import { readCSVFile } from '../../utils/readCSV';
 
-interface PointsPerMatchProps {
+interface CoralSuccessRateProps {
   chart: string;
   selectedTeam: string;
 }
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#A28DFF', '#FF6F61', '#6B8E23', '#FF4500', '#DA70D6', '#32CD32'];
 
-const PointsPerMatch: React.FC<PointsPerMatchProps> = ({ chart, selectedTeam }) => {
+const CoralSuccessRate: React.FC<CoralSuccessRateProps> = ({ chart, selectedTeam }) => {
   const [pointsData, setPointsData] = useState<any[]>([]);
 
   useEffect(() => {
@@ -24,12 +24,24 @@ const PointsPerMatch: React.FC<PointsPerMatchProps> = ({ chart, selectedTeam }) 
             throw new Error('Parsed data is not an array or is undefined');
           }
 
-          const teamData = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'EndMatch');
+          const teamData = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'EndAuto');
 
-          const pointsColumnData = teamData.map((row: any) => ({
-            name: row['Match'],
-            value: parseInt(row['PointScored'], 10)
-          }));
+          const matchCount = teamData.length;
+
+          const aggregatedData = teamData.reduce((acc: any, row: any) => {
+            acc['DelCoralL1'] = (acc['DelCoralL1'] || 0) + parseInt(row['DelCoralL1'], 10);
+            acc['DelCoralL2'] = (acc['DelCoralL2'] || 0) + parseInt(row['DelCoralL2'], 10);
+            acc['DelCoralL3'] = (acc['DelCoralL3'] || 0) + parseInt(row['DelCoralL3'], 10);
+            acc['DelCoralL4'] = (acc['DelCoralL4'] || 0) + parseInt(row['DelCoralL4'], 10);
+            acc['AcqAlgaeF'] = (acc['AcqAlgaeF'] || 0) + parseInt(row['AcqAlgaeF'], 10);
+            return acc;
+          }, {});
+
+          const pointsColumnData = [
+            { name: 'Acquire Algae', value: parseFloat(((aggregatedData['DelCoralL1'] + aggregatedData['DelCoralL2'] + aggregatedData['DelCoralL3'] + aggregatedData['DelCoralL4']) / matchCount).toFixed(2)) },
+            { name: 'Drop', value: parseFloat((aggregatedData['AcqAlgaeF'] / matchCount).toFixed(2)) }
+          ];
+
           setPointsData(pointsColumnData);
         } catch (error) {
           console.error('Error fetching team data:', error);
@@ -63,4 +75,4 @@ const PointsPerMatch: React.FC<PointsPerMatchProps> = ({ chart, selectedTeam }) 
   );
 };
 
-export default PointsPerMatch;
+export default CoralSuccessRate;

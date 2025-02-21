@@ -26,6 +26,8 @@ const AcquireAlgaePerLocation: React.FC<AcquireAlgaePerLocationProps> = ({ chart
 
           const teamData = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'EndAuto');
 
+          const matchCount = teamData.length;
+
           const aggregatedData = teamData.reduce((acc: any, row: any) => {
             acc['AcqAlgaeR'] = (acc['AcqAlgaeR'] || 0) + parseInt(row['AcqAlgaeR'], 10);
             acc['AcqAlgaeF'] = (acc['AcqAlgaeF'] || 0) + parseInt(row['AcqAlgaeF'], 10);
@@ -33,8 +35,8 @@ const AcquireAlgaePerLocation: React.FC<AcquireAlgaePerLocationProps> = ({ chart
           }, {});
 
           const pointsColumnData = [
-            { name: 'Acquire Algae Reef', value: aggregatedData['AcqAlgaeR'] },
-            { name: 'Acquire Algae Floor', value: aggregatedData['AcqAlgaeF'] }
+            { name: 'Acquire Algae Reef', value: parseFloat((aggregatedData['AcqAlgaeR'] / matchCount).toFixed(2)) },
+            { name: 'Acquire Algae Floor', value: parseFloat((aggregatedData['AcqAlgaeF'] / matchCount).toFixed(2)) }
           ];
           
           setPointsData(pointsColumnData);

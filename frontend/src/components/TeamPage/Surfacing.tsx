@@ -1,7 +1,8 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import './CSS/Surfacing.css';
 import { readCSVFile } from '../../utils/readCSV';
+import GraphsInterface from '../Graphs/GraphsInterface';
 
 interface SurfacingProps {
     selectedTeam: string;
@@ -20,6 +21,14 @@ const Surfacing: React.FC<SurfacingProps> = ({ selectedTeam }) => {
     const [averageDZTimes, setAverageDZTimes] = useState<number[]>([]);
     const [teamData, setTeamData] = useState<any[]>([]);
     const [strategyCounts, setStrategyCounts] = useState<{ [key: string]: number }>({});
+
+    const [Chart1, setSelectedChart1] = useState<string>('PointsPerMatch');
+    const [Chart2, setSelectedChart2] = useState<string>('PointsPerMatch');
+    const [Chart3, setSelectedChart3] = useState<string>('PointsPerMatch');
+
+    const chartOptions = [
+        { value: 'PointsPerMatch', label: 'Points Per Match' },
+    ];
 
     useEffect(() => {
         const fetchGlobalData = async () => {
@@ -114,6 +123,18 @@ const Surfacing: React.FC<SurfacingProps> = ({ selectedTeam }) => {
         return `rgb(${red}, ${green}, 0)`;
     };
 
+    const handleChange1 = (event: SelectChangeEvent<string>) => {
+        setSelectedChart1(event.target.value as string);
+    };
+
+    const handleChange2 = (event: SelectChangeEvent<string>) => {
+        setSelectedChart2(event.target.value as string);
+    };
+
+    const handleChange3 = (event: SelectChangeEvent<string>) => {
+        setSelectedChart3(event.target.value as string);
+    };
+
     return (
         <div>
             <TableContainer component={Paper}>
@@ -193,7 +214,7 @@ const Surfacing: React.FC<SurfacingProps> = ({ selectedTeam }) => {
                         <TableRow className="table-row-bordered">
                             <TableCell>Strategy Count</TableCell>
                             {Object.entries(strategyCounts).map(([strategy, count], index) => (
-                                <TableCell key={index} colSpan={Math.ceil(columns.length / Object.entries(strategyCounts).length-1)}>
+                                <TableCell key={index} colSpan={Math.ceil(columns.length / Object.entries(strategyCounts).length - 1)}>
                                     {`${strategy}: ${count}`}
                                 </TableCell>
                             ))}
@@ -201,6 +222,56 @@ const Surfacing: React.FC<SurfacingProps> = ({ selectedTeam }) => {
                     </TableBody>
                 </Table>
             </TableContainer>
+            <div>&nbsp;</div>
+            <FormControl variant="outlined" style={{ marginBottom: '20px', minWidth: 120 }}>
+                <InputLabel id="demo-simple-select-outlined-label">Selected Chart</InputLabel>
+                <Select
+                    labelId="demo-simple-select-outlined-label"
+                    id="demo-simple-select-outlined"
+                    value={Chart1}
+                    onChange={handleChange1}
+                    label="Select Value"
+                >
+                    {chartOptions.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                        </MenuItem>
+                    ))}
+                </Select>
+                <GraphsInterface chart={Chart1} selectedTeam={selectedTeam} />
+            </FormControl>
+            <FormControl variant="outlined" style={{ marginBottom: '20px', minWidth: 120 }}>
+                <InputLabel id="demo-simple-select-outlined-label">Selected Chart</InputLabel>
+                <Select
+                    labelId="demo-simple-select-outlined-label"
+                    id="demo-simple-select-outlined"
+                    value={Chart2}
+                    onChange={handleChange2}
+                    label="Select Value"
+                >
+                    {chartOptions.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                        </MenuItem>
+                    ))}                </Select>
+                <GraphsInterface chart={Chart2} selectedTeam={selectedTeam} />
+            </FormControl>
+            <FormControl variant="outlined" style={{ marginBottom: '20px', minWidth: 120 }}>
+                <InputLabel id="demo-simple-select-outlined-label">Selected Chart</InputLabel>
+                <Select
+                    labelId="demo-simple-select-outlined-label"
+                    id="demo-simple-select-outlined"
+                    value={Chart3}
+                    onChange={handleChange3}
+                    label="Select Value"
+                >
+                    {chartOptions.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                        </MenuItem>
+                    ))}                </Select>
+                <GraphsInterface chart={Chart3} selectedTeam={selectedTeam} />
+            </FormControl>
         </div>
     );
 }
