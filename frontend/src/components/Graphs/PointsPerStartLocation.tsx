@@ -24,16 +24,21 @@ const PointsPerStartLocation: React.FC<PointsPerStartLocationProps> = ({ chart, 
             throw new Error('Parsed data is not an array or is undefined');
           }
 
-          const teamData = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'EndAuto');
+          const endAutoData = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'EndAuto');
+          const endMatchData = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'EndMatch');
 
-          const startingLocPointsData = teamData.reduce((acc: any, row: any) => {
-            const startingLoc = row['Starting_Loc'];
-            const points = parseFloat(row['PointScored']);
-            if (!acc[startingLoc]) {
-              acc[startingLoc] = { totalPoints: 0, count: 0 };
+          const startingLocPointsData = endAutoData.reduce((acc: any, autoRow: any) => {
+            const startingLoc = autoRow['Starting_Loc'];
+            const matchId = autoRow['Match'];
+            const matchRow = endMatchData.find((matchRow: any) => matchRow['Match'] === matchId);
+            if (matchRow) {
+              const points = parseFloat(matchRow['PointScored']);
+              if (!acc[startingLoc]) {
+                acc[startingLoc] = { totalPoints: 0, count: 0 };
+              }
+              acc[startingLoc].totalPoints += points;
+              acc[startingLoc].count += 1;
             }
-            acc[startingLoc].totalPoints += points;
-            acc[startingLoc].count += 1;
             return acc;
           }, {});
 
