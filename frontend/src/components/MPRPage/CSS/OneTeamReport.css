@@ -28,7 +28,7 @@
     align-items: flex-start;
 }
 
-.table-row-bordered td {
+.table-row-bordered2 td{
     padding: 2px; /* Reduce padding */
     font-size: 13px; /* Reduce font size */
 }

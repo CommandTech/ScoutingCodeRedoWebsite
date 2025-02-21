@@ -144,30 +144,30 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
                 <TableContainer component={Paper}>
                     <Table>
                         <TableHead>
-                            <TableRow className="table-row-bordered">
+                            <TableRow className="table-row-bordered2">
                                 {columns.map((column, index) => (
                                     <TableCell key={index}>{column}</TableCell>
                                 ))}
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            <TableRow className="table-row-bordered">
+                            <TableRow className="table-row-bordered2">
                                 <TableCell colSpan={columns.length} align="left" className={cellClass}>
                                     {robotNumber}
                                 </TableCell>
                             </TableRow>
-                            <TableRow className="table-row-bordered">
+                            <TableRow className="table-row-bordered2">
                                 <TableCell colSpan={columns.length} align="center">
                                     Auto
                                 </TableCell>
                             </TableRow>
-                            <TableRow className="table-row-bordered">
+                            <TableRow className="table-row-bordered2">
                                 <TableCell>Starting Location</TableCell>
                                 {startingLocations.map((loc, index) => (
                                     <TableCell key={index}>{loc}</TableCell>
                                 ))}
                             </TableRow>
-                            <TableRow className="table-row-bordered">
+                            <TableRow className="table-row-bordered2">
                                 <TableCell>Leave Location</TableCell>
                                 {leaveLocations.map((loc, index) => (
                                     <TableCell key={index} className={`leave-location-cell ${loc === 'Y' ? 'yes' : 'no'}`}>
@@ -175,7 +175,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
                                     </TableCell>
                                 ))}
                             </TableRow>
-                            <TableRow className="table-row-bordered">
+                            <TableRow className="table-row-bordered2">
                                 <TableCell>Number of Coral</TableCell>
                                 {filteredCoralCounts.map((count, index) => (
                                     <TableCell key={index} style={{ backgroundColor: getBackgroundColor(count, colorValues[0], colorValues[1]) }}>
@@ -183,12 +183,12 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
                                     </TableCell>
                                 ))}
                             </TableRow>
-                            <TableRow className="table-row-bordered" style={{ backgroundColor: hasAcqCoralF ? 'yellow' : 'inherit' }}>
+                            <TableRow className="table-row-bordered2" style={{ backgroundColor: hasAcqCoralF ? 'yellow' : 'inherit' }}>
                                 <TableCell colSpan={columns.length} align="center">
                                     TELEOP
                                 </TableCell>
                             </TableRow>
-                            <TableRow className="table-row-bordered">
+                            <TableRow className="table-row-bordered2">
                                 <TableCell>L4</TableCell>
                                 {delCoralL4Diffs.map((diff, index) => (
                                     <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[2], colorValues[3]) }}>
@@ -196,7 +196,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
                                     </TableCell>
                                 ))}
                             </TableRow>
-                            <TableRow className="table-row-bordered">
+                            <TableRow className="table-row-bordered2">
                                 <TableCell>L3</TableCell>
                                 {delCoralL3Diffs.map((diff, index) => (
                                     <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[4], colorValues[5]) }}>
@@ -204,7 +204,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
                                     </TableCell>
                                 ))}
                             </TableRow>
-                            <TableRow className="table-row-bordered">
+                            <TableRow className="table-row-bordered2">
                                 <TableCell>L2</TableCell>
                                 {delCoralL2Diffs.map((diff, index) => (
                                     <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[6], colorValues[7]) }}>
@@ -212,7 +212,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
                                     </TableCell>
                                 ))}
                             </TableRow>
-                            <TableRow className="table-row-bordered">
+                            <TableRow className="table-row-bordered2">
                                 <TableCell>L1</TableCell>
                                 {delCoralL1Diffs.map((diff, index) => (
                                     <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[8], colorValues[9]) }}>
@@ -220,7 +220,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
                                     </TableCell>
                                 ))}
                             </TableRow>
-                            <TableRow className="table-row-bordered" style={{ borderBottom: '4px solid black' }}>
+                            <TableRow className="table-row-bordered2" style={{ borderBottom: '4px solid black' }}>
                                 <TableCell>Floor/Drop</TableCell>
                                 {delCoralFDiffs.map((diff, index) => (
                                     <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[11], colorValues[10]) }}>
@@ -228,7 +228,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
                                     </TableCell>
                                 ))}
                             </TableRow>
-                            <TableRow className="table-row-bordered">
+                            <TableRow className="table-row-bordered2">
                                 <TableCell>Net</TableCell>
                                 {delAlgaeNDiffs.map((diff, index) => (
                                     <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[12], colorValues[13]) }}>
@@ -236,7 +236,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
                                     </TableCell>
                                 ))}
                             </TableRow>
-                            <TableRow className="table-row-bordered">
+                            <TableRow className="table-row-bordered2">
                                 <TableCell>Processor</TableCell>
                                 {delAlgaePDiffs.map((diff, index) => (
                                     <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[14], colorValues[15]) }}>
@@ -244,7 +244,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
                                     </TableCell>
                                 ))}
                             </TableRow>
-                            <TableRow className="table-row-bordered">
+                            <TableRow className="table-row-bordered2">
                                 <TableCell>Floor/Drop</TableCell>
                                 {delAlgaeFDiffs.map((diff, index) => (
                                     <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[17], colorValues[16]) }}>
@@ -252,18 +252,18 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
                                     </TableCell>
                                 ))}
                             </TableRow>
-                            <TableRow className="table-row-bordered">
+                            <TableRow className="table-row-bordered2">
                                 <TableCell colSpan={columns.length} align="center">
                                     SURFACING
                                 </TableCell>
                             </TableRow>
-                            <TableRow className="table-row-bordered">
+                            <TableRow className="table-row-bordered2">
                                 <TableCell>Climb State</TableCell>
                                 {climbStates.map((state, index) => (
                                     <TableCell key={index}>{state}</TableCell>
                                 ))}
                             </TableRow>
-                            <TableRow className="table-row-bordered">
+                            <TableRow className="table-row-bordered2">
                                 <TableCell>Climb Time</TableCell>
                                 {climbTimes.map((time, index) => {
                                     const state = climbStates[index];
