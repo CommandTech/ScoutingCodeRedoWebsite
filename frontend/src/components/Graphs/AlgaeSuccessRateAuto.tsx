@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 import { readCSVFile } from '../../utils/readCSV';
 
-interface PointsPerMatchAutoProps {
+interface AlgaeSuccessRateAutoProps {
   chart: string;
   selectedTeam: string;
 }
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#A28DFF', '#FF6F61', '#6B8E23', '#FF4500', '#DA70D6', '#32CD32'];
 
-const PointsPerMatchAuto: React.FC<PointsPerMatchAutoProps> = ({ chart, selectedTeam }) => {
+const AlgaeSuccessRateAuto: React.FC<AlgaeSuccessRateAutoProps> = ({ chart, selectedTeam }) => {
   const [pointsData, setPointsData] = useState<any[]>([]);
 
   useEffect(() => {
@@ -26,10 +26,20 @@ const PointsPerMatchAuto: React.FC<PointsPerMatchAutoProps> = ({ chart, selected
 
           const teamData = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'EndAuto');
 
-          const pointsColumnData = teamData.map((row: any, index: number) => ({
-            name: `${index + 1}`,
-            value: parseInt(row['PointScored'], 10)
-          }));
+          const matchCount = teamData.length;
+
+          const aggregatedData = teamData.reduce((acc: any, row: any) => {
+            acc['DelAlgaeP'] = (acc['DelAlgaeP'] || 0) + parseInt(row['DelAlgaeP'], 10);
+            acc['DelAlgaeN'] = (acc['DelAlgaeN'] || 0) + parseInt(row['DelAlgaeN'], 10);
+            acc['DelAlgaeF'] = (acc['DelAlgaeF'] || 0) + parseInt(row['DelAlgaeF'], 10);
+            return acc;
+          }, {});
+
+          const pointsColumnData = [
+            { name: 'Acquire Algae', value: parseFloat(((aggregatedData['DelAlgaeP'] + aggregatedData['DelAlgaeN']) / matchCount).toFixed(2)) },
+            { name: 'Drop', value: parseFloat((aggregatedData['DelAlgaeF'] / matchCount).toFixed(2)) }
+          ];
+          
           setPointsData(pointsColumnData);
         } catch (error) {
           console.error('Error fetching team data:', error);
@@ -63,4 +73,4 @@ const PointsPerMatchAuto: React.FC<PointsPerMatchAutoProps> = ({ chart, selected
   );
 };
 
-export default PointsPerMatchAuto;
+export default AlgaeSuccessRateAuto;

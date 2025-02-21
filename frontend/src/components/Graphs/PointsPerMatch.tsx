@@ -26,8 +26,8 @@ const PointsPerMatch: React.FC<PointsPerMatchProps> = ({ chart, selectedTeam }) 
 
           const teamData = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'EndMatch');
 
-          const pointsColumnData = teamData.map((row: any) => ({
-            name: row['Match'],
+          const pointsColumnData = teamData.map((row: any, index: number) => ({
+            name: `${index + 1}`,
             value: parseInt(row['PointScored'], 10)
           }));
           setPointsData(pointsColumnData);

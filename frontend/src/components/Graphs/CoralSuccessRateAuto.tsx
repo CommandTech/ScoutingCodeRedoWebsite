@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 import { readCSVFile } from '../../utils/readCSV';
 
-interface CoralSuccessRateProps {
+interface CoralSuccessRateAutoProps {
   chart: string;
   selectedTeam: string;
 }
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#A28DFF', '#FF6F61', '#6B8E23', '#FF4500', '#DA70D6', '#32CD32'];
 
-const CoralSuccessRate: React.FC<CoralSuccessRateProps> = ({ chart, selectedTeam }) => {
+const CoralSuccessRateAuto: React.FC<CoralSuccessRateAutoProps> = ({ chart, selectedTeam }) => {
   const [pointsData, setPointsData] = useState<any[]>([]);
 
   useEffect(() => {
@@ -75,4 +75,4 @@ const CoralSuccessRate: React.FC<CoralSuccessRateProps> = ({ chart, selectedTeam
   );
 };
 
-export default CoralSuccessRate;
+export default CoralSuccessRateAuto;

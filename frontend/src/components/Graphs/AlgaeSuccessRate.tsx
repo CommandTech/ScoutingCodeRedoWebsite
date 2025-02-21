@@ -24,11 +24,19 @@ const AlgaeSuccessRate: React.FC<AlgaeSuccessRateProps> = ({ chart, selectedTeam
             throw new Error('Parsed data is not an array or is undefined');
           }
 
-          const teamData = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'EndAuto');
+          const endAutoData = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'EndAuto');
+          const endMatchData = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'EndMatch');
 
-          const matchCount = teamData.length;
+          const matchCount = endAutoData.length;
 
-          const aggregatedData = teamData.reduce((acc: any, row: any) => {
+          const aggregatedEndAutoData = endAutoData.reduce((acc: any, row: any) => {
+            acc['DelAlgaeP'] = (acc['DelAlgaeP'] || 0) + parseInt(row['DelAlgaeP'], 10);
+            acc['DelAlgaeN'] = (acc['DelAlgaeN'] || 0) + parseInt(row['DelAlgaeN'], 10);
+            acc['DelAlgaeF'] = (acc['DelAlgaeF'] || 0) + parseInt(row['DelAlgaeF'], 10);
+            return acc;
+          }, {});
+
+          const aggregatedEndMatchData = endMatchData.reduce((acc: any, row: any) => {
             acc['DelAlgaeP'] = (acc['DelAlgaeP'] || 0) + parseInt(row['DelAlgaeP'], 10);
             acc['DelAlgaeN'] = (acc['DelAlgaeN'] || 0) + parseInt(row['DelAlgaeN'], 10);
             acc['DelAlgaeF'] = (acc['DelAlgaeF'] || 0) + parseInt(row['DelAlgaeF'], 10);
@@ -36,8 +44,8 @@ const AlgaeSuccessRate: React.FC<AlgaeSuccessRateProps> = ({ chart, selectedTeam
           }, {});
 
           const pointsColumnData = [
-            { name: 'Acquire Algae', value: parseFloat(((aggregatedData['DelAlgaeP'] + aggregatedData['DelAlgaeN']) / matchCount).toFixed(2)) },
-            { name: 'Drop', value: parseFloat((aggregatedData['DelAlgaeF'] / matchCount).toFixed(2)) }
+            { name: 'Acquire Algae', value: parseFloat(((aggregatedEndMatchData['DelAlgaeP'] + aggregatedEndMatchData['DelAlgaeN'] - aggregatedEndAutoData['DelAlgaeP'] - aggregatedEndAutoData['DelAlgaeN']) / matchCount).toFixed(2)) },
+            { name: 'Drop', value: parseFloat(((aggregatedEndMatchData['DelAlgaeF'] - aggregatedEndAutoData['DelAlgaeF']) / matchCount).toFixed(2)) }
           ];
           
           setPointsData(pointsColumnData);

@@ -10,8 +10,6 @@ interface TeleopProps {
 
 const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
     const [matchCount, setMatchCount] = useState<number>(0);
-    const [leaveData, setLeaveData] = useState<any[]>([]);
-    const [startingLocData, setStartingLocData] = useState<any[]>([]);
     const [acqCoralSData, setAcqCoralSData] = useState<any[]>([]);
     const [acqCoralFData, setAcqCoralFData] = useState<any[]>([]);
     const [acqAlgaeRData, setAcqAlgaeRData] = useState<any[]>([]);
@@ -28,12 +26,14 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
 
     const [minMaxValues, setMinMaxValues] = useState<any>({});
 
-    const [Chart1, setSelectedChart1] = useState<string>('StartingLocation');
-    const [Chart2, setSelectedChart2] = useState<string>('StartingLocation');
-    const [Chart3, setSelectedChart3] = useState<string>('StartingLocation');
+    const [Chart1, setSelectedChart1] = useState<string>('PointsPerDriverStation');
+    const [Chart2, setSelectedChart2] = useState<string>('PointsPerDriverStation');
+    const [Chart3, setSelectedChart3] = useState<string>('PointsPerDriverStation');
 
     const chartOptions = [
-        { value: 'StartingLocation', label: 'Starting Location' },
+        { value: 'PointsPerDriverStation', label: 'Points Per Driver Station Average' },
+        { value: 'DeliveriesPerDriverStation', label: 'Deliveries Per Driver Station Average' },
+        { value: 'AlgaeSuccessRate', label: 'Algae Success Rate Average' },
     ];
 
     useEffect(() => {
@@ -98,8 +98,6 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                         }).filter((value: number | null) => value !== null);
                     };
 
-                    setLeaveData(calculateDifference('Leave'));
-                    setStartingLocData(calculateDifference('Starting_Loc'));
                     setAcqCoralSData(calculateDifference('AcqCoralS'));
                     setAcqCoralFData(calculateDifference('AcqCoralF'));
                     setAcqAlgaeRData(calculateDifference('AcqAlgaeR'));
