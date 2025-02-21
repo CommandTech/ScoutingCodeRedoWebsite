@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import './CSS/OneTeamReport.css';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { readCSVFile } from '../../utils/readCSV';
+import GraphsInterface from '../Graphs/GraphsInterface';
 
 interface OneTeamReportProps {
     color: string;
     robotNumber: string;
     colorValues: Array<number>;
+    chart: string;
 }
 
-const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, colorValues }) => {
+const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, colorValues, chart }) => {
     const [startingLocations, setStartingLocations] = useState<string[]>([]);
     const [leaveLocations, setLeaveLocations] = useState<string[]>([]);
     const [filteredCoralCounts, setFilteredCoralCounts] = useState<number[]>([]);
@@ -133,168 +135,180 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
 
     return (
         <div className="one-team-report">
-            <TableContainer component={Paper}>
-                <Table>
-                    <TableHead>
-                        <TableRow className="table-row-bordered">
-                            {columns.map((column, index) => (
-                                <TableCell key={index}>{column}</TableCell>
-                            ))}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        <TableRow className="table-row-bordered">
-                            <TableCell colSpan={columns.length} align="left" className={cellClass}>
-                                {robotNumber}
-                            </TableCell>
-                        </TableRow>
-                        <TableRow className="table-row-bordered">
-                            <TableCell colSpan={columns.length} align="center">
-                                Auto
-                            </TableCell>
-                        </TableRow>
-                        <TableRow className="table-row-bordered">
-                            <TableCell>Starting Location</TableCell>
-                            {startingLocations.map((loc, index) => (
-                                <TableCell key={index}>{loc}</TableCell>
-                            ))}
-                        </TableRow>
-                        <TableRow className="table-row-bordered">
-                            <TableCell>Leave Location</TableCell>
-                            {leaveLocations.map((loc, index) => (
-                                <TableCell key={index} className={`leave-location-cell ${loc === 'Y' ? 'yes' : 'no'}`}>
-                                    {loc}
+            <div className="flex-container">
+                {color === 'Red' && (
+                    <FormControl variant="outlined" style={{ marginRight: '100px' }}>
+                        <GraphsInterface chart={chart} selectedTeam={robotNumber} />
+                    </FormControl>
+                )}
+                <TableContainer component={Paper}>
+                    <Table>
+                        <TableHead>
+                            <TableRow className="table-row-bordered">
+                                {columns.map((column, index) => (
+                                    <TableCell key={index}>{column}</TableCell>
+                                ))}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            <TableRow className="table-row-bordered">
+                                <TableCell colSpan={columns.length} align="left" className={cellClass}>
+                                    {robotNumber}
                                 </TableCell>
-                            ))}
-                        </TableRow>
-                        <TableRow className="table-row-bordered">
-                            <TableCell>Number of Coral</TableCell>
-                            {filteredCoralCounts.map((count, index) => (
-                                <TableCell key={index} style={{ backgroundColor: getBackgroundColor(count, colorValues[0], colorValues[1]) }}>
-                                    {count}
+                            </TableRow>
+                            <TableRow className="table-row-bordered">
+                                <TableCell colSpan={columns.length} align="center">
+                                    Auto
                                 </TableCell>
-                            ))}
-                        </TableRow>
-                        <TableRow className="table-row-bordered" style={{ backgroundColor: hasAcqCoralF ? 'yellow' : 'inherit' }}>
-                            <TableCell colSpan={columns.length} align="center">
-                                TELEOP
-                            </TableCell>
-                        </TableRow>
-                        <TableRow className="table-row-bordered">
-                            <TableCell>L4</TableCell>
-                            {delCoralL4Diffs.map((diff, index) => (
-                                <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[2], colorValues[3]) }}>
-                                    {diff}
+                            </TableRow>
+                            <TableRow className="table-row-bordered">
+                                <TableCell>Starting Location</TableCell>
+                                {startingLocations.map((loc, index) => (
+                                    <TableCell key={index}>{loc}</TableCell>
+                                ))}
+                            </TableRow>
+                            <TableRow className="table-row-bordered">
+                                <TableCell>Leave Location</TableCell>
+                                {leaveLocations.map((loc, index) => (
+                                    <TableCell key={index} className={`leave-location-cell ${loc === 'Y' ? 'yes' : 'no'}`}>
+                                        {loc}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                            <TableRow className="table-row-bordered">
+                                <TableCell>Number of Coral</TableCell>
+                                {filteredCoralCounts.map((count, index) => (
+                                    <TableCell key={index} style={{ backgroundColor: getBackgroundColor(count, colorValues[0], colorValues[1]) }}>
+                                        {count}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                            <TableRow className="table-row-bordered" style={{ backgroundColor: hasAcqCoralF ? 'yellow' : 'inherit' }}>
+                                <TableCell colSpan={columns.length} align="center">
+                                    TELEOP
                                 </TableCell>
-                            ))}
-                        </TableRow>
-                        <TableRow className="table-row-bordered">
-                            <TableCell>L3</TableCell>
-                            {delCoralL3Diffs.map((diff, index) => (
-                                <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[4], colorValues[5]) }}>
-                                    {diff}
+                            </TableRow>
+                            <TableRow className="table-row-bordered">
+                                <TableCell>L4</TableCell>
+                                {delCoralL4Diffs.map((diff, index) => (
+                                    <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[2], colorValues[3]) }}>
+                                        {diff}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                            <TableRow className="table-row-bordered">
+                                <TableCell>L3</TableCell>
+                                {delCoralL3Diffs.map((diff, index) => (
+                                    <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[4], colorValues[5]) }}>
+                                        {diff}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                            <TableRow className="table-row-bordered">
+                                <TableCell>L2</TableCell>
+                                {delCoralL2Diffs.map((diff, index) => (
+                                    <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[6], colorValues[7]) }}>
+                                        {diff}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                            <TableRow className="table-row-bordered">
+                                <TableCell>L1</TableCell>
+                                {delCoralL1Diffs.map((diff, index) => (
+                                    <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[8], colorValues[9]) }}>
+                                        {diff}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                            <TableRow className="table-row-bordered" style={{ borderBottom: '4px solid black' }}>
+                                <TableCell>Floor/Drop</TableCell>
+                                {delCoralFDiffs.map((diff, index) => (
+                                    <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[11], colorValues[10]) }}>
+                                        {diff}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                            <TableRow className="table-row-bordered">
+                                <TableCell>Net</TableCell>
+                                {delAlgaeNDiffs.map((diff, index) => (
+                                    <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[12], colorValues[13]) }}>
+                                        {diff}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                            <TableRow className="table-row-bordered">
+                                <TableCell>Processor</TableCell>
+                                {delAlgaePDiffs.map((diff, index) => (
+                                    <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[14], colorValues[15]) }}>
+                                        {diff}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                            <TableRow className="table-row-bordered">
+                                <TableCell>Floor/Drop</TableCell>
+                                {delAlgaeFDiffs.map((diff, index) => (
+                                    <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[17], colorValues[16]) }}>
+                                        {diff}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                            <TableRow className="table-row-bordered">
+                                <TableCell colSpan={columns.length} align="center">
+                                    SURFACING
                                 </TableCell>
-                            ))}
-                        </TableRow>
-                        <TableRow className="table-row-bordered">
-                            <TableCell>L2</TableCell>
-                            {delCoralL2Diffs.map((diff, index) => (
-                                <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[6], colorValues[7]) }}>
-                                    {diff}
-                                </TableCell>
-                            ))}
-                        </TableRow>
-                        <TableRow className="table-row-bordered">
-                            <TableCell>L1</TableCell>
-                            {delCoralL1Diffs.map((diff, index) => (
-                                <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[8], colorValues[9]) }}>
-                                    {diff}
-                                </TableCell>
-                            ))}
-                        </TableRow>
-                        <TableRow className="table-row-bordered" style={{ borderBottom: '4px solid black' }}>
-                            <TableCell>Floor/Drop</TableCell>
-                            {delCoralFDiffs.map((diff, index) => (
-                                <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[11], colorValues[10]) }}>
-                                    {diff}
-                                </TableCell>
-                            ))}
-                        </TableRow>
-                        <TableRow className="table-row-bordered">
-                            <TableCell>Net</TableCell>
-                            {delAlgaeNDiffs.map((diff, index) => (
-                                <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[12], colorValues[13]) }}>
-                                    {diff}
-                                </TableCell>
-                            ))}
-                        </TableRow>
-                        <TableRow className="table-row-bordered">
-                            <TableCell>Processor</TableCell>
-                            {delAlgaePDiffs.map((diff, index) => (
-                                <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[14], colorValues[15]) }}>
-                                    {diff}
-                                </TableCell>
-                            ))}
-                        </TableRow>
-                        <TableRow className="table-row-bordered">
-                            <TableCell>Floor/Drop</TableCell>
-                            {delAlgaeFDiffs.map((diff, index) => (
-                                <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[17], colorValues[16]) }}>
-                                    {diff}
-                                </TableCell>
-                            ))}
-                        </TableRow>
-                        <TableRow className="table-row-bordered">
-                            <TableCell colSpan={columns.length} align="center">
-                                SURFACING
-                            </TableCell>
-                        </TableRow>
-                        <TableRow className="table-row-bordered">
-                            <TableCell>Climb State</TableCell>
-                            {climbStates.map((state, index) => (
-                                <TableCell key={index}>{state}</TableCell>
-                            ))}
-                        </TableRow>
-                        <TableRow className="table-row-bordered">
-                            <TableCell>Climb Time</TableCell>
-                            {climbTimes.map((time, index) => {
-                                const state = climbStates[index];
-                                if (state === 'Deep') {
-                                    return (
-                                        <TableCell key={index} style={{ backgroundColor: getBackgroundColor(time, colorValues[19], colorValues[18]) }}>
-                                            {time}
-                                        </TableCell>
-                                    );
-                                }
-                                if (state === 'Shallow') {
-                                    return (
-                                        <TableCell key={index} style={{ backgroundColor: getBackgroundColor(time, colorValues[21], colorValues[20]) }}>
-                                            {time}
-                                        </TableCell>
-                                    );
-                                }
-                                if (state === 'Park') {
-                                    const backgroundColor = time > 0 ? 'red' : getBackgroundColor(time, colorValues[23], colorValues[22]);
-                                    return (
-                                        <TableCell key={index} style={{ backgroundColor }}>
-                                            {time}
-                                        </TableCell>
-                                    );
-                                }
-                                if (state === 'Elsewhere') {
-                                    const backgroundColor = time > 0 ? 'red' : getBackgroundColor(time, colorValues[25], colorValues[24]);
-                                    return (
-                                        <TableCell key={index} style={{ backgroundColor }}>
-                                            {time}
-                                        </TableCell>
-                                    );
-                                }
-                                return <TableCell key={index}>{time}</TableCell>;
-                            })}
-                        </TableRow>
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                            </TableRow>
+                            <TableRow className="table-row-bordered">
+                                <TableCell>Climb State</TableCell>
+                                {climbStates.map((state, index) => (
+                                    <TableCell key={index}>{state}</TableCell>
+                                ))}
+                            </TableRow>
+                            <TableRow className="table-row-bordered">
+                                <TableCell>Climb Time</TableCell>
+                                {climbTimes.map((time, index) => {
+                                    const state = climbStates[index];
+                                    if (state === 'Deep') {
+                                        return (
+                                            <TableCell key={index} style={{ backgroundColor: getBackgroundColor(time, colorValues[19], colorValues[18]) }}>
+                                                {time}
+                                            </TableCell>
+                                        );
+                                    }
+                                    if (state === 'Shallow') {
+                                        return (
+                                            <TableCell key={index} style={{ backgroundColor: getBackgroundColor(time, colorValues[21], colorValues[20]) }}>
+                                                {time}
+                                            </TableCell>
+                                        );
+                                    }
+                                    if (state === 'Park') {
+                                        const backgroundColor = time > 0 ? 'red' : getBackgroundColor(time, colorValues[23], colorValues[22]);
+                                        return (
+                                            <TableCell key={index} style={{ backgroundColor }}>
+                                                {time}
+                                            </TableCell>
+                                        );
+                                    }
+                                    if (state === 'Elsewhere') {
+                                        const backgroundColor = time > 0 ? 'red' : getBackgroundColor(time, colorValues[25], colorValues[24]);
+                                        return (
+                                            <TableCell key={index} style={{ backgroundColor }}>
+                                                {time}
+                                            </TableCell>
+                                        );
+                                    }
+                                    return <TableCell key={index}>{time}</TableCell>;
+                                })}
+                            </TableRow>
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                {color === 'Blue' && (
+                    <FormControl variant="outlined">
+                        <GraphsInterface chart={chart} selectedTeam={robotNumber} />
+                    </FormControl>
+                )}
+            </div>
         </div>
     );
 };

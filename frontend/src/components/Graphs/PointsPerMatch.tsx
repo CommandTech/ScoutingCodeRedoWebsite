@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 import { readCSVFile } from '../../utils/readCSV';
 
-interface PointsPerStartLocationProps {
+interface PointsPerMatchProps {
   chart: string;
   selectedTeam: string;
 }
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#A28DFF', '#FF6F61', '#6B8E23', '#FF4500', '#DA70D6', '#32CD32'];
 
-const PointsPerStartLocation: React.FC<PointsPerStartLocationProps> = ({ chart, selectedTeam }) => {
-  const [startingLocData, setStartingLocData] = useState<any[]>([]);
+const PointsPerMatch: React.FC<PointsPerMatchProps> = ({ chart, selectedTeam }) => {
+  const [pointsData, setPointsData] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchTeamData = async () => {
@@ -26,23 +26,11 @@ const PointsPerStartLocation: React.FC<PointsPerStartLocationProps> = ({ chart, 
 
           const teamData = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'EndAuto');
 
-          const startingLocPointsData = teamData.reduce((acc: any, row: any) => {
-            const startingLoc = row['Starting_Loc'];
-            const points = parseFloat(row['PointScored']);
-            if (!acc[startingLoc]) {
-              acc[startingLoc] = { totalPoints: 0, count: 0 };
-            }
-            acc[startingLoc].totalPoints += points;
-            acc[startingLoc].count += 1;
-            return acc;
-          }, {});
-
-          const averagePointsData = Object.keys(startingLocPointsData).map((loc) => ({
-            name: loc,
-            value: parseFloat((startingLocPointsData[loc].totalPoints / startingLocPointsData[loc].count).toFixed(2)),
+          const pointsColumnData = teamData.map((row: any) => ({
+            name: row['Match'],
+            value: parseInt(row['PointScored'], 10)
           }));
-
-          setStartingLocData(averagePointsData);
+          setPointsData(pointsColumnData);
         } catch (error) {
           console.error('Error fetching team data:', error);
         }
@@ -56,7 +44,7 @@ const PointsPerStartLocation: React.FC<PointsPerStartLocationProps> = ({ chart, 
     <div>
       <PieChart width={400} height={400}>
         <Pie
-          data={startingLocData}
+          data={pointsData}
           cx={200}
           cy={200}
           labelLine={false}
@@ -64,7 +52,7 @@ const PointsPerStartLocation: React.FC<PointsPerStartLocationProps> = ({ chart, 
           fill="#8884d8"
           dataKey="value"
         >
-          {startingLocData.map((_entry: any, index: number) => (
+          {pointsData.map((_entry: any, index: number) => (
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
@@ -75,4 +63,4 @@ const PointsPerStartLocation: React.FC<PointsPerStartLocationProps> = ({ chart, 
   );
 };
 
-export default PointsPerStartLocation;
+export default PointsPerMatch;

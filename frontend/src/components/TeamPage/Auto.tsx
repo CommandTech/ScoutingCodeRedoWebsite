@@ -34,6 +34,9 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
     const chartOptions = [
         { value: 'StartingLocation', label: 'Starting Location' },
         { value: 'PointsPerStartLocation', label: 'Points Per Start Location' },
+        { value: 'PointsPerMatch', label: 'Points Per Match' },
+        { value: 'AcquireAlgaePerLocation', label: 'Acquire Algae Per Location' },
+        { value: 'DeliveriesNearVsFar', label: 'Deliveries Near Vs Far' }
     ];
 
     useEffect(() => {
@@ -127,7 +130,7 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
         const numericData = data.map(value => parseFloat(value)).filter(value => !isNaN(value));
         const sum = numericData.reduce((acc, value) => acc + value, 0);
         return sum / numericData.length;
-    };
+    };  
 
     const handleChange1 = (event: SelectChangeEvent<string>) => {
         setSelectedChart1(event.target.value as string);
