@@ -35,6 +35,7 @@ const DeliveriesNearVsFar: React.FC<DeliveriesNearVsFarProps> = ({ chart, select
           const matchCount = uniqueMatches.size - 1;
 
           const nearFarData: any = {};
+          let lastDelCoralF = previousDelCoralF;
 
           teamData.forEach((row: any) => {
             const deliveryType = row['Del_Near_Far'];
@@ -44,26 +45,22 @@ const DeliveriesNearVsFar: React.FC<DeliveriesNearVsFarProps> = ({ chart, select
               nearFarData[deliveryType] = 0;
             }
             nearFarData[deliveryType] += 1;
-            if (nearFarData[deliveryType] === 0) {
-              console.log('No data for', deliveryType);
-            }
-            
-            if (previousDelCoralF !== null && currentDelCoralF > previousDelCoralF) {
+
+            if (lastDelCoralF !== null && currentDelCoralF > lastDelCoralF) {
               if (deliveryType === 'Near' || deliveryType === 'Far') {
-                nearFarData[deliveryType] = (nearFarData[deliveryType]) - 1;
+                nearFarData[deliveryType] -= 1;
               }
-              console.log(currentDelCoralF, previousDelCoralF);
             }
-            setPreviousDelCoralF(currentDelCoralF);
+            lastDelCoralF = currentDelCoralF;
           });
 
+          setPreviousDelCoralF(lastDelCoralF);
           const formattedData = Object.keys(nearFarData).map(key => ({
             name: key,
-            value: parseFloat((nearFarData[key] / matchCount).toFixed(2))
+            value: parseFloat(((nearFarData[key] - 1) / matchCount).toFixed(2))
           }));
 
           setPointsData(formattedData);
-
         } catch (error) {
           console.error('Error fetching team data:', error);
         }
@@ -71,7 +68,7 @@ const DeliveriesNearVsFar: React.FC<DeliveriesNearVsFarProps> = ({ chart, select
     };
 
     fetchTeamData();
-  }, [selectedTeam, previousDelCoralF]);
+  }, [selectedTeam]);
 
   return (
     <div>
