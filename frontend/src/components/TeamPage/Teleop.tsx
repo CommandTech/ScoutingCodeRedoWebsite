@@ -37,6 +37,7 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
         { value: 'AcquireAlgaeNearVsFar', label: 'Acquire Algae Near Vs Far Average' },
         { value: 'AcquireCoralNearVsFar', label: 'Acquire Coral Near Vs Far Average' },
         { value: 'DeliveriesNearVsFar', label: 'Deliveries Near Vs Far Average' },
+        { value: 'AcquireAlgaePerLocation', label: 'Acquire Algae Per Location Average' }
     ];
 
     useEffect(() => {
