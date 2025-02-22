@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 import { readCSVFile } from '../../utils/readCSV';
 
-interface PointsPerDriverStationProps {
+interface AcquireCoralNearVsFarProps {
   chart: string;
   selectedTeam: string;
 }
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#A28DFF', '#FF6F61', '#6B8E23', '#FF4500', '#DA70D6', '#32CD32'];
 
-const PointsPerDriverStation: React.FC<PointsPerDriverStationProps> = ({ chart, selectedTeam }) => {
+const AcquireCoralNearVsFar: React.FC<AcquireCoralNearVsFarProps> = ({ chart, selectedTeam }) => {
   const [pointsData, setPointsData] = useState<any[]>([]);
 
   useEffect(() => {
@@ -24,30 +24,26 @@ const PointsPerDriverStation: React.FC<PointsPerDriverStationProps> = ({ chart, 
             throw new Error('Parsed data is not an array or is undefined');
           }
 
-          const teamData = parsedData.filter((row: any) => row['Team'] === selectedTeam);
+          const teamData = parsedData.filter((row: any) =>
+            row['Team'] === selectedTeam &&
+            row['RecordType'] === 'Activities' &&
+            row['Mode'] === 'Teleop'
+          );
 
-          const driverStationPoints: { [key: string]: { totalPoints: number, matchCount: number } } = {};
+          const nearData = teamData.filter((row: any) => row['AcqCoral_Near_Far'] === 'Near').length;
+          const farData = teamData.filter((row: any) => row['AcqCoral_Near_Far'] === 'Far').length;
 
-          teamData.forEach((row: any) => {
-            if (row['RecordType'] === 'EndMatch') {
-              const endAutoRow = teamData.find((r: any) => r['Match'] === row['Match'] && r['DriveSta'] === row['DriveSta'] && r['RecordType'] === 'EndAuto');
-              if (endAutoRow) {
-                const pointsScored = parseInt(row['PointScored'], 10) - parseInt(endAutoRow['PointScored'], 10);
-                if (!driverStationPoints[row['DriveSta']]) {
-                  driverStationPoints[row['DriveSta']] = { totalPoints: 0, matchCount: 0 };
-                }
-                driverStationPoints[row['DriveSta']].totalPoints += pointsScored;
-                driverStationPoints[row['DriveSta']].matchCount += 1;
-              }
-            }
-          });
+          const uniqueMatches = new Set(parsedData.map((row: any) => row['Team'] === selectedTeam && row['Match']));
+          const matchCount = uniqueMatches.size - 1;
 
-          const pointsColumnData = Object.keys(driverStationPoints).map((driveSta) => ({
-            name: driveSta,
-            value: parseFloat((driverStationPoints[driveSta].totalPoints / driverStationPoints[driveSta].matchCount).toFixed(2))
-          }));
+          const averageNear = (nearData / matchCount).toFixed(2);
+          const averageFar = (farData / matchCount).toFixed(2);
 
-          setPointsData(pointsColumnData);
+          setPointsData([
+            { name: 'Near', value: parseFloat(averageNear) },
+            { name: 'Far', value: parseFloat(averageFar) }
+          ]);
+
         } catch (error) {
           console.error('Error fetching team data:', error);
         }
@@ -80,4 +76,4 @@ const PointsPerDriverStation: React.FC<PointsPerDriverStationProps> = ({ chart, 
   );
 };
 
-export default PointsPerDriverStation;
+export default AcquireCoralNearVsFar;

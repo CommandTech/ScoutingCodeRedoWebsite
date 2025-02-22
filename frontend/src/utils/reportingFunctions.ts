@@ -29,7 +29,6 @@ const calculateClimbTimes = (teamNumbers: string[], parsedData: any[]) => {
             }
         });
     });
-    console.log('climbTimes:', climbTimes);
     return climbTimes;
 };
 
