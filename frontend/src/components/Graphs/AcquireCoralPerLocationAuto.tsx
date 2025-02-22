@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 import { readCSVFile } from '../../utils/readCSV';
 
-interface AcquireCoralPerLocationProps {
+interface AcquireCoralPerLocationAutoProps {
   chart: string;
   selectedTeam: string;
 }
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#A28DFF', '#FF6F61', '#6B8E23', '#FF4500', '#DA70D6', '#32CD32'];
 
-const AcquireCoralPerLocation: React.FC<AcquireCoralPerLocationProps> = ({ chart, selectedTeam }) => {
+const AcquireCoralPerLocationAuto: React.FC<AcquireCoralPerLocationAutoProps> = ({ chart, selectedTeam }) => {
   const [pointsData, setPointsData] = useState<any[]>([]);
 
   useEffect(() => {
@@ -72,4 +72,4 @@ const AcquireCoralPerLocation: React.FC<AcquireCoralPerLocationProps> = ({ chart
   );
 };
 
-export default AcquireCoralPerLocation;
+export default AcquireCoralPerLocationAuto;

@@ -5,7 +5,7 @@ import PointsPerMatchAuto from './PointsPerMatchAuto';
 import AcquireAlgaePerLocation from './AcquireAlgaePerLocation';
 import DeliveriesNearVsFarAuto from './DeliveriesNearVsFarAuto';
 import PointsPerMatch from './PointsPerMatch';
-import AcquireCoralPerLocation from './AcquireCoralPerLocation';
+import AcquireCoralPerLocationAuto from './AcquireCoralPerLocationAuto';
 import AlgaeSuccessRateAuto from './AlgaeSuccessRateAuto';
 import CoralSuccessRateAuto from './CoralSuccessRateAuto';
 import PointsPerDriverStation from './PointsPerDriverStation';
@@ -32,8 +32,8 @@ const GraphsInterface: React.FC<GraphsInterfaceProps> = ({ chart, selectedTeam }
                 return <PointsPerMatchAuto chart={chart} selectedTeam={selectedTeam} />;
             case 'AcquireAlgaePerLocation':
                 return <AcquireAlgaePerLocation chart={chart} selectedTeam={selectedTeam} />;
-            case 'AcquireCoralPerLocation':
-                return <AcquireCoralPerLocation chart={chart} selectedTeam={selectedTeam} />;
+            case 'AcquireCoralPerLocationAuto':
+                return <AcquireCoralPerLocationAuto chart={chart} selectedTeam={selectedTeam} />;
             case 'AlgaeSuccessRateAuto':
                 return <AlgaeSuccessRateAuto chart={chart} selectedTeam={selectedTeam} />;
             case 'CoralSuccessRateAuto':
