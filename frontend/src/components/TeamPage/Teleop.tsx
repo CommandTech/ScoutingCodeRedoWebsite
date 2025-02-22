@@ -22,7 +22,6 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
     const [delAlgaePData, setDelAlgaePData] = useState<any[]>([]);
     const [delAlgaeNData, setDelAlgaeNData] = useState<any[]>([]);
     const [delAlgaeFData, setDelAlgaeFData] = useState<any[]>([]);
-    const [disAlgaeData, setDisAlgaeData] = useState<any[]>([]);
 
     const [minMaxValues, setMinMaxValues] = useState<any>({});
 
@@ -34,6 +33,8 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
         { value: 'PointsPerDriverStation', label: 'Points Per Driver Station Average' },
         { value: 'DeliveriesPerDriverStation', label: 'Deliveries Per Driver Station Average' },
         { value: 'AlgaeSuccessRate', label: 'Algae Success Rate Average' },
+        { value: 'CoralSuccessRate', label: 'Coral Success Rate Average' },
+        { value: 'AcquireAlgaeNearVsFar', label: 'Acquire Algae Near Vs Far Average' },
     ];
 
     useEffect(() => {
@@ -110,7 +111,6 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                     setDelAlgaePData(calculateDifference('DelAlgaeP'));
                     setDelAlgaeNData(calculateDifference('DelAlgaeN'));
                     setDelAlgaeFData(calculateDifference('DelAlgaeF'));
-                    setDisAlgaeData(calculateDifference('DisAlgae'));
                 } catch (error) {
                     console.error('Error fetching team data:', error);
                 }

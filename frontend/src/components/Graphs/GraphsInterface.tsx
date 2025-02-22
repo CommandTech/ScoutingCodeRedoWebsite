@@ -3,7 +3,7 @@ import StartingLocation from './StartingLocation';
 import PointsPerStartLocation from './PointsPerStartLocation';
 import PointsPerMatchAuto from './PointsPerMatchAuto';
 import AcquireAlgaePerLocation from './AcquireAlgaePerLocation';
-import DeliveriesNearVsFar from './DeliveriesNearVsFar';
+import DeliveriesNearVsFarAuto from './DeliveriesNearVsFarAuto';
 import PointsPerMatch from './PointsPerMatch';
 import AcquireCoralPerLocation from './AcquireCoralPerLocation';
 import AlgaeSuccessRateAuto from './AlgaeSuccessRateAuto';
@@ -11,6 +11,8 @@ import CoralSuccessRateAuto from './CoralSuccessRateAuto';
 import PointsPerDriverStation from './PointsPerDriverStation';
 import DeliveriesPerDriverStation from './DeliveriesPerDriverStation';
 import AlgaeSuccessRate from './AlgaeSuccessRate';
+import CoralSuccessRate from './CoralSuccessRate';
+import AcquireAlgaeNearVsFar from './AcquireAlgaeNearVsFar';
 
 interface GraphsInterfaceProps {
     chart: string;
@@ -34,8 +36,8 @@ const GraphsInterface: React.FC<GraphsInterfaceProps> = ({ chart, selectedTeam }
                 return <AlgaeSuccessRateAuto chart={chart} selectedTeam={selectedTeam} />;
             case 'CoralSuccessRateAuto':
                 return <CoralSuccessRateAuto chart={chart} selectedTeam={selectedTeam} />;
-            case 'DeliveriesNearVsFar':
-                return <DeliveriesNearVsFar chart={chart} selectedTeam={selectedTeam} />;
+            case 'DeliveriesNearVsFarAuto':
+                return <DeliveriesNearVsFarAuto chart={chart} selectedTeam={selectedTeam} />;
             case 'PointsPerMatch':
                 return <PointsPerMatch chart={chart} selectedTeam={selectedTeam} />;
             case 'PointsPerDriverStation':
@@ -44,6 +46,10 @@ const GraphsInterface: React.FC<GraphsInterfaceProps> = ({ chart, selectedTeam }
                 return <DeliveriesPerDriverStation chart={chart} selectedTeam={selectedTeam} />;
             case 'AlgaeSuccessRate':
                 return <AlgaeSuccessRate chart={chart} selectedTeam={selectedTeam} />;
+            case 'CoralSuccessRate':
+                return <CoralSuccessRate chart={chart} selectedTeam={selectedTeam} />;
+            case 'AcquireAlgaeNearVsFar':
+                return <AcquireAlgaeNearVsFar chart={chart} selectedTeam={selectedTeam} />;
             default:
                 return <div>No Defined Graph</div>;
         }

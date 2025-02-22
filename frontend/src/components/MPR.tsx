@@ -43,7 +43,7 @@ const MPR = () => {
     { value: 'AcquireCoralPerLocation', label: 'Acquire Coral Per Location Average (Auto)' },
     { value: 'AlgaeSuccessRate', label: 'Algae Success Rate Average (Auto)' },
     { value: 'CoralSuccessRate', label: 'Coral Success Rate Average (Auto)' },
-    { value: 'DeliveriesNearVsFar', label: 'Deliveries Near Vs Far (Auto)' },
+    { value: 'DeliveriesNearVsFarAuto', label: 'Deliveries Near Vs Far (Auto)' },
   ];
 
   useEffect(() => {

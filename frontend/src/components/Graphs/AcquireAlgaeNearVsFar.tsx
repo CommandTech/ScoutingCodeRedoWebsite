@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 import { readCSVFile } from '../../utils/readCSV';
 
-interface DeliveriesPerDriverStationProps {
+interface AcquireAlgaeNearVsFarProps {
   chart: string;
   selectedTeam: string;
 }
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#A28DFF', '#FF6F61', '#6B8E23', '#FF4500', '#DA70D6', '#32CD32'];
 
-const DeliveriesPerDriverStation: React.FC<DeliveriesPerDriverStationProps> = ({ chart, selectedTeam }) => {
+const AcquireAlgaeNearVsFar: React.FC<AcquireAlgaeNearVsFarProps> = ({ chart, selectedTeam }) => {
   const [pointsData, setPointsData] = useState<any[]>([]);
 
   useEffect(() => {
@@ -26,34 +26,23 @@ const DeliveriesPerDriverStation: React.FC<DeliveriesPerDriverStationProps> = ({
 
           const teamData = parsedData.filter((row: any) =>
             row['Team'] === selectedTeam &&
-            (row['RecordType'] === 'EndMatch' || row['RecordType'] === 'EndAuto')
+            row['RecordType'] === 'Activities' &&
+            row['Mode'] === 'Teleop'
           );
 
-          const summedData = teamData.reduce((acc: any, row: any) => {
-            const driveSta = row.DriveSta;
-            const sum = ['DelCoralL1', 'DelCoralL2', 'DelCoralL3', 'DelCoralL4', 'DelAlgaeP', 'DelAlgaeN']
-              .reduce((total, key) => total + (parseFloat(row[key]) || 0), 0);
+          const nearData = teamData.filter((row: any) => row['AcqAlgae_Near_Far'] === 'Near').length;
+          const farData = teamData.filter((row: any) => row['AcqAlgae_Near_Far'] === 'Far').length;
 
-            if (!acc[driveSta]) {
-              acc[driveSta] = { name: driveSta, value: 0, count: 0 };
-            }
+          const uniqueMatches = new Set(parsedData.map((row: any) => row['Team'] === selectedTeam && row['Match']));
+          const matchCount = uniqueMatches.size - 1;
 
-            if (row['RecordType'] === 'EndMatch') {
-              acc[driveSta].value += sum;
-              acc[driveSta].count += 1;
-            } else if (row['RecordType'] === 'EndAuto') {
-              acc[driveSta].value -= sum;
-            }
+          const averageNear = (nearData / matchCount).toFixed(2);
+          const averageFar = (farData / matchCount).toFixed(2);
 
-            return acc;
-          }, {});
-
-          const averagedData = Object.values(summedData).map((item: any) => ({
-            name: item.name,
-            value: item.value / item.count
-          }));
-
-          setPointsData(averagedData);
+          setPointsData([
+            { name: 'Near', value: parseFloat(averageNear) },
+            { name: 'Far', value: parseFloat(averageFar) }
+          ]);
 
         } catch (error) {
           console.error('Error fetching team data:', error);
@@ -87,4 +76,4 @@ const DeliveriesPerDriverStation: React.FC<DeliveriesPerDriverStationProps> = ({
   );
 };
 
-export default DeliveriesPerDriverStation;
+export default AcquireAlgaeNearVsFar;

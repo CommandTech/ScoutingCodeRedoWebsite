@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 import { readCSVFile } from '../../utils/readCSV';
 
-interface DeliveriesNearVsFarProps {
+interface DeliveriesNearVsFarAutoProps {
   chart: string;
   selectedTeam: string;
 }
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#A28DFF', '#FF6F61', '#6B8E23', '#FF4500', '#DA70D6', '#32CD32'];
 
-const DeliveriesNearVsFar: React.FC<DeliveriesNearVsFarProps> = ({ chart, selectedTeam }) => {
+const DeliveriesNearVsFarAuto: React.FC<DeliveriesNearVsFarAutoProps> = ({ chart, selectedTeam }) => {
   const [pointsData, setPointsData] = useState<any[]>([]);
 
   useEffect(() => {
@@ -24,13 +24,15 @@ const DeliveriesNearVsFar: React.FC<DeliveriesNearVsFarProps> = ({ chart, select
             throw new Error('Parsed data is not an array or is undefined');
           }
 
-          const teamData = parsedData.filter((row: any) => 
-            row['Team'] === selectedTeam && 
-            row['RecordType'] === 'Activities' && 
+          const teamData = parsedData.filter((row: any) =>
+            row['Team'] === selectedTeam &&
+            row['RecordType'] === 'Activities' &&
             row['Mode'] === 'Auto'
           );
 
-          const matchCount = teamData.length;
+          const uniqueMatches = new Set(parsedData.map((row: any) => row['Team'] === selectedTeam && row['Match']));
+          const matchCount = uniqueMatches.size - 1;
+
           const nearDeliveries = teamData.filter((row: any) => row['Del_Near_Far'] === 'Near').length;
           const farDeliveries = teamData.filter((row: any) => row['Del_Near_Far'] === 'Far').length;
 
@@ -75,4 +77,4 @@ const DeliveriesNearVsFar: React.FC<DeliveriesNearVsFarProps> = ({ chart, select
   );
 };
 
-export default DeliveriesNearVsFar;
+export default DeliveriesNearVsFarAuto;

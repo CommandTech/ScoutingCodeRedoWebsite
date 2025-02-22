@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 import { readCSVFile } from '../../utils/readCSV';
 
-interface AlgaeSuccessRateProps {
+interface CoralSuccessRateProps {
   chart: string;
   selectedTeam: string;
 }
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#A28DFF', '#FF6F61', '#6B8E23', '#FF4500', '#DA70D6', '#32CD32'];
 
-const AlgaeSuccessRate: React.FC<AlgaeSuccessRateProps> = ({ chart, selectedTeam }) => {
+const CoralSuccessRate: React.FC<CoralSuccessRateProps> = ({ chart, selectedTeam }) => {
   const [pointsData, setPointsData] = useState<any[]>([]);
 
   useEffect(() => {
@@ -30,24 +30,29 @@ const AlgaeSuccessRate: React.FC<AlgaeSuccessRateProps> = ({ chart, selectedTeam
           const matchCount = endMatchData.length;
 
           const aggregatedEndAutoData = endAutoData.reduce((acc: any, row: any) => {
-            acc['DelAlgaeP'] = (acc['DelAlgaeP'] || 0) + parseInt(row['DelAlgaeP'], 10);
-            acc['DelAlgaeN'] = (acc['DelAlgaeN'] || 0) + parseInt(row['DelAlgaeN'], 10);
-            acc['DelAlgaeF'] = (acc['DelAlgaeF'] || 0) + parseInt(row['DelAlgaeF'], 10);
+            acc['DelCoralL1'] = (acc['DelCoralL1'] || 0) + parseInt(row['DelCoralL1'], 10);
+            acc['DelCoralL2'] = (acc['DelCoralL2'] || 0) + parseInt(row['DelCoralL2'], 10);
+            acc['DelCoralL3'] = (acc['DelCoralL3'] || 0) + parseInt(row['DelCoralL3'], 10);
+            acc['DelCoralL4'] = (acc['DelCoralL4'] || 0) + parseInt(row['DelCoralL4'], 10);
+            acc['DelCoralF'] = (acc['DelCoralF'] || 0) + parseInt(row['DelCoralF'], 10);
             return acc;
           }, {});
 
           const aggregatedEndMatchData = endMatchData.reduce((acc: any, row: any) => {
-            acc['DelAlgaeP'] = (acc['DelAlgaeP'] || 0) + parseInt(row['DelAlgaeP'], 10);
-            acc['DelAlgaeN'] = (acc['DelAlgaeN'] || 0) + parseInt(row['DelAlgaeN'], 10);
-            acc['DelAlgaeF'] = (acc['DelAlgaeF'] || 0) + parseInt(row['DelAlgaeF'], 10);
+            acc['DelCoralL1'] = (acc['DelCoralL1'] || 0) + parseInt(row['DelCoralL1'], 10);
+            acc['DelCoralL2'] = (acc['DelCoralL2'] || 0) + parseInt(row['DelCoralL2'], 10);
+            acc['DelCoralL3'] = (acc['DelCoralL3'] || 0) + parseInt(row['DelCoralL3'], 10);
+            acc['DelCoralL4'] = (acc['DelCoralL4'] || 0) + parseInt(row['DelCoralL4'], 10);
+            acc['DelCoralF'] = (acc['DelCoralF'] || 0) + parseInt(row['DelCoralF'], 10);
             return acc;
           }, {});
 
           const pointsColumnData = [
-            { name: 'Acquire Algae', value: parseFloat(((aggregatedEndMatchData['DelAlgaeP'] + aggregatedEndMatchData['DelAlgaeN'] - aggregatedEndAutoData['DelAlgaeP'] - aggregatedEndAutoData['DelAlgaeN']) / matchCount).toFixed(2)) },
-            { name: 'Drop', value: parseFloat(((aggregatedEndMatchData['DelAlgaeF'] - aggregatedEndAutoData['DelAlgaeF']) / matchCount).toFixed(2)) }
+            { name: 'Acquire Algae', value: parseFloat(((aggregatedEndMatchData['DelCoralL1'] + aggregatedEndMatchData['DelCoralL2'] + aggregatedEndMatchData['DelCoralL3'] + aggregatedEndMatchData['DelCoralL4'] 
+              - aggregatedEndAutoData['DelCoralL1'] - aggregatedEndAutoData['DelCoralL2'] - aggregatedEndAutoData['DelCoralL3'] - aggregatedEndAutoData['DelCoralL4']) / matchCount).toFixed(2)) },
+            { name: 'Drop', value: parseFloat(((aggregatedEndMatchData['DelCoralF'] - aggregatedEndAutoData['DelCoralF']) / matchCount).toFixed(2)) }
           ];
-          
+
           setPointsData(pointsColumnData);
         } catch (error) {
           console.error('Error fetching team data:', error);
@@ -81,4 +86,4 @@ const AlgaeSuccessRate: React.FC<AlgaeSuccessRateProps> = ({ chart, selectedTeam
   );
 };
 
-export default AlgaeSuccessRate;
+export default CoralSuccessRate;

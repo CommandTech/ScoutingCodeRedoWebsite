@@ -40,6 +40,7 @@ const PointsPerDriverStation: React.FC<PointsPerDriverStationProps> = ({ chart, 
                 driverStationPoints[row['DriveSta']].matchCount += 1;
               }
             }
+            console.log(driverStationPoints);
           });
 
           const pointsColumnData = Object.keys(driverStationPoints).map((driveSta) => ({
