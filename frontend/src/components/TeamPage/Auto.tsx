@@ -35,7 +35,7 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
         { value: 'StartingLocation', label: 'Starting Location' },
         { value: 'PointsPerStartLocation', label: 'Points Per Start Location' },
         { value: 'PointsPerMatchAuto', label: 'Points Per Match' },
-        { value: 'AcquireAlgaePerLocation', label: 'Acquire Algae Per Location Average' },
+        { value: 'AcquireAlgaePerLocationAuto', label: 'Acquire Algae Per Location Average' },
         { value: 'AcquireCoralPerLocationAuto', label: 'Acquire Coral Per Location Average' },
         { value: 'AlgaeSuccessRateAuto', label: 'Algae Success Rate Average' },
         { value: 'CoralSuccessRateAuto', label: 'Coral Success Rate Average' },
