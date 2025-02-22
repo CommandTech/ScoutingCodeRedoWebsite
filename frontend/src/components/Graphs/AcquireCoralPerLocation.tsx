@@ -35,8 +35,8 @@ const AcquireCoralPerLocation: React.FC<AcquireCoralPerLocationProps> = ({ chart
           }, {});
 
           const pointsColumnData = [
-            { name: 'Acquire Coral Station', value: parseFloat((aggregatedData['AcqCoralS'] / matchCount).toFixed(2)) },
-            { name: 'Acquire Coral Floor', value: parseFloat((aggregatedData['AcqCoralF'] / matchCount).toFixed(2)) }
+            { name: 'Station', value: parseFloat((aggregatedData['AcqCoralS'] / matchCount).toFixed(2)) },
+            { name: 'Floor', value: parseFloat((aggregatedData['AcqCoralF'] / matchCount).toFixed(2)) }
           ];
           
           setPointsData(pointsColumnData);

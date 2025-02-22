@@ -35,8 +35,8 @@ const AcquireAlgaePerLocation: React.FC<AcquireAlgaePerLocationProps> = ({ chart
           }, {});
 
           const pointsColumnData = [
-            { name: 'Acquire Algae Reef', value: parseFloat((aggregatedData['AcqAlgaeR'] / matchCount).toFixed(2)) },
-            { name: 'Acquire Algae Floor', value: parseFloat((aggregatedData['AcqAlgaeF'] / matchCount).toFixed(2)) }
+            { name: 'Reef', value: parseFloat((aggregatedData['AcqAlgaeR'] / matchCount).toFixed(2)) },
+            { name: 'Floor', value: parseFloat((aggregatedData['AcqAlgaeF'] / matchCount).toFixed(2)) }
           ];
           
           setPointsData(pointsColumnData);
