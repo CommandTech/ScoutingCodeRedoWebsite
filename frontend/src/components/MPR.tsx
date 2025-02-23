@@ -30,20 +30,28 @@ const MPR = () => {
     maxAlgaeFDifference: 0,
     minAlgaeFDifference: 0,
   });
-  const [climbTimes, setClimbTimes] = useState<{ [key: string]: { min: number, max: number } }>({});
   const [colorArray, setColorArray] = useState<number[]>([]);
 
   const [Chart1, setSelectedChart1] = useState<string>('StartingLocation');
 
   const chartOptions = [
     { value: 'StartingLocation', label: 'Starting Location (Auto)' },
-    { value: 'PointsPerStartLocation', label: 'Points Per Start Location (Auto)' },
-    { value: 'PointsPerMatchAuto', label: 'Points Per Match (Auto)' },
-    { value: 'AcquireAlgaePerLocation', label: 'Acquire Algae Per Location Average (Auto)' },
-    { value: 'AcquireCoralPerLocation', label: 'Acquire Coral Per Location Average (Auto)' },
-    { value: 'AlgaeSuccessRate', label: 'Algae Success Rate Average (Auto)' },
-    { value: 'CoralSuccessRate', label: 'Coral Success Rate Average (Auto)' },
-    { value: 'DeliveriesNearVsFarAuto', label: 'Deliveries Near Vs Far (Auto)' },
+        { value: 'PointsPerStartLocation', label: 'Points Per Start Location (Auto)' },
+        { value: 'PointsPerMatchAuto', label: 'Points Per Match (Auto)' },
+        { value: 'AcquireAlgaePerLocationAuto', label: 'Acquire Algae Per Location Average (Auto)' },
+        { value: 'AcquireCoralPerLocationAuto', label: 'Acquire Coral Per Location Average (Auto)' },
+        { value: 'AlgaeSuccessRateAuto', label: 'Algae Success Rate Average (Auto)' },
+        { value: 'CoralSuccessRateAuto', label: 'Coral Success Rate Average (Auto)' },
+        { value: 'DeliveriesNearVsFarAuto', label: 'Deliveries Near Vs Far (Auto)' },
+        { value: 'PointsPerDriverStation', label: 'Points Per Driver Station Average (Teleop)' },
+        { value: 'DeliveriesPerDriverStation', label: 'Deliveries Per Driver Station Average (Teleop)' },
+        { value: 'AlgaeSuccessRate', label: 'Algae Success Rate Average (Teleop)' },
+        { value: 'CoralSuccessRate', label: 'Coral Success Rate Average (Teleop)' },
+        { value: 'AcquireAlgaeNearVsFar', label: 'Acquire Algae Near Vs Far Average (Teleop)' },
+        { value: 'AcquireCoralNearVsFar', label: 'Acquire Coral Near Vs Far Average (Teleop)' },
+        { value: 'DeliveriesNearVsFar', label: 'Deliveries Near Vs Far Average (Teleop)' },
+        { value: 'AcquireAlgaePerLocation', label: 'Acquire Algae Per Location Average (Teleop)' },
+        { value: 'AcquireCoralPerLocation', label: 'Acquire Coral Per Location Average (Teleop)' },
   ];
 
   useEffect(() => {
@@ -156,7 +164,6 @@ const MPR = () => {
         });
 
         const climbTimes = calculateClimbTimes(teamNumbers, parsedData);
-        setClimbTimes(climbTimes);
 
         setColorArray([maxCoralCount, minCoralCount, maxCoralL4Difference, minCoralL4Difference, maxCoralL3Difference, minCoralL3Difference,
           maxCoralL2Difference, minCoralL2Difference, maxCoralL1Difference, minCoralL1Difference, maxCoralFDifference, minCoralFDifference, maxAlgaeNDifference, minAlgaeNDifference,
