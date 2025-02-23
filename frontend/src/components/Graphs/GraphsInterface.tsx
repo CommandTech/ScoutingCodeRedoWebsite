@@ -19,6 +19,8 @@ import AcquireAlgaePerLocation from './AcquireAlgaePerLocation';
 import AcquireCoralPerLocation from './AcquireCoralPerLocation';
 import SurfacingPointsPerMatch from './SurfacingPointsPerMatch';
 import CageAttempt from './CageAttempt';
+import EndState from './EndState';
+import ClimbSuccess from './ClimbSuccess';
 
 interface GraphsInterfaceProps {
     chart: string;
@@ -68,6 +70,10 @@ const GraphsInterface: React.FC<GraphsInterfaceProps> = ({ chart, selectedTeam }
                 return <SurfacingPointsPerMatch chart={chart} selectedTeam={selectedTeam} />;
             case 'CageAttempt':
                 return <CageAttempt chart={chart} selectedTeam={selectedTeam} />;
+            case 'EndState':
+                return <EndState chart={chart} selectedTeam={selectedTeam} />;
+            case 'ClimbSuccess':
+                return <ClimbSuccess chart={chart} selectedTeam={selectedTeam} />;
             default:
                 return <div>No Defined Graph</div>;
         }

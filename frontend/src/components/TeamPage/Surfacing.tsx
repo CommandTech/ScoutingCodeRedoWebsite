@@ -30,6 +30,8 @@ const Surfacing: React.FC<SurfacingProps> = ({ selectedTeam }) => {
         { value: 'PointsPerMatch', label: 'Points Per Match' },
         { value: 'SurfacingPointsPerMatch', label: 'Surfacing Points Per Match' },
         { value: 'CageAttempt', label: 'Cage Attempt' },
+        { value: 'EndState', label: 'End State' },
+        { value: 'ClimbSuccess', label: 'Climb Success' }
     ];
 
     useEffect(() => {
