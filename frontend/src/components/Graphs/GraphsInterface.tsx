@@ -17,6 +17,7 @@ import AcquireCoralNearVsFar from './AcquireCoralNearVsFar';
 import DeliveriesNearVsFar from './DeliveriesNearVsFar';
 import AcquireAlgaePerLocation from './AcquireAlgaePerLocation';
 import AcquireCoralPerLocation from './AcquireCoralPerLocation';
+import SurfacingPointsPerMatch from './SurfacingPointsPerMatch';
 
 interface GraphsInterfaceProps {
     chart: string;
@@ -62,6 +63,8 @@ const GraphsInterface: React.FC<GraphsInterfaceProps> = ({ chart, selectedTeam }
                 return <AcquireAlgaePerLocation chart={chart} selectedTeam={selectedTeam} />;
             case 'AcquireCoralPerLocation':
                 return <AcquireCoralPerLocation chart={chart} selectedTeam={selectedTeam} />;
+            case 'SurfacingPointsPerMatch':
+                return <SurfacingPointsPerMatch chart={chart} selectedTeam={selectedTeam} />;
             default:
                 return <div>No Defined Graph</div>;
         }

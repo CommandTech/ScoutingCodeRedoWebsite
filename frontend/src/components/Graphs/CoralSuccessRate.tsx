@@ -7,7 +7,7 @@ interface CoralSuccessRateProps {
   selectedTeam: string;
 }
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#A28DFF', '#FF6F61', '#6B8E23', '#FF4500', '#DA70D6', '#32CD32'];
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#A28DFF', '#FF6F61', '#6B8E23', '#FF4500', '#DA70D6', '#32CD32', '#FFD700', '#8A2BE2', '#DC143C', '#00CED1', '#FF1493'];
 
 const CoralSuccessRate: React.FC<CoralSuccessRateProps> = ({ chart, selectedTeam }) => {
   const [pointsData, setPointsData] = useState<any[]>([]);

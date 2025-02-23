@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 import { readCSVFile } from '../../utils/readCSV';
 
-interface AcquireAlgaePerLocationProps {
+interface SurfacingPointsPerMatchProps {
   chart: string;
   selectedTeam: string;
 }
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#A28DFF', '#FF6F61', '#6B8E23', '#FF4500', '#DA70D6', '#32CD32', '#FFD700', '#8A2BE2', '#DC143C', '#00CED1', '#FF1493'];
 
-const AcquireAlgaePerLocation: React.FC<AcquireAlgaePerLocationProps> = ({ chart, selectedTeam }) => {
+const SurfacingPointsPerMatch: React.FC<SurfacingPointsPerMatchProps> = ({ chart, selectedTeam }) => {
   const [pointsData, setPointsData] = useState<any[]>([]);
 
   useEffect(() => {
@@ -24,29 +24,28 @@ const AcquireAlgaePerLocation: React.FC<AcquireAlgaePerLocationProps> = ({ chart
             throw new Error('Parsed data is not an array or is undefined');
           }
 
-          const teamDataAuto = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'EndAuto');
           const teamData = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'EndMatch');
 
-          const matchCount = teamData.length;
+          const SurfacingPoints = teamData.map((row: any) => {
+            switch (row['EndState']) {
+              case 'Deep':
+                return 12;
+              case 'Shallow':
+                return 6;
+              case 'Park':
+                return 2;
+              default:
+                return 0;
+            }
+          });
 
-          const aggregatedDataAuto = teamDataAuto.reduce((acc: any, row: any) => {
-            acc['AcqAlgaeR'] = (acc['AcqAlgaeR'] || 0) + parseInt(row['AcqAlgaeR'], 10);
-            acc['AcqAlgaeF'] = (acc['AcqAlgaeF'] || 0) + parseInt(row['AcqAlgaeF'], 10);
-            return acc;
-          }, {});
+          const pointsData = SurfacingPoints.map((points: number, index: number) => ({
+            name: `${index + 1}`,
+            value: points,
+          }));
 
-          const aggregatedData = teamData.reduce((acc: any, row: any) => {
-            acc['AcqAlgaeR'] = (acc['AcqAlgaeR'] || 0) + parseInt(row['AcqAlgaeR'], 10);
-            acc['AcqAlgaeF'] = (acc['AcqAlgaeF'] || 0) + parseInt(row['AcqAlgaeF'], 10);
-            return acc;
-          }, {});
+          setPointsData(pointsData);
 
-          const pointsColumnData = [
-            { name: 'Reef', value: parseFloat(((aggregatedData['AcqAlgaeR'] - aggregatedDataAuto['AcqAlgaeR']) / matchCount).toFixed(2)) },
-            { name: 'Floor', value: parseFloat(((aggregatedData['AcqAlgaeF'] - aggregatedDataAuto['AcqAlgaeF']) / matchCount).toFixed(2)) }
-          ];
-          
-          setPointsData(pointsColumnData);
         } catch (error) {
           console.error('Error fetching team data:', error);
         }
@@ -79,4 +78,4 @@ const AcquireAlgaePerLocation: React.FC<AcquireAlgaePerLocationProps> = ({ chart
   );
 };
 
-export default AcquireAlgaePerLocation;
+export default SurfacingPointsPerMatch;
