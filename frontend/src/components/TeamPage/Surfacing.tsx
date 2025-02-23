@@ -29,6 +29,7 @@ const Surfacing: React.FC<SurfacingProps> = ({ selectedTeam }) => {
     const chartOptions = [
         { value: 'PointsPerMatch', label: 'Points Per Match' },
         { value: 'SurfacingPointsPerMatch', label: 'Surfacing Points Per Match' },
+        { value: 'CageAttempt', label: 'Cage Attempt' },
     ];
 
     useEffect(() => {
