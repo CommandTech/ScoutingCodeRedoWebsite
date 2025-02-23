@@ -30,7 +30,7 @@ const ClimbSuccess: React.FC<ClimbSuccessProps> = ({ chart, selectedTeam }) => {
           let failCount = 0;
 
           teamData.forEach((row: any) => {
-            if (row['CageAttept'] === 'Y') {
+            if (row['CageAttempt'] === 'Y') {
               if (row['EndState'] === 'Deep' || row['EndState'] === 'Shallow') {
                 successCount++;
               } else {

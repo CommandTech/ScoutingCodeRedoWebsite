@@ -26,8 +26,8 @@ const CageAttempt: React.FC<CageAttemptProps> = ({ chart, selectedTeam }) => {
 
           const teamData = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'EndMatch');
           
-          const yesCount = teamData.filter((row: any) => row['CageAttept'] === 'Y').length;
-          const noCount = teamData.filter((row: any) => row['CageAttept'] === 'N').length;
+          const yesCount = teamData.filter((row: any) => row['CageAttempt'] === 'Y').length;
+          const noCount = teamData.filter((row: any) => row['CageAttempt'] === 'N').length;
 
           setPointsData([
             { name: 'Yes', value: yesCount },
