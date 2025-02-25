@@ -15,6 +15,9 @@ app.use(cors()); // Enable CORS for all routes
 
 app.use(express.static('uploads'));
 
+// Serve static files from the frontend build directory
+app.use(express.static(path.join(__dirname, '../frontend/build')));
+
 // Read configuration
 const config = ini.parse(fs.readFileSync('../config.ini', 'utf-8'));
 const serverUrl = new URL(config.SERVER_IP.ServerIP);
@@ -90,6 +93,11 @@ app.post('/upload', upload.single('file'), (req, res) => {
 
 app.get('/upload', (req, res) => {
   res.send('Upload endpoint');
+});
+
+// Serve the frontend application
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
 });
 
 // Watch the uploads directory for new files

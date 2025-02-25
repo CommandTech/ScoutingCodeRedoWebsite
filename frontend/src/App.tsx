@@ -30,6 +30,9 @@ function App() {
     setValue(newValue);
   };
 
+  console.log('[App] Current Path:', currentPath);
+  console.log('[App] Current Index:', currentIndex);
+
   return (
     <div className="App">
       <header className="App-header">
@@ -44,7 +47,7 @@ function App() {
       </header>
       <Routes>
         <Route path="/" element={<Team />} />
-        <Route path="/team" element={<Team />} />
+        <Route path="/Team" element={<Team />} />
         <Route path="/TBA" element={<TBAMain />} />
         <Route path="/TBA/:eventCode/:matchType/:matchNumber" element={<Match />} />
         <Route path="/TBA/:eventCode" element={<Schedule />} />
