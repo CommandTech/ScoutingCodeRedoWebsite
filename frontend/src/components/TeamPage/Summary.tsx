@@ -199,13 +199,6 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
 
   const columns = ['Matches:', ...Array.from({ length: matchCount }, (_, i) => `Match ${i + 1}`), 'Average'];
 
-  const getBackgroundColor = (value: number, max: number, min: number) => {
-    const ratio = (value - min) / (max - min);
-    const red = Math.round(255 * (1 - ratio));
-    const green = Math.round(255 * ratio);
-    return `rgb(${red}, ${green}, 0)`;
-  };
-
   const calculateAverage = (data: any[]): number => {
     const numericData = data.map(value => parseFloat(value)).filter(value => !isNaN(value));
     const sum = numericData.reduce((acc, value) => acc + value, 0);
@@ -228,24 +221,11 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
             <TableRow className="table-row-bordered">
               <TableCell className="fixed-width">Points Scored</TableCell>
               {pointScoredData.map((point, index) => (
-                <TableCell
-                  key={index}
-                  style={{
-                    backgroundColor: minMaxValues['PointScored']
-                      ? getBackgroundColor(point, minMaxValues['PointScored'].max, minMaxValues['PointScored'].min)
-                      : 'transparent'
-                  }}
-                >
+                <TableCell key={index}>
                   {isNaN(point) ? 'NaN' : point}
                 </TableCell>
               ))}
-              <TableCell
-                style={{
-                  backgroundColor: minMaxValues['PointScored']
-                    ? getBackgroundColor(calculateAverage(pointScoredData), minMaxAverages.max, minMaxAverages.min)
-                    : 'transparent'
-                }}
-              >
+              <TableCell>
                 {isNaN(calculateAverage(pointScoredData)) ? 'NaN' : calculateAverage(pointScoredData)}
               </TableCell>
             </TableRow>
@@ -267,47 +247,62 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
             <TableRow className="table-row-bordered">
               <TableCell className="fixed-width">Average Points Scored</TableCell>
               {driveStaValues.map((value, index) => (
-                <TableCell
-                  key={index}
-                  style={{
-                    backgroundColor: minMaxValues['PointScored']
-                      ? getBackgroundColor(driveStaAverages[value], minMaxValues['PointScored'].max, minMaxValues['PointScored'].min)
-                      : 'transparent'
-                  }}
-                >
+                <TableCell key={index}>
                   {isNaN(driveStaAverages[value]) ? 'NaN' : driveStaAverages[value]?.toFixed(2)}
                 </TableCell>
               ))}
             </TableRow>
             <TableRow className="table-row-bordered">
               <TableCell className="fixed-width">Average Coral Scored</TableCell>
-              {driveStaValues.map((value, index) => (
-                <TableCell
-                  key={index}
-                  style={{
-                    backgroundColor: minMaxValues['CoralSum']
-                      ? getBackgroundColor(driveStaCoralAverages[value], minMaxValues['CoralSum'].max, minMaxValues['CoralSum'].min)
-                      : 'transparent'
-                  }}
-                >
-                  {isNaN(driveStaCoralAverages[value]) ? 'NaN' : driveStaCoralAverages[value]?.toFixed(2)}
-                </TableCell>
-              ))}
+              {driveStaValues.map((value, index) => {
+                const numericValue = parseFloat(driveStaCoralAverages[value].toFixed(2));
+                let cellClass = '';
+                let displayValue = numericValue.toString();
+                if (isNaN(numericValue)) {
+                  displayValue = 'NaN';
+                } else if (numericValue == 0) {
+                  cellClass = 'summary black';
+                } else if (numericValue >= 1 && numericValue <= 3) {
+                  cellClass = 'summary red';
+                } else if (numericValue >= 4 && numericValue <= 7) {
+                  cellClass = 'summary yellow';
+                } else if (numericValue >= 8 && numericValue <= 12) {
+                  cellClass = 'summary green';
+                } else if (numericValue >= 13) {
+                  cellClass = 'summary blue';
+                }
+                return (
+                  <TableCell key={index} className={cellClass}>
+                    {displayValue}
+                  </TableCell>
+                );
+              })}
             </TableRow>
             <TableRow className="table-row-bordered">
               <TableCell className="fixed-width">Average Algae Scored</TableCell>
-              {driveStaValues.map((value, index) => (
-                <TableCell
-                  key={index}
-                  style={{
-                    backgroundColor: minMaxValues['AlgaeSum']
-                      ? getBackgroundColor(driveStaAlgaeAverages[value], minMaxValues['AlgaeSum'].max, minMaxValues['AlgaeSum'].min)
-                      : 'transparent'
-                  }}
-                >
-                  {isNaN(driveStaAlgaeAverages[value]) ? 'NaN' : driveStaAlgaeAverages[value]?.toFixed(2)}
-                </TableCell>
-              ))}
+              {driveStaValues.map((value, index) => {
+                const numericValue = parseFloat(driveStaAlgaeAverages[value].toFixed(2));
+                let cellClass = '';
+                let displayValue = numericValue.toString();
+                if (isNaN(numericValue)) {
+                  displayValue = 'NaN';
+                } else if (numericValue == 0) {
+                  cellClass = 'summary black';
+                } else if (numericValue >= 1 && numericValue <= 2) {
+                  cellClass = 'summary red';
+                } else if (numericValue >= 3 && numericValue <= 4) {
+                  cellClass = 'summary yellow';
+                } else if (numericValue >= 5 && numericValue <= 6) {
+                  cellClass = 'summary green';
+                } else if (numericValue >= 7) {
+                  cellClass = 'summary blue';
+                }
+                return (
+                  <TableCell key={index} className={cellClass}>
+                    {displayValue}
+                  </TableCell>
+                );
+              })}
             </TableRow>
           </TableBody>
         </Table>
