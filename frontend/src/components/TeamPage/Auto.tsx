@@ -25,7 +25,6 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
     const [delAlgaeNData, setDelAlgaeNData] = useState<any[]>([]);
     const [delAlgaeFData, setDelAlgaeFData] = useState<any[]>([]);
     const [disAlgaeData, setDisAlgaeData] = useState<any[]>([]);
-    const [minMaxValues, setMinMaxValues] = useState<any>({});
 
     const [Chart1, setSelectedChart1] = useState<string>('StartingLocation');
     const [Chart2, setSelectedChart2] = useState<string>('StartingLocation');
@@ -67,7 +66,6 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                         max: Math.max(...values)
                     };
                 });
-                setMinMaxValues(minMax);
             } catch (error) {
                 console.error('Error fetching global data:', error);
             }

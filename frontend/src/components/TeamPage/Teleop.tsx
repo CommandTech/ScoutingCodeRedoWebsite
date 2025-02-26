@@ -23,7 +23,6 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
     const [delAlgaeNData, setDelAlgaeNData] = useState<any[]>([]);
     const [delAlgaeFData, setDelAlgaeFData] = useState<any[]>([]);
     const [disAlgaeData, setDisAlgaeData] = useState<any[]>([]);
-    const [minMaxValues, setMinMaxValues] = useState<any>({});
 
     const [Chart1, setSelectedChart1] = useState<string>('PointsPerDriverStation');
     const [Chart2, setSelectedChart2] = useState<string>('PointsPerDriverStation');
@@ -66,7 +65,6 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                         max: Math.max(...values)
                     };
                 });
-                setMinMaxValues(minMax);
             } catch (error) {
                 console.error('Error fetching global data:', error);
             }

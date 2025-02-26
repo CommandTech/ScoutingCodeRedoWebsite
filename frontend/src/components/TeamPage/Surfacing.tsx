@@ -14,10 +14,6 @@ const Surfacing: React.FC<SurfacingProps> = ({ selectedTeam }) => {
     const [selectedCages, setSelectedCages] = useState<string[]>([]);
     const [matchCount, setMatchCount] = useState<number>(0);
     const [defenseCounts, setDefenseCounts] = useState<number[]>([]);
-    const [globalMaxShallowTime, setGlobalMaxShallowTime] = useState<number>(0);
-    const [globalMinShallowTime, setGlobalMinShallowTime] = useState<number>(0);
-    const [globalMaxDeepTime, setGlobalMaxDeepTime] = useState<number>(0);
-    const [globalMinDeepTime, setGlobalMinDeepTime] = useState<number>(0);
     const [averageDZTimes, setAverageDZTimes] = useState<number[]>([]);
     const [teamData, setTeamData] = useState<any[]>([]);
     const [strategyCounts, setStrategyCounts] = useState<{ [key: string]: number }>({});
@@ -52,11 +48,6 @@ const Surfacing: React.FC<SurfacingProps> = ({ selectedTeam }) => {
                 const deepTimes = parsedData
                     .filter((row: any) => row['EndState'] === 'Deep')
                     .map((row: any) => parseFloat(row['ClimbT']));
-
-                setGlobalMaxShallowTime(Math.max(...shallowTimes));
-                setGlobalMinShallowTime(Math.min(...shallowTimes));
-                setGlobalMaxDeepTime(Math.max(...deepTimes));
-                setGlobalMinDeepTime(Math.min(...deepTimes));
             } catch (error) {
                 console.error('Error fetching global data:', error);
             }
@@ -88,7 +79,10 @@ const Surfacing: React.FC<SurfacingProps> = ({ selectedTeam }) => {
 
                     const averageDZTimes = uniqueMatches.map(match => {
                         const matchData = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['Match'] === match);
-                        const dzTimeSum = matchData.reduce((sum: number, row: any) => sum + parseFloat(row['DZTime']), 0);
+                        const dzTimeSum = matchData.reduce((sum: number, row: any) => {
+                            const dzTime = parseFloat(row['DZTime']);
+                            return sum + (isNaN(dzTime) ? 0 : dzTime);
+                        }, 0);
                         const defenseCount = defenseCounts[uniqueMatches.indexOf(match)];
                         return defenseCount > 0 ? (dzTimeSum / defenseCount).toFixed(2) : '0';
                     });
