@@ -270,28 +270,6 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
                                     );
                                 })}
                             </TableRow>
-                            <TableRow className="table-row-bordered2" style={{ borderBottom: '4px solid black' }}>
-                                <TableCell>Floor/Drop</TableCell>
-                                {delCoralFDiffs.map((diff, index) => {
-                                    let cellClass = '';
-                                    if (diff >= 10) {
-                                        cellClass = 'mpr black';
-                                    } else if (diff >= 6 && diff <= 9) {
-                                        cellClass = 'mpr red';
-                                    } else if (diff >= 3 && diff <= 5) {
-                                        cellClass = 'mpr yellow';
-                                    } else if (diff >= 1 && diff <= 2) {
-                                        cellClass = 'mpr green';
-                                    } else if (diff == 0) {
-                                        cellClass = 'mpr blue';
-                                    }
-                                    return (
-                                        <TableCell key={index} className={cellClass}>
-                                            {diff}
-                                        </TableCell>
-                                    );
-                                })}
-                            </TableRow>
                             <TableRow className="table-row-bordered2">
                                 <TableCell>Net</TableCell>
                                 {delAlgaeNDiffs.map((diff, index) => {
@@ -327,28 +305,6 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
                                     } else if (diff >= 5 && diff <= 6) {
                                         cellClass = 'mpr green';
                                     } else if (diff >= 7) {
-                                        cellClass = 'mpr blue';
-                                    }
-                                    return (
-                                        <TableCell key={index} className={cellClass}>
-                                            {diff}
-                                        </TableCell>
-                                    );
-                                })}
-                            </TableRow>
-                            <TableRow className="table-row-bordered2">
-                                <TableCell>Floor/Drop</TableCell>
-                                {delAlgaeFDiffs.map((diff, index) => {
-                                    let cellClass = '';
-                                    if (diff >= 10) {
-                                        cellClass = 'mpr black';
-                                    } else if (diff >= 6 && diff <= 9) {
-                                        cellClass = 'mpr red';
-                                    } else if (diff >= 3 && diff <= 5) {
-                                        cellClass = 'mpr yellow';
-                                    } else if (diff >= 1 && diff <= 2) {
-                                        cellClass = 'mpr green';
-                                    } else if (diff == 0) {
                                         cellClass = 'mpr blue';
                                     }
                                     return (
