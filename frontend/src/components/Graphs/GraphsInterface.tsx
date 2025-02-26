@@ -21,6 +21,7 @@ import SurfacingPointsPerMatch from './SurfacingPointsPerMatch';
 import CageAttempt from './CageAttempt';
 import EndState from './EndState';
 import ClimbSuccess from './ClimbSuccess';
+import RobotPicture from './RobotPicture';
 
 interface GraphsInterfaceProps {
     chart: string;
@@ -74,6 +75,8 @@ const GraphsInterface: React.FC<GraphsInterfaceProps> = ({ chart, selectedTeam }
                 return <EndState chart={chart} selectedTeam={selectedTeam} />;
             case 'ClimbSuccess':
                 return <ClimbSuccess chart={chart} selectedTeam={selectedTeam} />;
+                case 'RobotPictures':
+                return <RobotPicture selectedTeam={selectedTeam} />;
             default:
                 return <div>No Defined Graph</div>;
         }

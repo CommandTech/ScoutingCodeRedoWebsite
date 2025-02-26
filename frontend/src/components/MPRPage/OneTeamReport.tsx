@@ -132,12 +132,12 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
                         </TableHead>
                         <TableBody>
                             <TableRow className="table-row-bordered2">
-                                <TableCell colSpan={columns.length} align="left" className={cellClass}>
+                                <TableCell colSpan={columns.length} align="left" className={cellClass} style={{ fontWeight: 'bold', fontSize: '15px' }}>
                                     {robotNumber}
                                 </TableCell>
                             </TableRow>
                             <TableRow className="table-row-bordered2">
-                                <TableCell colSpan={columns.length} align="center">
+                                <TableCell colSpan={columns.length} align="center" style={{ backgroundColor: '#ff00ff' }}>
                                     Auto
                                 </TableCell>
                             </TableRow>
@@ -177,7 +177,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
                                     );
                                 })}
                             </TableRow>
-                            <TableRow className="table-row-bordered2" style={{ backgroundColor: hasAcqCoralF ? 'yellow' : 'inherit' }}>
+                            <TableRow className="table-row-bordered2" style={{ backgroundColor: '#ff00ff' }}>
                                 <TableCell colSpan={columns.length} align="center">
                                     TELEOP
                                 </TableCell>
@@ -315,7 +315,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
                                 })}
                             </TableRow>
                             <TableRow className="table-row-bordered2">
-                                <TableCell colSpan={columns.length} align="center">
+                                <TableCell colSpan={columns.length} align="center" style={{ backgroundColor: '#ff00ff' }}>
                                     SURFACING
                                 </TableCell>
                             </TableRow>

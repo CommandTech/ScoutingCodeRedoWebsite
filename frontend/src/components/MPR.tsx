@@ -33,7 +33,8 @@ const MPR = () => {
     { value: 'SurfacingPointsPerMatch', label: 'Surfacing Points Per Match (Surfacing)' },
     { value: 'CageAttempt', label: 'Cage Attempt (Surfacing)' },
     { value: 'EndState', label: 'End State (Surfacing)' },
-    { value: 'ClimbSuccess', label: 'Climb Success (Surfacing)' }
+    { value: 'ClimbSuccess', label: 'Climb Success (Surfacing)' },
+    { value: 'RobotPictures', label: 'Robot Pictures (Summary)' },
   ];
   const [showGraphs, setShowGraphs] = useState<boolean>(true);
 
