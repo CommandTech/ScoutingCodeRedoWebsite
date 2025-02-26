@@ -9,12 +9,9 @@ interface SummaryProps {
 
 const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
   const [matchCount, setMatchCount] = useState<number>(0);
-  const [minMaxValues, setMinMaxValues] = useState<any>({});
   const [pointScoredData, setPointScoredData] = useState<number[]>([]);
   const [driveStaValues, setDriveStaValues] = useState<string[]>([]);
   const [driveStaAverages, setDriveStaAverages] = useState<{ [key: string]: number }>({});
-  const [teamAverages, setTeamAverages] = useState<number[]>([]);
-  const [minMaxAverages, setMinMaxAverages] = useState<{ min: number; max: number }>({ min: 0, max: 0 });
   const [driveStaCoralAverages, setDriveStaCoralAverages] = useState<{ [key: string]: number }>({});
   const [driveStaAlgaeAverages, setDriveStaAlgaeAverages] = useState<{ [key: string]: number }>({});
   const [matchEventCounts, setMatchEventCounts] = useState<{ [key: string]: number }>({});
@@ -65,7 +62,6 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
           max: Math.max(...coralSums)
         };
 
-        setMinMaxValues(minMax);
       } catch (error) {
         console.error('Error fetching global data:', error);
       }
@@ -94,13 +90,6 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
 
           const pointScored = teamDataEndMatch.map((row: any) => parseFloat(row['PointScored'])).filter((value: number) => !isNaN(value));
           setPointScoredData(pointScored);
-
-          const minPointScored = Math.min(...pointScored);
-          const maxPointScored = Math.max(...pointScored);
-          setMinMaxValues((prevValues: any) => ({
-            ...prevValues,
-            PointScored: { min: minPointScored, max: maxPointScored }
-          }));
 
           const driveSta = Array.from(new Set(parsedData.map((row: any) => row['DriveSta'])))
             .filter(value => ['blue0', 'blue1', 'blue2', 'red0', 'red1', 'red2'].includes(value))
@@ -149,13 +138,6 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
             const sum = points.reduce((acc, value) => acc + value, 0);
             return sum / points.length;
           });
-
-          setTeamAverages(teamAverageValues);
-
-          const minAverage = Math.min(...teamAverageValues);
-          const maxAverage = Math.max(...teamAverageValues);
-          setMinMaxAverages({ min: minAverage, max: maxAverage });
-
         } catch (error) {
           console.error('Error fetching team data:', error);
         }
@@ -206,6 +188,9 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
     return isNaN(average) ? NaN : average;
   };
 
+  const teamName = selectedTeam.replace('frc', '');
+  const imagePath = `/RobotPictures/${teamName}.png`;
+  
   return (
     <div>
       <TableContainer component={Paper}>
@@ -328,6 +313,10 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
           </TableBody>
         </Table>
       </TableContainer>
+      <div>&nbsp;</div>
+      <div>
+        <img src={imagePath} alt={`Robot of team ${teamName}`} />
+      </div>
     </div>
   );
 }

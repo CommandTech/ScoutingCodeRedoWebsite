@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
 // Endpoint to get configuration
 app.get('/config', (req, res) => {
   console.log('Config endpoint hit');
-  res.json({ 
+  res.json({
     ServerIP: config.SERVER_IP.ServerIP,
     year: config.YEAR.year,
     baseURL: config.BASE_URL.baseURL,
@@ -86,6 +86,22 @@ app.post('/upload', upload.single('file'), (req, res) => {
         res.sendStatus(500);
       });
   });
+});
+
+app.post('/uploadPicture', upload.single('file'), (req, res) => {
+  const file = req.file;
+  const pictureNumber = req.body.number;
+  const targetPath = path.join(__dirname, '../frontend/public/RobotPictures', `${pictureNumber}${path.extname(file.originalname)}`);
+
+  // Rename the uploaded file
+  fs.promises.rename(file.path, targetPath)
+    .then(() => {
+      res.status(200).send("Success: Picture uploaded and renamed.");
+    })
+    .catch((err) => {
+      console.error(`Error renaming file: ${err.message}`);
+      res.sendStatus(500);
+    });
 });
 
 app.get('/upload', (req, res) => {

@@ -7,7 +7,9 @@ const ExcelReader: React.FC = () => {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [ServerIP, setServerIP] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null); // New state variable for success message
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [pictureFile, setPictureFile] = useState<File | null>(null);
+  const [pictureNumber, setPictureNumber] = useState<string>(''); 
 
   useEffect(() => {
     const fetchConfig = async () => {
@@ -70,11 +72,50 @@ const ExcelReader: React.FC = () => {
     }
   };
 
+  const handlePictureUpload = async () => {
+    if (pictureFile) {
+      const formData = new FormData();
+      formData.append('file', pictureFile);
+      formData.append('number', pictureNumber);
+
+      try {
+        const response = await fetch(`${ServerIP}/uploadPicture`, {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (response.ok) {
+          const successText = await response.text();
+          setSuccessMessage(successText); // Set success message from server response
+        } else {
+          console.error('Error uploading picture');
+        }
+      } catch (error) {
+        console.error('Error uploading picture:', error);
+      }
+    }
+  };
+
   return (
     <div>
       <input type="file" accept=".xlsx, .xls" onChange={handleFileUpload} />
       {loading && <p>Loading...</p>}
-      {successMessage && <p>{successMessage}</p>} {/* Display success message */}
+      {successMessage && <p>{successMessage}</p>}
+      <div>&nbsp;</div>
+      <div>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setPictureFile(e.target.files?.[0] || null)}
+        />
+        <input
+          type="text"
+          placeholder="Enter picture number"
+          value={pictureNumber}
+          onChange={(e) => setPictureNumber(e.target.value)}
+        />
+        <button onClick={handlePictureUpload}>Upload Robot Pictures</button>
+      </div>
     </div>
   );
 };
