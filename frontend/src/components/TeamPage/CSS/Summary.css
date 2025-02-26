@@ -1,11 +1,12 @@
-.table-row-bordered {
+.table-row-bordered td{
     border: 2px solid #000;
+    text-align: center;
+
 }
 
 .fixed-width {
     width: 150px;
 }
-
 
 .summary.black {
     background-color: rgb(0, 0, 0);

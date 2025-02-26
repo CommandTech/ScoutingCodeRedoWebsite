@@ -1,8 +1,10 @@
-.table-row-bordered {
+.table-row-bordered td {
     border: 2px solid #000;
 }
 
-
+.center td{
+    text-align: center;
+}
 
 .auto.black {
     background-color: rgb(0, 0, 0);
@@ -21,6 +23,7 @@
 .auto.green {
     background-color: rgb(0, 255, 0);
 }
+
 .auto.blue {
     background-color: rgb(0, 0, 255);
     color: white;

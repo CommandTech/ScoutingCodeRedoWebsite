@@ -142,7 +142,7 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
 
     return (
         <div>
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} className="center">
                 <Table>
                     <TableHead>
                         <TableRow className="table-row-bordered">
@@ -158,7 +158,7 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                 <TableCell key={index}>{loc}</TableCell>
                             ))}
                         </TableRow>
-                        <TableRow>
+                        <TableRow className="table-row-bordered">
                             <TableCell>Leave</TableCell>
                             {leaveData.map((leave, index) => (
                                 <TableCell
@@ -267,7 +267,7 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                 {calculateAverage(acqAlgaeRData).toFixed(2)}
                             </TableCell>
                         </TableRow>
-                        <TableRow>
+                        <TableRow className="table-row-bordered">
                             <TableCell>Algae Floor</TableCell>
                             {acqAlgaeFData.map((data, index) => {
                                 let cellClass = '';

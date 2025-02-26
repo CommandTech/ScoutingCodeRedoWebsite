@@ -1,5 +1,6 @@
-.table-row-bordered {
+.table-row-bordered td {
     border: 2px solid #000;
+    text-align: center;
 }
 
 .surfacing.black {
@@ -19,6 +20,7 @@
 .surfacing.green {
     background-color: rgb(0, 255, 0);
 }
+
 .surfacing.blue {
     background-color: rgb(0, 0, 255);
     color: white;

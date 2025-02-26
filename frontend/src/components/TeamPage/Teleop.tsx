@@ -146,7 +146,7 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
 
     return (
         <div>
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} className='center'>
                 <Table>
                     <TableHead>
                         <TableRow className="table-row-bordered">
@@ -254,7 +254,7 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                                 {calculateAverage(acqAlgaeRData).toFixed(2)}
                             </TableCell>
                         </TableRow>
-                        <TableRow>
+                        <TableRow className="table-row-bordered">
                             <TableCell>Algae Floor</TableCell>
                             {acqAlgaeFData.map((data, index) => {
                                 let cellClass = '';
