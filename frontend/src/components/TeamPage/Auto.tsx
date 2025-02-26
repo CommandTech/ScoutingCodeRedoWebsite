@@ -267,7 +267,7 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                 {calculateAverage(acqAlgaeRData).toFixed(2)}
                             </TableCell>
                         </TableRow>
-                        <TableRow className="table-row-bordered">
+                        <TableRow>
                             <TableCell>Algae Floor</TableCell>
                             {acqAlgaeFData.map((data, index) => {
                                 let cellClass = '';
@@ -296,6 +296,19 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                                 'auto blue'
                             }>
                                 {calculateAverage(acqAlgaeFData).toFixed(2)}
+                            </TableCell>
+                        </TableRow>
+                        <TableRow className="table-row-bordered">
+                            <TableCell>Algae Disrupted</TableCell>
+                            {disAlgaeData.map((data, index) => {
+                                return (
+                                    <TableCell key={index}>
+                                        {data}
+                                    </TableCell>
+                                );
+                            })}
+                            <TableCell>
+                                {calculateAverage(disAlgaeData).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow className="table-row-bordered">

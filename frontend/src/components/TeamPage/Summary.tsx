@@ -119,25 +119,6 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
           setDriveStaAverages(driveStaAvg);
           setDriveStaCoralAverages(driveStaCoralAvg);
           setDriveStaAlgaeAverages(driveStaAlgaeAvg);
-
-          const teamAverages = parsedData
-            .filter((row: any) => row['RecordType'] === 'EndMatch')
-            .reduce((acc: { [key: string]: number[] }, row: any) => {
-              const team = row['Team'];
-              const points = parseFloat(row['PointScored']);
-              if (!isNaN(points)) {
-                if (!acc[team]) {
-                  acc[team] = [];
-                }
-                acc[team].push(points);
-              }
-              return acc;
-            }, {});
-
-          const teamAverageValues = Object.values(teamAverages).map((points: number[]) => {
-            const sum = points.reduce((acc, value) => acc + value, 0);
-            return sum / points.length;
-          });
         } catch (error) {
           console.error('Error fetching team data:', error);
         }

@@ -22,7 +22,7 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
     const [delAlgaePData, setDelAlgaePData] = useState<any[]>([]);
     const [delAlgaeNData, setDelAlgaeNData] = useState<any[]>([]);
     const [delAlgaeFData, setDelAlgaeFData] = useState<any[]>([]);
-
+    const [disAlgaeData, setDisAlgaeData] = useState<any[]>([]);
     const [minMaxValues, setMinMaxValues] = useState<any>({});
 
     const [Chart1, setSelectedChart1] = useState<string>('PointsPerDriverStation');
@@ -97,7 +97,9 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                         return teamDataEndMatch.map((endMatchRow: any) => {
                             const endAutoRow = teamDataEndAuto.find((endAutoRow: any) => endAutoRow['Match'] === endMatchRow['Match']);
                             if (endAutoRow) {
-                                return parseFloat(endMatchRow[column]) - parseFloat(endAutoRow[column]);
+                                const endMatchValue = parseFloat(endMatchRow[column]);
+                                const endAutoValue = parseFloat(endAutoRow[column]);
+                                return endMatchValue - endAutoValue;
                             }
                             return null;
                         }).filter((value: number | null) => value !== null);
@@ -115,6 +117,7 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                     setDelAlgaePData(calculateDifference('DelAlgaeP'));
                     setDelAlgaeNData(calculateDifference('DelAlgaeN'));
                     setDelAlgaeFData(calculateDifference('DelAlgaeF'));
+                    setDisAlgaeData(calculateDifference('DisAlgae'));
                 } catch (error) {
                     console.error('Error fetching team data:', error);
                 }
@@ -254,7 +257,7 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                                 {calculateAverage(acqAlgaeRData).toFixed(2)}
                             </TableCell>
                         </TableRow>
-                        <TableRow className="table-row-bordered">
+                        <TableRow>
                             <TableCell>Algae Floor</TableCell>
                             {acqAlgaeFData.map((data, index) => {
                                 let cellClass = '';
@@ -283,6 +286,19 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                                                 'teleop blue'
                             }>
                                 {calculateAverage(acqAlgaeFData).toFixed(2)}
+                            </TableCell>
+                        </TableRow>
+                        <TableRow className="table-row-bordered">
+                            <TableCell>Algae Disrupted</TableCell>
+                            {disAlgaeData.map((data, index) => {
+                                return (
+                                    <TableCell key={index}>
+                                        {data}
+                                    </TableCell>
+                                );
+                            })}
+                            <TableCell>
+                                {calculateAverage(disAlgaeData).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow className="table-row-bordered">
