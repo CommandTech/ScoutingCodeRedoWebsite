@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import './CSS/OneTeamReport.css';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, FormControl, Button } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, FormControl } from '@mui/material';
 import { readCSVFile } from '../../utils/readCSV';
 import GraphsInterface from '../Graphs/GraphsInterface';
 
 interface OneTeamReportProps {
     color: string;
     robotNumber: string;
-    colorValues: Array<number>;
     chart: string;
     graphStatus: boolean;
 }
 
-const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, colorValues, chart, graphStatus }) => {
+const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart, graphStatus }) => {
     const [startingLocations, setStartingLocations] = useState<string[]>([]);
     const [leaveLocations, setLeaveLocations] = useState<string[]>([]);
     const [filteredCoralCounts, setFilteredCoralCounts] = useState<number[]>([]);
@@ -30,7 +29,6 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
     const [hasAcqCoralF, setHasAcqCoralF] = useState<boolean>(false);
 
     useEffect(() => {
-        console.log(colorValues);
         const fetchData = async () => {
             const response = await fetch('/ExcelCSVFiles/Activities.csv');
             const csvData = await response.text();
@@ -120,20 +118,6 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
 
     const cellClass = color === 'Red' ? 'robot-number-cell red' : 'robot-number-cell blue';
 
-    const getBackgroundColor = (value: number, max: number, min: number) => {
-        const ratio = (value - min) / (max - min);
-        const red = Math.round(255 * (1 - ratio));
-        const green = Math.round(255 * ratio);
-        return `rgb(${red}, ${green}, 0)`;
-    };
-
-    const climbStateColors: { [key: string]: [number, number] } = {
-        'Deep': [colorValues[18], colorValues[19]],
-        'Shallow': [colorValues[20], colorValues[21]],
-        'Park': [colorValues[22], colorValues[23]],
-        'Elsewhere': [colorValues[24], colorValues[25]],
-    };
-
     return (
         <div className="one-team-report">
             <div className="flex-container">
@@ -173,11 +157,25 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
                             </TableRow>
                             <TableRow className="table-row-bordered2">
                                 <TableCell>Number of Coral</TableCell>
-                                {filteredCoralCounts.map((count, index) => (
-                                    <TableCell key={index} style={{ backgroundColor: getBackgroundColor(count, colorValues[0], colorValues[1]) }}>
-                                        {count}
-                                    </TableCell>
-                                ))}
+                                {filteredCoralCounts.map((count, index) => {
+                                    let cellClass = '';
+                                    if (count == 0) {
+                                        cellClass = 'mpr black';
+                                    } else if (count == 1) {
+                                        cellClass = 'mpr red';
+                                    } else if (count == 2) {
+                                        cellClass = 'mpr yellow';
+                                    } else if (count == 3) {
+                                        cellClass = 'mpr green';
+                                    } else if (count >= 4) {
+                                        cellClass = 'mpr blue';
+                                    }
+                                    return (
+                                        <TableCell key={index} className={cellClass}>
+                                            {count}
+                                        </TableCell>
+                                    );
+                                })}
                             </TableRow>
                             <TableRow className="table-row-bordered2" style={{ backgroundColor: hasAcqCoralF ? 'yellow' : 'inherit' }}>
                                 <TableCell colSpan={columns.length} align="center">
@@ -186,67 +184,179 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
                             </TableRow>
                             <TableRow className="table-row-bordered2">
                                 <TableCell>L4</TableCell>
-                                {delCoralL4Diffs.map((diff, index) => (
-                                    <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[2], colorValues[3]) }}>
-                                        {diff}
-                                    </TableCell>
-                                ))}
+                                {delCoralL4Diffs.map((diff, index) => {
+                                    let cellClass = '';
+                                    if (diff == 0) {
+                                        cellClass = 'mpr black';
+                                    } else if (diff >= 1 && diff <= 2) {
+                                        cellClass = 'mpr red';
+                                    } else if (diff >= 3 && diff <= 5) {
+                                        cellClass = 'mpr yellow';
+                                    } else if (diff >= 6 && diff <= 9) {
+                                        cellClass = 'mpr green';
+                                    } else if (diff >= 10) {
+                                        cellClass = 'mpr blue';
+                                    }
+                                    return (
+                                        <TableCell key={index} className={cellClass}>
+                                            {diff}
+                                        </TableCell>
+                                    );
+                                })}
                             </TableRow>
                             <TableRow className="table-row-bordered2">
                                 <TableCell>L3</TableCell>
-                                {delCoralL3Diffs.map((diff, index) => (
-                                    <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[4], colorValues[5]) }}>
-                                        {diff}
-                                    </TableCell>
-                                ))}
+                                {delCoralL3Diffs.map((diff, index) => {
+                                    let cellClass = '';
+                                    if (diff == 0) {
+                                        cellClass = 'mpr black';
+                                    } else if (diff >= 1 && diff <= 2) {
+                                        cellClass = 'mpr red';
+                                    } else if (diff >= 3 && diff <= 5) {
+                                        cellClass = 'mpr yellow';
+                                    } else if (diff >= 6 && diff <= 9) {
+                                        cellClass = 'mpr green';
+                                    } else if (diff >= 10) {
+                                        cellClass = 'mpr blue';
+                                    }
+                                    return (
+                                        <TableCell key={index} className={cellClass}>
+                                            {diff}
+                                        </TableCell>
+                                    );
+                                })}
                             </TableRow>
                             <TableRow className="table-row-bordered2">
                                 <TableCell>L2</TableCell>
-                                {delCoralL2Diffs.map((diff, index) => (
-                                    <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[6], colorValues[7]) }}>
-                                        {diff}
-                                    </TableCell>
-                                ))}
+                                {delCoralL2Diffs.map((diff, index) => {
+                                    let cellClass = '';
+                                    if (diff == 0) {
+                                        cellClass = 'mpr black';
+                                    } else if (diff >= 1 && diff <= 2) {
+                                        cellClass = 'mpr red';
+                                    } else if (diff >= 3 && diff <= 5) {
+                                        cellClass = 'mpr yellow';
+                                    } else if (diff >= 6 && diff <= 9) {
+                                        cellClass = 'mpr green';
+                                    } else if (diff >= 10) {
+                                        cellClass = 'mpr blue';
+                                    }
+                                    return (
+                                        <TableCell key={index} className={cellClass}>
+                                            {diff}
+                                        </TableCell>
+                                    );
+                                })}
                             </TableRow>
                             <TableRow className="table-row-bordered2">
                                 <TableCell>L1</TableCell>
-                                {delCoralL1Diffs.map((diff, index) => (
-                                    <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[8], colorValues[9]) }}>
-                                        {diff}
-                                    </TableCell>
-                                ))}
+                                {delCoralL1Diffs.map((diff, index) => {
+                                    let cellClass = '';
+                                    if (diff == 0) {
+                                        cellClass = 'mpr black';
+                                    } else if (diff >= 1 && diff <= 2) {
+                                        cellClass = 'mpr red';
+                                    } else if (diff >= 3 && diff <= 5) {
+                                        cellClass = 'mpr yellow';
+                                    } else if (diff >= 6 && diff <= 9) {
+                                        cellClass = 'mpr green';
+                                    } else if (diff >= 10) {
+                                        cellClass = 'mpr blue';
+                                    }
+                                    return (
+                                        <TableCell key={index} className={cellClass}>
+                                            {diff}
+                                        </TableCell>
+                                    );
+                                })}
                             </TableRow>
                             <TableRow className="table-row-bordered2" style={{ borderBottom: '4px solid black' }}>
                                 <TableCell>Floor/Drop</TableCell>
-                                {delCoralFDiffs.map((diff, index) => (
-                                    <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[11], colorValues[10]) }}>
-                                        {diff}
-                                    </TableCell>
-                                ))}
+                                {delCoralFDiffs.map((diff, index) => {
+                                    let cellClass = '';
+                                    if (diff >= 10) {
+                                        cellClass = 'mpr black';
+                                    } else if (diff >= 6 && diff <= 9) {
+                                        cellClass = 'mpr red';
+                                    } else if (diff >= 3 && diff <= 5) {
+                                        cellClass = 'mpr yellow';
+                                    } else if (diff >= 1 && diff <= 2) {
+                                        cellClass = 'mpr green';
+                                    } else if (diff == 0) {
+                                        cellClass = 'mpr blue';
+                                    }
+                                    return (
+                                        <TableCell key={index} className={cellClass}>
+                                            {diff}
+                                        </TableCell>
+                                    );
+                                })}
                             </TableRow>
                             <TableRow className="table-row-bordered2">
                                 <TableCell>Net</TableCell>
-                                {delAlgaeNDiffs.map((diff, index) => (
-                                    <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[12], colorValues[13]) }}>
-                                        {diff}
-                                    </TableCell>
-                                ))}
+                                {delAlgaeNDiffs.map((diff, index) => {
+                                    let cellClass = '';
+                                    if (diff == 0) {
+                                        cellClass = 'mpr black';
+                                    } else if (diff >= 1 && diff <= 2) {
+                                        cellClass = 'mpr red';
+                                    } else if (diff >= 3 && diff <= 4) {
+                                        cellClass = 'mpr yellow';
+                                    } else if (diff >= 5 && diff <= 6) {
+                                        cellClass = 'mpr green';
+                                    } else if (diff >= 7) {
+                                        cellClass = 'mpr blue';
+                                    }
+                                    return (
+                                        <TableCell key={index} className={cellClass}>
+                                            {diff}
+                                        </TableCell>
+                                    );
+                                })}
                             </TableRow>
                             <TableRow className="table-row-bordered2">
                                 <TableCell>Processor</TableCell>
-                                {delAlgaePDiffs.map((diff, index) => (
-                                    <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[14], colorValues[15]) }}>
-                                        {diff}
-                                    </TableCell>
-                                ))}
+                                {delAlgaePDiffs.map((diff, index) => {
+                                    let cellClass = '';
+                                    if (diff == 0) {
+                                        cellClass = 'mpr black';
+                                    } else if (diff >= 1 && diff <= 2) {
+                                        cellClass = 'mpr red';
+                                    } else if (diff >= 3 && diff <= 4) {
+                                        cellClass = 'mpr yellow';
+                                    } else if (diff >= 5 && diff <= 6) {
+                                        cellClass = 'mpr green';
+                                    } else if (diff >= 7) {
+                                        cellClass = 'mpr blue';
+                                    }
+                                    return (
+                                        <TableCell key={index} className={cellClass}>
+                                            {diff}
+                                        </TableCell>
+                                    );
+                                })}
                             </TableRow>
                             <TableRow className="table-row-bordered2">
                                 <TableCell>Floor/Drop</TableCell>
-                                {delAlgaeFDiffs.map((diff, index) => (
-                                    <TableCell key={index} style={{ backgroundColor: getBackgroundColor(diff, colorValues[17], colorValues[16]) }}>
-                                        {diff}
-                                    </TableCell>
-                                ))}
+                                {delAlgaeFDiffs.map((diff, index) => {
+                                    let cellClass = '';
+                                    if (diff >= 10) {
+                                        cellClass = 'mpr black';
+                                    } else if (diff >= 6 && diff <= 9) {
+                                        cellClass = 'mpr red';
+                                    } else if (diff >= 3 && diff <= 5) {
+                                        cellClass = 'mpr yellow';
+                                    } else if (diff >= 1 && diff <= 2) {
+                                        cellClass = 'mpr green';
+                                    } else if (diff == 0) {
+                                        cellClass = 'mpr blue';
+                                    }
+                                    return (
+                                        <TableCell key={index} className={cellClass}>
+                                            {diff}
+                                        </TableCell>
+                                    );
+                                })}
                             </TableRow>
                             <TableRow className="table-row-bordered2">
                                 <TableCell colSpan={columns.length} align="center">
@@ -255,9 +365,25 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
                             </TableRow>
                             <TableRow className="table-row-bordered2">
                                 <TableCell>Climb State</TableCell>
-                                {climbStates.map((state, index) => (
-                                    <TableCell key={index}>{state}</TableCell>
-                                ))}
+                                {climbStates.map((state, index) => {
+                                    let cellClass = '';
+                                    if (state == 'Elsewhere') {
+                                        cellClass = 'mpr black';
+                                    } else if (state == '') {
+                                        cellClass = 'mpr red';
+                                    } else if (state == 'Park') {
+                                        cellClass = 'mpr yellow';
+                                    } else if (state == 'Shallow') {
+                                        cellClass = 'mpr green';
+                                    } else if (state == 'Deep') {
+                                        cellClass = 'mpr blue';
+                                    }
+                                    return (
+                                        <TableCell key={index} className={cellClass}>
+                                            {state}
+                                        </TableCell>
+                                    );
+                                })}
                             </TableRow>
                             <TableRow className="table-row-bordered2">
                                 <TableCell>Climb Time</TableCell>
@@ -265,30 +391,28 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
                                     const state = climbStates[index];
                                     if (state === 'Deep') {
                                         return (
-                                            <TableCell key={index} style={{ backgroundColor: getBackgroundColor(time, colorValues[19], colorValues[18]) }}>
+                                            <TableCell>
                                                 {time}
                                             </TableCell>
                                         );
                                     }
                                     if (state === 'Shallow') {
                                         return (
-                                            <TableCell key={index} style={{ backgroundColor: getBackgroundColor(time, colorValues[21], colorValues[20]) }}>
+                                            <TableCell>
                                                 {time}
                                             </TableCell>
                                         );
                                     }
                                     if (state === 'Park') {
-                                        const backgroundColor = time > 0 ? 'red' : getBackgroundColor(time, colorValues[23], colorValues[22]);
                                         return (
-                                            <TableCell key={index} style={{ backgroundColor }}>
+                                            <TableCell key={index}>
                                                 {time}
                                             </TableCell>
                                         );
                                     }
                                     if (state === 'Elsewhere') {
-                                        const backgroundColor = time > 0 ? 'red' : getBackgroundColor(time, colorValues[25], colorValues[24]);
                                         return (
-                                            <TableCell key={index} style={{ backgroundColor }}>
+                                            <TableCell key={index}>
                                                 {time}
                                             </TableCell>
                                         );

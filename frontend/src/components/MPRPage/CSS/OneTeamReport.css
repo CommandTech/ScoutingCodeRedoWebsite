@@ -31,5 +31,30 @@
 .table-row-bordered2 td{
     padding: 2px;
     font-size: 13px;
+    border-bottom: black;
 }
 
+
+
+.mpr.black {
+    background-color: rgb(0, 0, 0);
+    color: white;
+    border-right: white 1px solid;
+}
+
+.mpr.red {
+    background-color: rgb(255, 0, 0);
+}
+
+.mpr.yellow {
+    background-color: rgb(255, 255, 0);
+}
+
+.mpr.green {
+    background-color: rgb(0, 255, 0);
+}
+.mpr.blue {
+    background-color: rgb(0, 0, 255);
+    color: white;
+    border-right: white 1px solid;
+}
