@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './CSS/OneTeamReport.css';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, FormControl, Button } from '@mui/material';
 import { readCSVFile } from '../../utils/readCSV';
 import GraphsInterface from '../Graphs/GraphsInterface';
 
@@ -9,9 +9,10 @@ interface OneTeamReportProps {
     robotNumber: string;
     colorValues: Array<number>;
     chart: string;
+    graphStatus: boolean;
 }
 
-const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, colorValues, chart }) => {
+const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, colorValues, chart, graphStatus }) => {
     const [startingLocations, setStartingLocations] = useState<string[]>([]);
     const [leaveLocations, setLeaveLocations] = useState<string[]>([]);
     const [filteredCoralCounts, setFilteredCoralCounts] = useState<number[]>([]);
@@ -136,11 +137,6 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
     return (
         <div className="one-team-report">
             <div className="flex-container">
-                {color === 'Red' && (
-                    <FormControl variant="outlined" style={{ marginRight: '100px' }}>
-                        <GraphsInterface chart={chart} selectedTeam={robotNumber} />
-                    </FormControl>
-                )}
                 <TableContainer component={Paper}>
                     <Table>
                         <TableHead>
@@ -303,10 +299,12 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, color
                         </TableBody>
                     </Table>
                 </TableContainer>
-                {color === 'Blue' && (
-                    <FormControl variant="outlined" style={{ marginRight: '100px' }}>
-                        <GraphsInterface chart={chart} selectedTeam={robotNumber} />
-                    </FormControl>
+                {graphStatus && (
+                    <div className="chart-container">
+                        <FormControl variant="outlined">
+                            <GraphsInterface chart={chart} selectedTeam={robotNumber} />
+                        </FormControl>
+                    </div>
                 )}
             </div>
         </div>

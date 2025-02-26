@@ -3,7 +3,7 @@ import OneTeamReport from './MPRPage/OneTeamReport';
 import { readCSVFile } from '../utils/readCSV';
 import { calculateDifferences, calculateClimbTimes, calculateCoralCounts } from '../utils/reportingFunctions';
 import './CSS/MPR.css';
-import { InputLabel, Select, MenuItem, SelectChangeEvent } from '@mui/material';
+import { InputLabel, Select, MenuItem, SelectChangeEvent, Button } from '@mui/material';
 
 const MPR = () => {
   const [teams, setTeams] = useState<string[]>([]);
@@ -31,28 +31,32 @@ const MPR = () => {
     minAlgaeFDifference: 0,
   });
   const [colorArray, setColorArray] = useState<number[]>([]);
-
   const [Chart1, setSelectedChart1] = useState<string>('StartingLocation');
-
   const chartOptions = [
     { value: 'StartingLocation', label: 'Starting Location (Auto)' },
-        { value: 'PointsPerStartLocation', label: 'Points Per Start Location (Auto)' },
-        { value: 'PointsPerMatchAuto', label: 'Points Per Match (Auto)' },
-        { value: 'AcquireAlgaePerLocationAuto', label: 'Acquire Algae Per Location Average (Auto)' },
-        { value: 'AcquireCoralPerLocationAuto', label: 'Acquire Coral Per Location Average (Auto)' },
-        { value: 'AlgaeSuccessRateAuto', label: 'Algae Success Rate Average (Auto)' },
-        { value: 'CoralSuccessRateAuto', label: 'Coral Success Rate Average (Auto)' },
-        { value: 'DeliveriesNearVsFarAuto', label: 'Deliveries Near Vs Far (Auto)' },
-        { value: 'PointsPerDriverStation', label: 'Points Per Driver Station Average (Teleop)' },
-        { value: 'DeliveriesPerDriverStation', label: 'Deliveries Per Driver Station Average (Teleop)' },
-        { value: 'AlgaeSuccessRate', label: 'Algae Success Rate Average (Teleop)' },
-        { value: 'CoralSuccessRate', label: 'Coral Success Rate Average (Teleop)' },
-        { value: 'AcquireAlgaeNearVsFar', label: 'Acquire Algae Near Vs Far Average (Teleop)' },
-        { value: 'AcquireCoralNearVsFar', label: 'Acquire Coral Near Vs Far Average (Teleop)' },
-        { value: 'DeliveriesNearVsFar', label: 'Deliveries Near Vs Far Average (Teleop)' },
-        { value: 'AcquireAlgaePerLocation', label: 'Acquire Algae Per Location Average (Teleop)' },
-        { value: 'AcquireCoralPerLocation', label: 'Acquire Coral Per Location Average (Teleop)' },
+    { value: 'PointsPerStartLocation', label: 'Points Per Start Location (Auto)' },
+    { value: 'PointsPerMatchAuto', label: 'Points Per Match (Auto)' },
+    { value: 'AcquireAlgaePerLocationAuto', label: 'Acquire Algae Per Location Average (Auto)' },
+    { value: 'AcquireCoralPerLocationAuto', label: 'Acquire Coral Per Location Average (Auto)' },
+    { value: 'AlgaeSuccessRateAuto', label: 'Algae Success Rate Average (Auto)' },
+    { value: 'CoralSuccessRateAuto', label: 'Coral Success Rate Average (Auto)' },
+    { value: 'DeliveriesNearVsFarAuto', label: 'Deliveries Near Vs Far (Auto)' },
+    { value: 'PointsPerDriverStation', label: 'Points Per Driver Station Average (Teleop)' },
+    { value: 'DeliveriesPerDriverStation', label: 'Deliveries Per Driver Station Average (Teleop)' },
+    { value: 'AlgaeSuccessRate', label: 'Algae Success Rate Average (Teleop)' },
+    { value: 'CoralSuccessRate', label: 'Coral Success Rate Average (Teleop)' },
+    { value: 'AcquireAlgaeNearVsFar', label: 'Acquire Algae Near Vs Far Average (Teleop)' },
+    { value: 'AcquireCoralNearVsFar', label: 'Acquire Coral Near Vs Far Average (Teleop)' },
+    { value: 'DeliveriesNearVsFar', label: 'Deliveries Near Vs Far Average (Teleop)' },
+    { value: 'AcquireAlgaePerLocation', label: 'Acquire Algae Per Location Average (Teleop)' },
+    { value: 'AcquireCoralPerLocation', label: 'Acquire Coral Per Location Average (Teleop)' },
+    { value: 'PointsPerMatch', label: 'Points Per Match (Surfacing)' },
+    { value: 'SurfacingPointsPerMatch', label: 'Surfacing Points Per Match (Surfacing)' },
+    { value: 'CageAttempt', label: 'Cage Attempt (Surfacing)' },
+    { value: 'EndState', label: 'End State (Surfacing)' },
+    { value: 'ClimbSuccess', label: 'Climb Success (Surfacing)' }
   ];
+  const [showGraphs, setShowGraphs] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchTeams = async () => {
@@ -216,17 +220,22 @@ const MPR = () => {
             ))}
           </Select>
         </div>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Button onClick={() => setShowGraphs(!showGraphs)}>
+            {showGraphs ? 'Hide Graphs' : 'Show Graphs'}
+          </Button>
+        </div>
         {selectedColor === 'All' ? (
           <div className="report-container">
             <div className="report-column">
-              <OneTeamReport color="Blue" robotNumber={teamNumbers[0]} colorValues={colorArray} chart={Chart1} />
-              <OneTeamReport color="Blue" robotNumber={teamNumbers[1]} colorValues={colorArray} chart={Chart1} />
-              <OneTeamReport color="Blue" robotNumber={teamNumbers[2]} colorValues={colorArray} chart={Chart1} />
+              <OneTeamReport color="Blue" robotNumber={teamNumbers[0]} colorValues={colorArray} chart={Chart1} graphStatus={showGraphs} />
+              <OneTeamReport color="Blue" robotNumber={teamNumbers[1]} colorValues={colorArray} chart={Chart1} graphStatus={showGraphs} />
+              <OneTeamReport color="Blue" robotNumber={teamNumbers[2]} colorValues={colorArray} chart={Chart1} graphStatus={showGraphs} />
             </div>
             <div className="report-column">
-              <OneTeamReport color="Red" robotNumber={teamNumbers[3]} colorValues={colorArray} chart={Chart1} />
-              <OneTeamReport color="Red" robotNumber={teamNumbers[4]} colorValues={colorArray} chart={Chart1} />
-              <OneTeamReport color="Red" robotNumber={teamNumbers[5]} colorValues={colorArray} chart={Chart1} />
+              <OneTeamReport color="Red" robotNumber={teamNumbers[3]} colorValues={colorArray} chart={Chart1} graphStatus={showGraphs} />
+              <OneTeamReport color="Red" robotNumber={teamNumbers[4]} colorValues={colorArray} chart={Chart1} graphStatus={showGraphs} />
+              <OneTeamReport color="Red" robotNumber={teamNumbers[5]} colorValues={colorArray} chart={Chart1} graphStatus={showGraphs} />
             </div>
           </div>
         ) : (

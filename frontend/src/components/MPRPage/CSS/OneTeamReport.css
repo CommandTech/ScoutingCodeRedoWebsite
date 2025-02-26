@@ -29,6 +29,7 @@
 }
 
 .table-row-bordered2 td{
-    padding: 2px; /* Reduce padding */
-    font-size: 13px; /* Reduce font size */
+    padding: 2px;
+    font-size: 13px;
 }
+
