@@ -1,3 +1,26 @@
 .table-row-bordered {
     border: 2px solid #000;
 }
+
+.teleop.black {
+    background-color: rgb(0, 0, 0);
+    color: white;
+    border-right: white 1px solid;
+}
+
+.teleop.red {
+    background-color: rgb(255, 0, 0);
+}
+
+.teleop.yellow {
+    background-color: rgb(255, 255, 0);
+}
+
+.teleop.green {
+    background-color: rgb(0, 255, 0);
+}
+.teleop.blue {
+    background-color: rgb(0, 0, 255);
+    color: white;
+    border-right: white 1px solid;
+}

@@ -126,13 +126,6 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
 
     const columns = ['Matches:', ...Array.from({ length: matchCount }, (_, i) => `Match ${i + 1}`), 'Average'];
 
-    const getBackgroundColor = (value: number, max: number, min: number) => {
-        const ratio = (value - min) / (max - min);
-        const red = Math.round(255 * (1 - ratio));
-        const green = Math.round(255 * ratio);
-        return `rgb(${red}, ${green}, 0)`;
-    };
-
     const calculateAverage = (data: any[]) => {
         const numericData = data.map(value => parseFloat(value)).filter(value => !isNaN(value));
         const sum = numericData.reduce((acc, value) => acc + value, 0);
@@ -170,65 +163,125 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                         </TableRow>
                         <TableRow>
                             <TableCell>Coral Station</TableCell>
-                            {acqCoralSData.map((data, index) => (
-                                <TableCell
-                                    key={index}
-                                    style={{ backgroundColor: getBackgroundColor(parseFloat(data), minMaxValues['AcqCoralS']?.max, minMaxValues['AcqCoralS']?.min) }}
-                                >
-                                    {data}
-                                </TableCell>
-                            ))}
-                            <TableCell
-                                style={{ backgroundColor: getBackgroundColor(calculateAverage(acqCoralSData), minMaxValues['AcqCoralS']?.max, minMaxValues['AcqCoralS']?.min) }}
-                            >
+                            {acqCoralSData.map((data, index) => {
+                                let cellClass = '';
+                                if (data == 0) {
+                                    cellClass = 'teleop black';
+                                } else if (data == 1) {
+                                    cellClass = 'teleop red';
+                                } else if (data == 2) {
+                                    cellClass = 'teleop yellow';
+                                } else if (data == 3) {
+                                    cellClass = 'teleop green';
+                                } else if (data >= 4) {
+                                    cellClass = 'teleop blue';
+                                }
+                                return (
+                                    <TableCell key={index} className={cellClass}>
+                                        {data}
+                                    </TableCell>
+                                );
+                            })}
+                            <TableCell className={
+                                calculateAverage(acqCoralSData) < 1 ? 'teleop black' :
+                                    calculateAverage(acqCoralSData) < 2 ? 'teleop red' :
+                                        calculateAverage(acqCoralSData) < 3 ? 'teleop yellow' :
+                                            calculateAverage(acqCoralSData) < 4 ? 'teleop green' :
+                                                'teleop blue'
+                            }>
                                 {calculateAverage(acqCoralSData).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>Coral Floor</TableCell>
-                            {acqCoralFData.map((data, index) => (
-                                <TableCell
-                                    key={index}
-                                    style={{ backgroundColor: getBackgroundColor(parseFloat(data), minMaxValues['AcqCoralF']?.max, minMaxValues['AcqCoralF']?.min) }}
-                                >
-                                    {data}
-                                </TableCell>
-                            ))}
-                            <TableCell
-                                style={{ backgroundColor: getBackgroundColor(calculateAverage(acqCoralFData), minMaxValues['AcqCoralF']?.max, minMaxValues['AcqCoralF']?.min) }}
-                            >
+                            {acqCoralFData.map((data, index) => {
+                                let cellClass = '';
+                                if (data == 0) {
+                                    cellClass = 'teleop black';
+                                } else if (data == 1) {
+                                    cellClass = 'teleop red';
+                                } else if (data == 2) {
+                                    cellClass = 'teleop yellow';
+                                } else if (data == 3) {
+                                    cellClass = 'teleop green';
+                                } else if (data >= 4) {
+                                    cellClass = 'teleop blue';
+                                }
+                                return (
+                                    <TableCell key={index} className={cellClass}>
+                                        {data}
+                                    </TableCell>
+                                );
+                            })}
+                            <TableCell className={
+                                calculateAverage(acqCoralFData) < 1 ? 'teleop black' :
+                                    calculateAverage(acqCoralFData) < 2 ? 'teleop red' :
+                                        calculateAverage(acqCoralFData) < 3 ? 'teleop yellow' :
+                                            calculateAverage(acqCoralFData) < 4 ? 'teleop green' :
+                                                'teleop blue'
+                            }>
                                 {calculateAverage(acqCoralFData).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>Algae Reef</TableCell>
-                            {acqAlgaeRData.map((data, index) => (
-                                <TableCell
-                                    key={index}
-                                    style={{ backgroundColor: getBackgroundColor(parseFloat(data), minMaxValues['AcqAlgaeR']?.max, minMaxValues['AcqAlgaeR']?.min) }}
-                                >
-                                    {data}
-                                </TableCell>
-                            ))}
-                            <TableCell
-                                style={{ backgroundColor: getBackgroundColor(calculateAverage(acqAlgaeRData), minMaxValues['AcqAlgaeR']?.max, minMaxValues['AcqAlgaeR']?.min) }}
-                            >
+                            {acqAlgaeRData.map((data, index) => {
+                                let cellClass = '';
+                                if (data == 0) {
+                                    cellClass = 'auto black';
+                                } else if (data >= 1 && data <= 2) {
+                                    cellClass = 'auto red';
+                                } else if (data >= 3 && data <= 4) {
+                                    cellClass = 'auto yellow';
+                                } else if (data >= 5 && data <= 6) {
+                                    cellClass = 'auto green';
+                                } else if (data >= 7) {
+                                    cellClass = 'auto blue';
+                                }
+                                return (
+                                    <TableCell key={index} className={cellClass}>
+                                        {data}
+                                    </TableCell>
+                                );
+                            })}
+                            <TableCell className={
+                                calculateAverage(acqAlgaeRData) < 1 ? 'auto black' :
+                                    (calculateAverage(acqAlgaeRData) >= 1 && calculateAverage(acqAlgaeRData) <= 2) ? 'auto red' :
+                                        (calculateAverage(acqAlgaeRData) >= 3 && calculateAverage(acqAlgaeRData) <= 4) ? 'auto yellow' :
+                                            (calculateAverage(acqAlgaeRData) >= 5 && calculateAverage(acqAlgaeRData) <= 6) ? 'auto green' :
+                                                'auto blue'
+                            }>
                                 {calculateAverage(acqAlgaeRData).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>Algae Floor</TableCell>
-                            {acqAlgaeFData.map((data, index) => (
-                                <TableCell
-                                    key={index}
-                                    style={{ backgroundColor: getBackgroundColor(parseFloat(data), minMaxValues['AcqAlgaeF']?.max, minMaxValues['AcqAlgaeF']?.min) }}
-                                >
-                                    {data}
-                                </TableCell>
-                            ))}
-                            <TableCell
-                                style={{ backgroundColor: getBackgroundColor(calculateAverage(acqAlgaeFData), minMaxValues['AcqAlgaeF']?.max, minMaxValues['AcqAlgaeF']?.min) }}
-                            >
+                            {acqAlgaeFData.map((data, index) => {
+                                let cellClass = '';
+                                if (data == 0) {
+                                    cellClass = 'teleop black';
+                                } else if (data >= 1 && data <= 2) {
+                                    cellClass = 'teleop red';
+                                } else if (data >= 3 && data <= 4) {
+                                    cellClass = 'teleop yellow';
+                                } else if (data >= 5 && data <= 6) {
+                                    cellClass = 'teleop green';
+                                } else if (data >= 7) {
+                                    cellClass = 'teleop blue';
+                                }
+                                return (
+                                    <TableCell key={index} className={cellClass}>
+                                        {data}
+                                    </TableCell>
+                                );
+                            })}
+                            <TableCell className={
+                                calculateAverage(acqAlgaeFData) < 1 ? 'teleop black' :
+                                    (calculateAverage(acqAlgaeFData) >= 1 && calculateAverage(acqAlgaeFData) <= 2) ? 'teleop red' :
+                                        (calculateAverage(acqAlgaeFData) >= 3 && calculateAverage(acqAlgaeFData) <= 4) ? 'teleop yellow' :
+                                            (calculateAverage(acqAlgaeFData) >= 5 && calculateAverage(acqAlgaeFData) <= 6) ? 'teleop green' :
+                                                'teleop blue'
+                            }>
                                 {calculateAverage(acqAlgaeFData).toFixed(2)}
                             </TableCell>
                         </TableRow>
@@ -239,129 +292,249 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                         </TableRow>
                         <TableRow>
                             <TableCell>L1</TableCell>
-                            {delCoralL1Data.map((data, index) => (
-                                <TableCell
-                                    key={index}
-                                    style={{ backgroundColor: getBackgroundColor(parseFloat(data), minMaxValues['DelCoralL1']?.max, minMaxValues['DelCoralL1']?.min) }}
-                                >
-                                    {data}
-                                </TableCell>
-                            ))}
-                            <TableCell
-                                style={{ backgroundColor: getBackgroundColor(calculateAverage(delCoralL1Data), minMaxValues['DelCoralL1']?.max, minMaxValues['DelCoralL1']?.min) }}
-                            >
+                            {delCoralL1Data.map((data, index) => {
+                                let cellClass = '';
+                                if (data == 0) {
+                                    cellClass = 'teleop black';
+                                } else if (data == 1) {
+                                    cellClass = 'teleop red';
+                                } else if (data == 2) {
+                                    cellClass = 'teleop yellow';
+                                } else if (data == 3) {
+                                    cellClass = 'teleop green';
+                                } else if (data >= 4) {
+                                    cellClass = 'teleop blue';
+                                }
+                                return (
+                                    <TableCell key={index} className={cellClass}>
+                                        {data}
+                                    </TableCell>
+                                );
+                            })}
+                            <TableCell className={
+                                calculateAverage(delCoralL1Data) < 1 ? 'teleop black' :
+                                    calculateAverage(delCoralL1Data) < 2 ? 'teleop red' :
+                                        calculateAverage(delCoralL1Data) < 3 ? 'teleop yellow' :
+                                            calculateAverage(delCoralL1Data) < 4 ? 'teleop green' :
+                                                'teleop blue'
+                            }>
                                 {calculateAverage(delCoralL1Data).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>L2</TableCell>
-                            {delCoralL2Data.map((data, index) => (
-                                <TableCell
-                                    key={index}
-                                    style={{ backgroundColor: getBackgroundColor(parseFloat(data), minMaxValues['DelCoralL2']?.max, minMaxValues['DelCoralL2']?.min) }}
-                                >
-                                    {data}
-                                </TableCell>
-                            ))}
-                            <TableCell
-                                style={{ backgroundColor: getBackgroundColor(calculateAverage(delCoralL2Data), minMaxValues['DelCoralL2']?.max, minMaxValues['DelCoralL2']?.min) }}
-                            >
+                            {delCoralL2Data.map((data, index) => {
+                                let cellClass = '';
+                                if (data == 0) {
+                                    cellClass = 'teleop black';
+                                } else if (data == 1) {
+                                    cellClass = 'teleop red';
+                                } else if (data == 2) {
+                                    cellClass = 'teleop yellow';
+                                } else if (data == 3) {
+                                    cellClass = 'teleop green';
+                                } else if (data >= 4) {
+                                    cellClass = 'teleop blue';
+                                }
+                                return (
+                                    <TableCell key={index} className={cellClass}>
+                                        {data}
+                                    </TableCell>
+                                );
+                            })}
+                            <TableCell className={
+                                calculateAverage(delCoralL2Data) < 1 ? 'teleop black' :
+                                    calculateAverage(delCoralL2Data) < 2 ? 'teleop red' :
+                                        calculateAverage(delCoralL2Data) < 3 ? 'teleop yellow' :
+                                            calculateAverage(delCoralL2Data) < 4 ? 'teleop green' :
+                                                'teleop blue'
+                            }>
                                 {calculateAverage(delCoralL2Data).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>L3</TableCell>
-                            {delCoralL3Data.map((data, index) => (
-                                <TableCell
-                                    key={index}
-                                    style={{ backgroundColor: getBackgroundColor(parseFloat(data), minMaxValues['DelCoralL3']?.max, minMaxValues['DelCoralL3']?.min) }}
-                                >
-                                    {data}
-                                </TableCell>
-                            ))}
-                            <TableCell
-                                style={{ backgroundColor: getBackgroundColor(calculateAverage(delCoralL3Data), minMaxValues['DelCoralL3']?.max, minMaxValues['DelCoralL3']?.min) }}
-                            >
+                            {delCoralL3Data.map((data, index) => {
+                                let cellClass = '';
+                                if (data == 0) {
+                                    cellClass = 'teleop black';
+                                } else if (data == 1) {
+                                    cellClass = 'teleop red';
+                                } else if (data == 2) {
+                                    cellClass = 'teleop yellow';
+                                } else if (data == 3) {
+                                    cellClass = 'teleop green';
+                                } else if (data >= 4) {
+                                    cellClass = 'teleop blue';
+                                }
+                                return (
+                                    <TableCell key={index} className={cellClass}>
+                                        {data}
+                                    </TableCell>
+                                );
+                            })}
+                            <TableCell className={
+                                calculateAverage(delCoralL3Data) < 1 ? 'teleop black' :
+                                    calculateAverage(delCoralL3Data) < 2 ? 'teleop red' :
+                                        calculateAverage(delCoralL3Data) < 3 ? 'teleop yellow' :
+                                            calculateAverage(delCoralL3Data) < 4 ? 'teleop green' :
+                                                'teleop blue'
+                            }>
                                 {calculateAverage(delCoralL3Data).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>L4</TableCell>
-                            {delCoralL4Data.map((data, index) => (
-                                <TableCell
-                                    key={index}
-                                    style={{ backgroundColor: getBackgroundColor(parseFloat(data), minMaxValues['DelCoralL4']?.max, minMaxValues['DelCoralL4']?.min) }}
-                                >
-                                    {data}
-                                </TableCell>
-                            ))}
-                            <TableCell
-                                style={{ backgroundColor: getBackgroundColor(calculateAverage(delCoralL4Data), minMaxValues['DelCoralL4']?.max, minMaxValues['DelCoralL4']?.min) }}
-                            >
+                            {delCoralL4Data.map((data, index) => {
+                                let cellClass = '';
+                                if (data == 0) {
+                                    cellClass = 'teleop black';
+                                } else if (data == 1) {
+                                    cellClass = 'teleop red';
+                                } else if (data == 2) {
+                                    cellClass = 'teleop yellow';
+                                } else if (data == 3) {
+                                    cellClass = 'teleop green';
+                                } else if (data >= 4) {
+                                    cellClass = 'teleop blue';
+                                }
+                                return (
+                                    <TableCell key={index} className={cellClass}>
+                                        {data}
+                                    </TableCell>
+                                );
+                            })}
+                            <TableCell className={
+                                calculateAverage(delCoralL4Data) < 1 ? 'teleop black' :
+                                    calculateAverage(delCoralL4Data) < 2 ? 'teleop red' :
+                                        calculateAverage(delCoralL4Data) < 3 ? 'teleop yellow' :
+                                            calculateAverage(delCoralL4Data) < 4 ? 'teleop green' :
+                                                'teleop blue'
+                            }>
                                 {calculateAverage(delCoralL4Data).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow style={{ borderBottom: '4px solid black' }}>
                             <TableCell>Floor/Drop</TableCell>
-                            {delCoralFData.map((data, index) => (
-                                <TableCell
-                                    key={index}
-                                    style={{ backgroundColor: getBackgroundColor(parseFloat(data), minMaxValues['DelCoralF']?.min, minMaxValues['DelCoralF']?.max) }}
-                                >
-                                    {data}
-                                </TableCell>
-                            ))}
-                            <TableCell
-                                style={{ backgroundColor: getBackgroundColor(calculateAverage(delCoralFData), minMaxValues['DelCoralF']?.min, minMaxValues['DelCoralF']?.max) }}
-                            >
+                            {delCoralFData.map((data, index) => {
+                                let cellClass = '';
+                                if (data > 4) {
+                                    cellClass = 'teleop black';
+                                } else if (data == 3) {
+                                    cellClass = 'teleop red';
+                                } else if (data == 2) {
+                                    cellClass = 'teleop yellow';
+                                } else if (data == 1) {
+                                    cellClass = 'teleop green';
+                                } else if (data == 0) {
+                                    cellClass = 'teleop blue';
+                                }
+                                return (
+                                    <TableCell key={index} className={cellClass}>
+                                        {data}
+                                    </TableCell>
+                                );
+                            })}
+                            <TableCell className={
+                                calculateAverage(delCoralFData) > 1 ? 'teleop black' :
+                                    calculateAverage(delCoralFData) > 2 ? 'teleop red' :
+                                        calculateAverage(delCoralFData) > 3 ? 'teleop yellow' :
+                                            calculateAverage(delCoralFData) > 4 ? 'teleop green' :
+                                                'teleop blue'
+                            }>
                                 {calculateAverage(delCoralFData).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>Processor</TableCell>
-                            {delAlgaePData.map((data, index) => (
-                                <TableCell
-                                    key={index}
-                                    style={{ backgroundColor: getBackgroundColor(parseFloat(data), minMaxValues['DelAlgaeP']?.max, minMaxValues['DelAlgaeP']?.min) }}
-                                >
-                                    {data}
-                                </TableCell>
-                            ))}
-                            <TableCell
-                                style={{ backgroundColor: getBackgroundColor(calculateAverage(delAlgaePData), minMaxValues['DelAlgaeP']?.max, minMaxValues['DelAlgaeP']?.min) }}
-                            >
+                            {delAlgaePData.map((data, index) => {
+                                let cellClass = '';
+                                if (data == 0) {
+                                    cellClass = 'teleop black';
+                                } else if (data >= 1 && data <= 2) {
+                                    cellClass = 'teleop red';
+                                } else if (data >= 3 && data <= 4) {
+                                    cellClass = 'teleop yellow';
+                                } else if (data >= 5 && data <= 6) {
+                                    cellClass = 'teleop green';
+                                } else if (data >= 7) {
+                                    cellClass = 'teleop blue';
+                                }
+                                return (
+                                    <TableCell key={index} className={cellClass}>
+                                        {data}
+                                    </TableCell>
+                                );
+                            })}
+                            <TableCell className={
+                                calculateAverage(delAlgaePData) < 1 ? 'teleop black' :
+                                    (calculateAverage(delAlgaePData) >= 1 && calculateAverage(delAlgaePData) <= 2) ? 'teleop red' :
+                                        (calculateAverage(delAlgaePData) >= 3 && calculateAverage(delAlgaePData) <= 4) ? 'teleop yellow' :
+                                            (calculateAverage(delAlgaePData) >= 5 && calculateAverage(delAlgaePData) <= 6) ? 'teleop green' :
+                                                'teleop blue'
+                            }>
                                 {calculateAverage(delAlgaePData).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>Net</TableCell>
-                            {delAlgaeNData.map((data, index) => (
-                                <TableCell
-                                    key={index}
-                                    style={{ backgroundColor: getBackgroundColor(parseFloat(data), minMaxValues['DelAlgaeN']?.max, minMaxValues['DelAlgaeN']?.min) }}
-                                >
-                                    {data}
-                                </TableCell>
-                            ))}
-                            <TableCell
-                                style={{ backgroundColor: getBackgroundColor(calculateAverage(delAlgaeNData), minMaxValues['DelAlgaeN']?.max, minMaxValues['DelAlgaeN']?.min) }}
-                            >
+                            {delAlgaeNData.map((data, index) => {
+                                let cellClass = '';
+                                if (data == 0) {
+                                    cellClass = 'teleop black';
+                                } else if (data >= 1 && data <= 2) {
+                                    cellClass = 'teleop red';
+                                } else if (data >= 3 && data <= 4) {
+                                    cellClass = 'teleop yellow';
+                                } else if (data >= 5 && data <= 6) {
+                                    cellClass = 'teleop green';
+                                } else if (data >= 7) {
+                                    cellClass = 'teleop blue';
+                                }
+                                return (
+                                    <TableCell key={index} className={cellClass}>
+                                        {data}
+                                    </TableCell>
+                                );
+                            })}
+                            <TableCell className={
+                                calculateAverage(delAlgaeNData) < 1 ? 'teleop black' :
+                                    (calculateAverage(delAlgaeNData) >= 1 && calculateAverage(delAlgaeNData) <= 2) ? 'teleop red' :
+                                        (calculateAverage(delAlgaeNData) >= 3 && calculateAverage(delAlgaeNData) <= 4) ? 'teleop yellow' :
+                                            (calculateAverage(delAlgaeNData) >= 5 && calculateAverage(delAlgaeNData) <= 6) ? 'teleop green' :
+                                                'teleop blue'
+                            }>
                                 {calculateAverage(delAlgaeNData).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>Floor/Drop</TableCell>
-                            {delAlgaeFData.map((data, index) => (
-                                <TableCell
-                                    key={index}
-                                    style={{ backgroundColor: getBackgroundColor(parseFloat(data), minMaxValues['DelAlgaeF']?.min, minMaxValues['DelAlgaeF']?.max) }}
-                                >
-                                    {data}
-                                </TableCell>
-                            ))}
-                            <TableCell
-                                style={{ backgroundColor: getBackgroundColor(calculateAverage(delAlgaeFData), minMaxValues['DelAlgaeF']?.min, minMaxValues['DelAlgaeF']?.max) }}
-                            >
+                            {delAlgaeFData.map((data, index) => {
+                                let cellClass = '';
+                                if (data == 0) {
+                                    cellClass = 'teleop black';
+                                } else if (data >= 1 && data <= 2) {
+                                    cellClass = 'teleop red';
+                                } else if (data >= 3 && data <= 4) {
+                                    cellClass = 'teleop yellow';
+                                } else if (data >= 5 && data <= 6) {
+                                    cellClass = 'teleop green';
+                                } else if (data >= 7) {
+                                    cellClass = 'teleop blue';
+                                }
+                                return (
+                                    <TableCell key={index} className={cellClass}>
+                                        {data}
+                                    </TableCell>
+                                );
+                            })}
+                            <TableCell className={
+                                calculateAverage(delAlgaeFData) < 1 ? 'teleop black' :
+                                    (calculateAverage(delAlgaeFData) >= 1 && calculateAverage(delAlgaeFData) <= 2) ? 'teleop red' :
+                                        (calculateAverage(delAlgaeFData) >= 3 && calculateAverage(delAlgaeFData) <= 4) ? 'teleop yellow' :
+                                            (calculateAverage(delAlgaeFData) >= 5 && calculateAverage(delAlgaeFData) <= 6) ? 'teleop green' :
+                                                'teleop blue'
+                            }>
                                 {calculateAverage(delAlgaeFData).toFixed(2)}
                             </TableCell>
                         </TableRow>

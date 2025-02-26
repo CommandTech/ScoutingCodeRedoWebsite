@@ -4,24 +4,24 @@
 
 
 
-.mpr.black {
+.auto.black {
     background-color: rgb(0, 0, 0);
     color: white;
     border-right: white 1px solid;
 }
 
-.mpr.red {
+.auto.red {
     background-color: rgb(255, 0, 0);
 }
 
-.mpr.yellow {
+.auto.yellow {
     background-color: rgb(255, 255, 0);
 }
 
-.mpr.green {
+.auto.green {
     background-color: rgb(0, 255, 0);
 }
-.mpr.blue {
+.auto.blue {
     background-color: rgb(0, 0, 255);
     color: white;
     border-right: white 1px solid;

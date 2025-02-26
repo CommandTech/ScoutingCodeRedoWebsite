@@ -179,15 +179,15 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                             {acqCoralSData.map((data, index) => {
                                 let cellClass = '';
                                 if (data == 0) {
-                                    cellClass = 'mpr black';
+                                    cellClass = 'auto black';
                                 } else if (data == 1) {
-                                    cellClass = 'mpr red';
+                                    cellClass = 'auto red';
                                 } else if (data == 2) {
-                                    cellClass = 'mpr yellow';
+                                    cellClass = 'auto yellow';
                                 } else if (data == 3) {
-                                    cellClass = 'mpr green';
+                                    cellClass = 'auto green';
                                 } else if (data >= 4) {
-                                    cellClass = 'mpr blue';
+                                    cellClass = 'auto blue';
                                 }
                                 return (
                                     <TableCell key={index} className={cellClass}>
@@ -196,11 +196,11 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                 );
                             })}
                             <TableCell className={
-                                calculateAverage(acqCoralSData) < 1 ? 'mpr black' :
-                                    calculateAverage(acqCoralSData) < 2 ? 'mpr red' :
-                                        calculateAverage(acqCoralSData) < 3 ? 'mpr yellow' :
-                                            calculateAverage(acqCoralSData) < 4 ? 'mpr green' :
-                                                'mpr blue'
+                                calculateAverage(acqCoralSData) < 1 ? 'auto black' :
+                                    calculateAverage(acqCoralSData) < 2 ? 'auto red' :
+                                        calculateAverage(acqCoralSData) < 3 ? 'auto yellow' :
+                                            calculateAverage(acqCoralSData) < 4 ? 'auto green' :
+                                                'auto blue'
                             }>
                                 {calculateAverage(acqCoralSData).toFixed(2)}
                             </TableCell>
@@ -210,15 +210,15 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                             {acqCoralFData.map((data, index) => {
                                 let cellClass = '';
                                 if (data == 0) {
-                                    cellClass = 'mpr black';
+                                    cellClass = 'auto black';
                                 } else if (data == 1) {
-                                    cellClass = 'mpr red';
+                                    cellClass = 'auto red';
                                 } else if (data == 2) {
-                                    cellClass = 'mpr yellow';
+                                    cellClass = 'auto yellow';
                                 } else if (data == 3) {
-                                    cellClass = 'mpr green';
+                                    cellClass = 'auto green';
                                 } else if (data >= 4) {
-                                    cellClass = 'mpr blue';
+                                    cellClass = 'auto blue';
                                 }
                                 return (
                                     <TableCell key={index} className={cellClass}>
@@ -227,13 +227,44 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                 );
                             })}
                             <TableCell className={
-                                calculateAverage(acqCoralFData) < 1 ? 'mpr black' :
-                                    calculateAverage(acqCoralFData) < 2 ? 'mpr red' :
-                                        calculateAverage(acqCoralFData) < 3 ? 'mpr yellow' :
-                                            calculateAverage(acqCoralFData) < 4 ? 'mpr green' :
-                                                'mpr blue'
+                                calculateAverage(acqCoralFData) < 1 ? 'auto black' :
+                                    calculateAverage(acqCoralFData) < 2 ? 'auto red' :
+                                        calculateAverage(acqCoralFData) < 3 ? 'auto yellow' :
+                                            calculateAverage(acqCoralFData) < 4 ? 'auto green' :
+                                                'auto blue'
                             }>
                                 {calculateAverage(acqCoralFData).toFixed(2)}
+                            </TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>Algae Reef</TableCell>
+                            {acqAlgaeRData.map((data, index) => {
+                                let cellClass = '';
+                                if (data == 0) {
+                                    cellClass = 'auto black';
+                                } else if (data >= 1 && data <= 2) {
+                                    cellClass = 'auto red';
+                                } else if (data >= 3 && data <= 4) {
+                                    cellClass = 'auto yellow';
+                                } else if (data >= 5 && data <= 6) {
+                                    cellClass = 'auto green';
+                                } else if (data >= 7) {
+                                    cellClass = 'auto blue';
+                                }
+                                return (
+                                    <TableCell key={index} className={cellClass}>
+                                        {data}
+                                    </TableCell>
+                                );
+                            })}
+                            <TableCell className={
+                                calculateAverage(acqAlgaeRData) < 1 ? 'auto black' :
+                                    (calculateAverage(acqAlgaeRData) >= 1 && calculateAverage(acqAlgaeRData) <= 2) ? 'auto red' :
+                                        (calculateAverage(acqAlgaeRData) >= 3 && calculateAverage(acqAlgaeRData) <= 4) ? 'auto yellow' :
+                                            (calculateAverage(acqAlgaeRData) >= 5 && calculateAverage(acqAlgaeRData) <= 6) ? 'auto green' :
+                                                'auto blue'
+                            }>
+                                {calculateAverage(acqAlgaeRData).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
@@ -241,15 +272,15 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                             {acqAlgaeFData.map((data, index) => {
                                 let cellClass = '';
                                 if (data == 0) {
-                                    cellClass = 'mpr black';
+                                    cellClass = 'auto black';
                                 } else if (data >= 1 && data <= 2) {
-                                    cellClass = 'mpr red';
+                                    cellClass = 'auto red';
                                 } else if (data >= 3 && data <= 4) {
-                                    cellClass = 'mpr yellow';
+                                    cellClass = 'auto yellow';
                                 } else if (data >= 5 && data <= 6) {
-                                    cellClass = 'mpr green';
+                                    cellClass = 'auto green';
                                 } else if (data >= 7) {
-                                    cellClass = 'mpr blue';
+                                    cellClass = 'auto blue';
                                 }
                                 return (
                                     <TableCell key={index} className={cellClass}>
@@ -258,11 +289,11 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                 );
                             })}
                             <TableCell className={
-                                calculateAverage(acqAlgaeFData) < 1 ? 'mpr black' :
-                                    (calculateAverage(acqAlgaeFData) >= 1 && calculateAverage(acqAlgaeFData) <= 2) ? 'mpr red' :
-                                        (calculateAverage(acqAlgaeFData) >= 3 && calculateAverage(acqAlgaeFData) <= 4) ? 'mpr yellow' :
-                                            (calculateAverage(acqAlgaeFData) >= 5 && calculateAverage(acqAlgaeFData) <= 6) ? 'mpr green' :
-                                                'mpr blue'
+                                calculateAverage(acqAlgaeFData) < 1 ? 'auto black' :
+                                    (calculateAverage(acqAlgaeFData) >= 1 && calculateAverage(acqAlgaeFData) <= 2) ? 'auto red' :
+                                        (calculateAverage(acqAlgaeFData) >= 3 && calculateAverage(acqAlgaeFData) <= 4) ? 'auto yellow' :
+                                            (calculateAverage(acqAlgaeFData) >= 5 && calculateAverage(acqAlgaeFData) <= 6) ? 'auto green' :
+                                                'auto blue'
                             }>
                                 {calculateAverage(acqAlgaeFData).toFixed(2)}
                             </TableCell>
@@ -277,15 +308,15 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                             {delCoralL1Data.map((data, index) => {
                                 let cellClass = '';
                                 if (data == 0) {
-                                    cellClass = 'mpr black';
+                                    cellClass = 'auto black';
                                 } else if (data == 1) {
-                                    cellClass = 'mpr red';
+                                    cellClass = 'auto red';
                                 } else if (data == 2) {
-                                    cellClass = 'mpr yellow';
+                                    cellClass = 'auto yellow';
                                 } else if (data == 3) {
-                                    cellClass = 'mpr green';
+                                    cellClass = 'auto green';
                                 } else if (data >= 4) {
-                                    cellClass = 'mpr blue';
+                                    cellClass = 'auto blue';
                                 }
                                 return (
                                     <TableCell key={index} className={cellClass}>
@@ -294,11 +325,11 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                 );
                             })}
                             <TableCell className={
-                                calculateAverage(delCoralL1Data) < 1 ? 'mpr black' :
-                                    calculateAverage(delCoralL1Data) < 2 ? 'mpr red' :
-                                        calculateAverage(delCoralL1Data) < 3 ? 'mpr yellow' :
-                                            calculateAverage(delCoralL1Data) < 4 ? 'mpr green' :
-                                                'mpr blue'
+                                calculateAverage(delCoralL1Data) < 1 ? 'auto black' :
+                                    calculateAverage(delCoralL1Data) < 2 ? 'auto red' :
+                                        calculateAverage(delCoralL1Data) < 3 ? 'auto yellow' :
+                                            calculateAverage(delCoralL1Data) < 4 ? 'auto green' :
+                                                'auto blue'
                             }>
                                 {calculateAverage(delCoralL1Data).toFixed(2)}
                             </TableCell>
@@ -308,15 +339,15 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                             {delCoralL2Data.map((data, index) => {
                                 let cellClass = '';
                                 if (data == 0) {
-                                    cellClass = 'mpr black';
+                                    cellClass = 'auto black';
                                 } else if (data == 1) {
-                                    cellClass = 'mpr red';
+                                    cellClass = 'auto red';
                                 } else if (data == 2) {
-                                    cellClass = 'mpr yellow';
+                                    cellClass = 'auto yellow';
                                 } else if (data == 3) {
-                                    cellClass = 'mpr green';
+                                    cellClass = 'auto green';
                                 } else if (data >= 4) {
-                                    cellClass = 'mpr blue';
+                                    cellClass = 'auto blue';
                                 }
                                 return (
                                     <TableCell key={index} className={cellClass}>
@@ -325,11 +356,11 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                 );
                             })}
                             <TableCell className={
-                                calculateAverage(delCoralL2Data) < 1 ? 'mpr black' :
-                                    calculateAverage(delCoralL2Data) < 2 ? 'mpr red' :
-                                        calculateAverage(delCoralL2Data) < 3 ? 'mpr yellow' :
-                                            calculateAverage(delCoralL2Data) < 4 ? 'mpr green' :
-                                                'mpr blue'
+                                calculateAverage(delCoralL2Data) < 1 ? 'auto black' :
+                                    calculateAverage(delCoralL2Data) < 2 ? 'auto red' :
+                                        calculateAverage(delCoralL2Data) < 3 ? 'auto yellow' :
+                                            calculateAverage(delCoralL2Data) < 4 ? 'auto green' :
+                                                'auto blue'
                             }>
                                 {calculateAverage(delCoralL2Data).toFixed(2)}
                             </TableCell>
@@ -339,15 +370,15 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                             {delCoralL3Data.map((data, index) => {
                                 let cellClass = '';
                                 if (data == 0) {
-                                    cellClass = 'mpr black';
+                                    cellClass = 'auto black';
                                 } else if (data == 1) {
-                                    cellClass = 'mpr red';
+                                    cellClass = 'auto red';
                                 } else if (data == 2) {
-                                    cellClass = 'mpr yellow';
+                                    cellClass = 'auto yellow';
                                 } else if (data == 3) {
-                                    cellClass = 'mpr green';
+                                    cellClass = 'auto green';
                                 } else if (data >= 4) {
-                                    cellClass = 'mpr blue';
+                                    cellClass = 'auto blue';
                                 }
                                 return (
                                     <TableCell key={index} className={cellClass}>
@@ -356,11 +387,11 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                 );
                             })}
                             <TableCell className={
-                                calculateAverage(delCoralL3Data) < 1 ? 'mpr black' :
-                                    calculateAverage(delCoralL3Data) < 2 ? 'mpr red' :
-                                        calculateAverage(delCoralL3Data) < 3 ? 'mpr yellow' :
-                                            calculateAverage(delCoralL3Data) < 4 ? 'mpr green' :
-                                                'mpr blue'
+                                calculateAverage(delCoralL3Data) < 1 ? 'auto black' :
+                                    calculateAverage(delCoralL3Data) < 2 ? 'auto red' :
+                                        calculateAverage(delCoralL3Data) < 3 ? 'auto yellow' :
+                                            calculateAverage(delCoralL3Data) < 4 ? 'auto green' :
+                                                'auto blue'
                             }>
                                 {calculateAverage(delCoralL3Data).toFixed(2)}
                             </TableCell>
@@ -370,15 +401,15 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                             {delCoralL4Data.map((data, index) => {
                                 let cellClass = '';
                                 if (data == 0) {
-                                    cellClass = 'mpr black';
+                                    cellClass = 'auto black';
                                 } else if (data == 1) {
-                                    cellClass = 'mpr red';
+                                    cellClass = 'auto red';
                                 } else if (data == 2) {
-                                    cellClass = 'mpr yellow';
+                                    cellClass = 'auto yellow';
                                 } else if (data == 3) {
-                                    cellClass = 'mpr green';
+                                    cellClass = 'auto green';
                                 } else if (data >= 4) {
-                                    cellClass = 'mpr blue';
+                                    cellClass = 'auto blue';
                                 }
                                 return (
                                     <TableCell key={index} className={cellClass}>
@@ -387,11 +418,11 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                 );
                             })}
                             <TableCell className={
-                                calculateAverage(delCoralL4Data) < 1 ? 'mpr black' :
-                                    calculateAverage(delCoralL4Data) < 2 ? 'mpr red' :
-                                        calculateAverage(delCoralL4Data) < 3 ? 'mpr yellow' :
-                                            calculateAverage(delCoralL4Data) < 4 ? 'mpr green' :
-                                                'mpr blue'
+                                calculateAverage(delCoralL4Data) < 1 ? 'auto black' :
+                                    calculateAverage(delCoralL4Data) < 2 ? 'auto red' :
+                                        calculateAverage(delCoralL4Data) < 3 ? 'auto yellow' :
+                                            calculateAverage(delCoralL4Data) < 4 ? 'auto green' :
+                                                'auto blue'
                             }>
                                 {calculateAverage(delCoralL4Data).toFixed(2)}
                             </TableCell>
@@ -401,15 +432,15 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                             {delCoralFData.map((data, index) => {
                                 let cellClass = '';
                                 if (data > 4) {
-                                    cellClass = 'mpr black';
+                                    cellClass = 'auto black';
                                 } else if (data == 3) {
-                                    cellClass = 'mpr red';
+                                    cellClass = 'auto red';
                                 } else if (data == 2) {
-                                    cellClass = 'mpr yellow';
+                                    cellClass = 'auto yellow';
                                 } else if (data == 1) {
-                                    cellClass = 'mpr green';
+                                    cellClass = 'auto green';
                                 } else if (data == 0) {
-                                    cellClass = 'mpr blue';
+                                    cellClass = 'auto blue';
                                 }
                                 return (
                                     <TableCell key={index} className={cellClass}>
@@ -418,11 +449,11 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                 );
                             })}
                             <TableCell className={
-                                calculateAverage(delCoralFData) > 1 ? 'mpr black' :
-                                    calculateAverage(delCoralFData) > 2 ? 'mpr red' :
-                                        calculateAverage(delCoralFData) > 3 ? 'mpr yellow' :
-                                            calculateAverage(delCoralFData) > 4 ? 'mpr green' :
-                                                'mpr blue'
+                                calculateAverage(delCoralFData) > 1 ? 'auto black' :
+                                    calculateAverage(delCoralFData) > 2 ? 'auto red' :
+                                        calculateAverage(delCoralFData) > 3 ? 'auto yellow' :
+                                            calculateAverage(delCoralFData) > 4 ? 'auto green' :
+                                                'auto blue'
                             }>
                                 {calculateAverage(delCoralFData).toFixed(2)}
                             </TableCell>
@@ -432,15 +463,15 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                             {delAlgaePData.map((data, index) => {
                                 let cellClass = '';
                                 if (data == 0) {
-                                    cellClass = 'mpr black';
+                                    cellClass = 'auto black';
                                 } else if (data >= 1 && data <= 2) {
-                                    cellClass = 'mpr red';
+                                    cellClass = 'auto red';
                                 } else if (data >= 3 && data <= 4) {
-                                    cellClass = 'mpr yellow';
+                                    cellClass = 'auto yellow';
                                 } else if (data >= 5 && data <= 6) {
-                                    cellClass = 'mpr green';
+                                    cellClass = 'auto green';
                                 } else if (data >= 7) {
-                                    cellClass = 'mpr blue';
+                                    cellClass = 'auto blue';
                                 }
                                 return (
                                     <TableCell key={index} className={cellClass}>
@@ -449,11 +480,11 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                 );
                             })}
                             <TableCell className={
-                                calculateAverage(delAlgaePData) < 1 ? 'mpr black' :
-                                    (calculateAverage(delAlgaePData) >= 1 && calculateAverage(delAlgaePData) <= 2) ? 'mpr red' :
-                                        (calculateAverage(delAlgaePData) >= 3 && calculateAverage(delAlgaePData) <= 4) ? 'mpr yellow' :
-                                            (calculateAverage(delAlgaePData) >= 5 && calculateAverage(delAlgaePData) <= 6) ? 'mpr green' :
-                                                'mpr blue'
+                                calculateAverage(delAlgaePData) < 1 ? 'auto black' :
+                                    (calculateAverage(delAlgaePData) >= 1 && calculateAverage(delAlgaePData) <= 2) ? 'auto red' :
+                                        (calculateAverage(delAlgaePData) >= 3 && calculateAverage(delAlgaePData) <= 4) ? 'auto yellow' :
+                                            (calculateAverage(delAlgaePData) >= 5 && calculateAverage(delAlgaePData) <= 6) ? 'auto green' :
+                                                'auto blue'
                             }>
                                 {calculateAverage(delAlgaePData).toFixed(2)}
                             </TableCell>
@@ -463,15 +494,15 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                             {delAlgaeNData.map((data, index) => {
                                 let cellClass = '';
                                 if (data == 0) {
-                                    cellClass = 'mpr black';
+                                    cellClass = 'auto black';
                                 } else if (data >= 1 && data <= 2) {
-                                    cellClass = 'mpr red';
+                                    cellClass = 'auto red';
                                 } else if (data >= 3 && data <= 4) {
-                                    cellClass = 'mpr yellow';
+                                    cellClass = 'auto yellow';
                                 } else if (data >= 5 && data <= 6) {
-                                    cellClass = 'mpr green';
+                                    cellClass = 'auto green';
                                 } else if (data >= 7) {
-                                    cellClass = 'mpr blue';
+                                    cellClass = 'auto blue';
                                 }
                                 return (
                                     <TableCell key={index} className={cellClass}>
@@ -480,11 +511,11 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                 );
                             })}
                             <TableCell className={
-                                calculateAverage(delAlgaeNData) < 1 ? 'mpr black' :
-                                    (calculateAverage(delAlgaeNData) >= 1 && calculateAverage(delAlgaeNData) <= 2) ? 'mpr red' :
-                                        (calculateAverage(delAlgaeNData) >= 3 && calculateAverage(delAlgaeNData) <= 4) ? 'mpr yellow' :
-                                            (calculateAverage(delAlgaeNData) >= 5 && calculateAverage(delAlgaeNData) <= 6) ? 'mpr green' :
-                                                'mpr blue'
+                                calculateAverage(delAlgaeNData) < 1 ? 'auto black' :
+                                    (calculateAverage(delAlgaeNData) >= 1 && calculateAverage(delAlgaeNData) <= 2) ? 'auto red' :
+                                        (calculateAverage(delAlgaeNData) >= 3 && calculateAverage(delAlgaeNData) <= 4) ? 'auto yellow' :
+                                            (calculateAverage(delAlgaeNData) >= 5 && calculateAverage(delAlgaeNData) <= 6) ? 'auto green' :
+                                                'auto blue'
                             }>
                                 {calculateAverage(delAlgaeNData).toFixed(2)}
                             </TableCell>
@@ -494,15 +525,15 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                             {delAlgaeFData.map((data, index) => {
                                 let cellClass = '';
                                 if (data == 0) {
-                                    cellClass = 'mpr black';
+                                    cellClass = 'auto black';
                                 } else if (data >= 1 && data <= 2) {
-                                    cellClass = 'mpr red';
+                                    cellClass = 'auto red';
                                 } else if (data >= 3 && data <= 4) {
-                                    cellClass = 'mpr yellow';
+                                    cellClass = 'auto yellow';
                                 } else if (data >= 5 && data <= 6) {
-                                    cellClass = 'mpr green';
+                                    cellClass = 'auto green';
                                 } else if (data >= 7) {
-                                    cellClass = 'mpr blue';
+                                    cellClass = 'auto blue';
                                 }
                                 return (
                                     <TableCell key={index} className={cellClass}>
@@ -511,11 +542,11 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                 );
                             })}
                             <TableCell className={
-                                calculateAverage(delAlgaeFData) < 1 ? 'mpr black' :
-                                    (calculateAverage(delAlgaeFData) >= 1 && calculateAverage(delAlgaeFData) <= 2) ? 'mpr red' :
-                                        (calculateAverage(delAlgaeFData) >= 3 && calculateAverage(delAlgaeFData) <= 4) ? 'mpr yellow' :
-                                            (calculateAverage(delAlgaeFData) >= 5 && calculateAverage(delAlgaeFData) <= 6) ? 'mpr green' :
-                                                'mpr blue'
+                                calculateAverage(delAlgaeFData) < 1 ? 'auto black' :
+                                    (calculateAverage(delAlgaeFData) >= 1 && calculateAverage(delAlgaeFData) <= 2) ? 'auto red' :
+                                        (calculateAverage(delAlgaeFData) >= 3 && calculateAverage(delAlgaeFData) <= 4) ? 'auto yellow' :
+                                            (calculateAverage(delAlgaeFData) >= 5 && calculateAverage(delAlgaeFData) <= 6) ? 'auto green' :
+                                                'auto blue'
                             }>
                                 {calculateAverage(delAlgaeFData).toFixed(2)}
                             </TableCell>

@@ -344,35 +344,6 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
                             <TableRow className="table-row-bordered2">
                                 <TableCell>Climb Time</TableCell>
                                 {climbTimes.map((time, index) => {
-                                    const state = climbStates[index];
-                                    if (state === 'Deep') {
-                                        return (
-                                            <TableCell>
-                                                {time}
-                                            </TableCell>
-                                        );
-                                    }
-                                    if (state === 'Shallow') {
-                                        return (
-                                            <TableCell>
-                                                {time}
-                                            </TableCell>
-                                        );
-                                    }
-                                    if (state === 'Park') {
-                                        return (
-                                            <TableCell key={index}>
-                                                {time}
-                                            </TableCell>
-                                        );
-                                    }
-                                    if (state === 'Elsewhere') {
-                                        return (
-                                            <TableCell key={index}>
-                                                {time}
-                                            </TableCell>
-                                        );
-                                    }
                                     return <TableCell key={index}>{time}</TableCell>;
                                 })}
                             </TableRow>

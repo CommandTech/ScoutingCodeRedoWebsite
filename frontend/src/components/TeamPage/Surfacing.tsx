@@ -120,13 +120,6 @@ const Surfacing: React.FC<SurfacingProps> = ({ selectedTeam }) => {
 
     const columns = ['Matches:', ...Array.from({ length: matchCount }, (_, i) => `Match ${i + 1}`)];
 
-    const getBackgroundColor = (value: number, max: number, min: number) => {
-        const ratio = (value - min) / (max - min);
-        const red = Math.round(255 * (1 - ratio));
-        const green = Math.round(255 * ratio);
-        return `rgb(${red}, ${green}, 0)`;
-    };
-
     const handleChange1 = (event: SelectChangeEvent<string>) => {
         setSelectedChart1(event.target.value as string);
     };
@@ -159,27 +152,31 @@ const Surfacing: React.FC<SurfacingProps> = ({ selectedTeam }) => {
                         </TableRow>
                         <TableRow className="table-row-bordered">
                             <TableCell>Climb State</TableCell>
-                            {climbStates.map((state, index) => (
-                                <TableCell key={index}>{state}</TableCell>
-                            ))}
+                            {climbStates.map((state, index) => {
+                                let cellClass = '';
+                                if (state == 'Elsewhere') {
+                                    cellClass = 'mpr black';
+                                } else if (state == '') {
+                                    cellClass = 'mpr red';
+                                } else if (state == 'Park') {
+                                    cellClass = 'mpr yellow';
+                                } else if (state == 'Shallow') {
+                                    cellClass = 'mpr green';
+                                } else if (state == 'Deep') {
+                                    cellClass = 'mpr blue';
+                                }
+                                return (
+                                    <TableCell key={index} className={cellClass}>
+                                        {state}
+                                    </TableCell>
+                                );
+                            })}
                         </TableRow>
                         <TableRow className="table-row-bordered" style={{ borderBottom: '4px solid black' }}>
                             <TableCell>Climb Time</TableCell>
                             {climbTimes.map((time, index) => {
-                                const state = climbStates[index];
-                                const timeValue = parseFloat(time);
-                                let backgroundColor = 'transparent';
-
-                                if (state === 'Park' || state === 'Elsewhere') {
-                                    backgroundColor = timeValue > 0 ? 'red' : '#00ff00';
-                                } else if (state === 'Shallow') {
-                                    backgroundColor = getBackgroundColor(timeValue, globalMinShallowTime, globalMaxShallowTime);
-                                } else if (state === 'Deep') {
-                                    backgroundColor = getBackgroundColor(timeValue, globalMinDeepTime, globalMaxDeepTime);
-                                }
-
                                 return (
-                                    <TableCell key={index} style={{ backgroundColor }}>
+                                    <TableCell key={index}>
                                         {time}
                                     </TableCell>
                                 );
