@@ -122,18 +122,11 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
 
     const columns = ['Matches:', ...Array.from({ length: matchCount }, (_, i) => `Match ${i + 1}`), 'Average'];
 
-    const getBackgroundColor = (value: number, max: number, min: number) => {
-        const ratio = (value - min) / (max - min);
-        const red = Math.round(255 * (1 - ratio));
-        const green = Math.round(255 * ratio);
-        return `rgb(${red}, ${green}, 0)`;
-    };
-
     const calculateAverage = (data: any[]) => {
         const numericData = data.map(value => parseFloat(value)).filter(value => !isNaN(value));
         const sum = numericData.reduce((acc, value) => acc + value, 0);
         return sum / numericData.length;
-    };  
+    };
 
     const handleChange1 = (event: SelectChangeEvent<string>) => {
         setSelectedChart1(event.target.value as string);
@@ -183,65 +176,94 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                         </TableRow>
                         <TableRow>
                             <TableCell>Coral Station</TableCell>
-                            {acqCoralSData.map((data, index) => (
-                                <TableCell
-                                    key={index}
-                                    style={{ backgroundColor: getBackgroundColor(parseFloat(data), minMaxValues['AcqCoralS']?.max, minMaxValues['AcqCoralS']?.min) }}
-                                >
-                                    {data}
-                                </TableCell>
-                            ))}
-                            <TableCell
-                                style={{ backgroundColor: getBackgroundColor(calculateAverage(acqCoralSData), minMaxValues['AcqCoralS']?.max, minMaxValues['AcqCoralS']?.min) }}
-                            >
+                            {acqCoralSData.map((data, index) => {
+                                let cellClass = '';
+                                if (data == 0) {
+                                    cellClass = 'mpr black';
+                                } else if (data == 1) {
+                                    cellClass = 'mpr red';
+                                } else if (data == 2) {
+                                    cellClass = 'mpr yellow';
+                                } else if (data == 3) {
+                                    cellClass = 'mpr green';
+                                } else if (data >= 4) {
+                                    cellClass = 'mpr blue';
+                                }
+                                return (
+                                    <TableCell key={index} className={cellClass}>
+                                        {data}
+                                    </TableCell>
+                                );
+                            })}
+                            <TableCell className={
+                                calculateAverage(acqCoralSData) < 1 ? 'mpr black' :
+                                    calculateAverage(acqCoralSData) < 2 ? 'mpr red' :
+                                        calculateAverage(acqCoralSData) < 3 ? 'mpr yellow' :
+                                            calculateAverage(acqCoralSData) < 4 ? 'mpr green' :
+                                                'mpr blue'
+                            }>
                                 {calculateAverage(acqCoralSData).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>Coral Floor</TableCell>
-                            {acqCoralFData.map((data, index) => (
-                                <TableCell
-                                    key={index}
-                                    style={{ backgroundColor: getBackgroundColor(parseFloat(data), minMaxValues['AcqCoralF']?.max, minMaxValues['AcqCoralF']?.min) }}
-                                >
-                                    {data}
-                                </TableCell>
-                            ))}
-                            <TableCell
-                                style={{ backgroundColor: getBackgroundColor(calculateAverage(acqCoralFData), minMaxValues['AcqCoralF']?.max, minMaxValues['AcqCoralF']?.min) }}
-                            >
+                            {acqCoralFData.map((data, index) => {
+                                let cellClass = '';
+                                if (data == 0) {
+                                    cellClass = 'mpr black';
+                                } else if (data == 1) {
+                                    cellClass = 'mpr red';
+                                } else if (data == 2) {
+                                    cellClass = 'mpr yellow';
+                                } else if (data == 3) {
+                                    cellClass = 'mpr green';
+                                } else if (data >= 4) {
+                                    cellClass = 'mpr blue';
+                                }
+                                return (
+                                    <TableCell key={index} className={cellClass}>
+                                        {data}
+                                    </TableCell>
+                                );
+                            })}
+                            <TableCell className={
+                                calculateAverage(acqCoralFData) < 1 ? 'mpr black' :
+                                    calculateAverage(acqCoralFData) < 2 ? 'mpr red' :
+                                        calculateAverage(acqCoralFData) < 3 ? 'mpr yellow' :
+                                            calculateAverage(acqCoralFData) < 4 ? 'mpr green' :
+                                                'mpr blue'
+                            }>
                                 {calculateAverage(acqCoralFData).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>Algae Reef</TableCell>
-                            {acqAlgaeRData.map((data, index) => (
-                                <TableCell
-                                    key={index}
-                                    style={{ backgroundColor: getBackgroundColor(parseFloat(data), minMaxValues['AcqAlgaeR']?.max, minMaxValues['AcqAlgaeR']?.min) }}
-                                >
-                                    {data}
-                                </TableCell>
-                            ))}
-                            <TableCell
-                                style={{ backgroundColor: getBackgroundColor(calculateAverage(acqAlgaeRData), minMaxValues['AcqAlgaeR']?.max, minMaxValues['AcqAlgaeR']?.min) }}
-                            >
-                                {calculateAverage(acqAlgaeRData).toFixed(2)}
-                            </TableCell>
-                        </TableRow>
-                        <TableRow>
                             <TableCell>Algae Floor</TableCell>
-                            {acqAlgaeFData.map((data, index) => (
-                                <TableCell
-                                    key={index}
-                                    style={{ backgroundColor: getBackgroundColor(parseFloat(data), minMaxValues['AcqAlgaeF']?.max, minMaxValues['AcqAlgaeF']?.min) }}
-                                >
-                                    {data}
-                                </TableCell>
-                            ))}
-                            <TableCell
-                                style={{ backgroundColor: getBackgroundColor(calculateAverage(acqAlgaeFData), minMaxValues['AcqAlgaeF']?.max, minMaxValues['AcqAlgaeF']?.min) }}
-                            >
+                            {acqAlgaeFData.map((data, index) => {
+                                let cellClass = '';
+                                if (data == 0) {
+                                    cellClass = 'mpr black';
+                                } else if (data >= 1 && data <= 2) {
+                                    cellClass = 'mpr red';
+                                } else if (data >= 3 && data <= 4) {
+                                    cellClass = 'mpr yellow';
+                                } else if (data >= 5 && data <= 6) {
+                                    cellClass = 'mpr green';
+                                } else if (data >= 7) {
+                                    cellClass = 'mpr blue';
+                                }
+                                return (
+                                    <TableCell key={index} className={cellClass}>
+                                        {data}
+                                    </TableCell>
+                                );
+                            })}
+                            <TableCell className={
+                                calculateAverage(acqAlgaeFData) < 1 ? 'mpr black' :
+                                    (calculateAverage(acqAlgaeFData) >= 1 && calculateAverage(acqAlgaeFData) <= 2) ? 'mpr red' :
+                                        (calculateAverage(acqAlgaeFData) >= 3 && calculateAverage(acqAlgaeFData) <= 4) ? 'mpr yellow' :
+                                            (calculateAverage(acqAlgaeFData) >= 5 && calculateAverage(acqAlgaeFData) <= 6) ? 'mpr green' :
+                                                'mpr blue'
+                            }>
                                 {calculateAverage(acqAlgaeFData).toFixed(2)}
                             </TableCell>
                         </TableRow>
@@ -252,129 +274,249 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                         </TableRow>
                         <TableRow>
                             <TableCell>L1</TableCell>
-                            {delCoralL1Data.map((data, index) => (
-                                <TableCell
-                                    key={index}
-                                    style={{ backgroundColor: getBackgroundColor(parseFloat(data), minMaxValues['DelCoralL1']?.max, minMaxValues['DelCoralL1']?.min) }}
-                                >
-                                    {data}
-                                </TableCell>
-                            ))}
-                            <TableCell
-                                style={{ backgroundColor: getBackgroundColor(calculateAverage(delCoralL1Data), minMaxValues['DelCoralL1']?.max, minMaxValues['DelCoralL1']?.min) }}
-                            >
+                            {delCoralL1Data.map((data, index) => {
+                                let cellClass = '';
+                                if (data == 0) {
+                                    cellClass = 'mpr black';
+                                } else if (data == 1) {
+                                    cellClass = 'mpr red';
+                                } else if (data == 2) {
+                                    cellClass = 'mpr yellow';
+                                } else if (data == 3) {
+                                    cellClass = 'mpr green';
+                                } else if (data >= 4) {
+                                    cellClass = 'mpr blue';
+                                }
+                                return (
+                                    <TableCell key={index} className={cellClass}>
+                                        {data}
+                                    </TableCell>
+                                );
+                            })}
+                            <TableCell className={
+                                calculateAverage(delCoralL1Data) < 1 ? 'mpr black' :
+                                    calculateAverage(delCoralL1Data) < 2 ? 'mpr red' :
+                                        calculateAverage(delCoralL1Data) < 3 ? 'mpr yellow' :
+                                            calculateAverage(delCoralL1Data) < 4 ? 'mpr green' :
+                                                'mpr blue'
+                            }>
                                 {calculateAverage(delCoralL1Data).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>L2</TableCell>
-                            {delCoralL2Data.map((data, index) => (
-                                <TableCell
-                                    key={index}
-                                    style={{ backgroundColor: getBackgroundColor(parseFloat(data), minMaxValues['DelCoralL2']?.max, minMaxValues['DelCoralL2']?.min) }}
-                                >
-                                    {data}
-                                </TableCell>
-                            ))}
-                            <TableCell
-                                style={{ backgroundColor: getBackgroundColor(calculateAverage(delCoralL2Data), minMaxValues['DelCoralL2']?.max, minMaxValues['DelCoralL2']?.min) }}
-                            >
+                            {delCoralL2Data.map((data, index) => {
+                                let cellClass = '';
+                                if (data == 0) {
+                                    cellClass = 'mpr black';
+                                } else if (data == 1) {
+                                    cellClass = 'mpr red';
+                                } else if (data == 2) {
+                                    cellClass = 'mpr yellow';
+                                } else if (data == 3) {
+                                    cellClass = 'mpr green';
+                                } else if (data >= 4) {
+                                    cellClass = 'mpr blue';
+                                }
+                                return (
+                                    <TableCell key={index} className={cellClass}>
+                                        {data}
+                                    </TableCell>
+                                );
+                            })}
+                            <TableCell className={
+                                calculateAverage(delCoralL2Data) < 1 ? 'mpr black' :
+                                    calculateAverage(delCoralL2Data) < 2 ? 'mpr red' :
+                                        calculateAverage(delCoralL2Data) < 3 ? 'mpr yellow' :
+                                            calculateAverage(delCoralL2Data) < 4 ? 'mpr green' :
+                                                'mpr blue'
+                            }>
                                 {calculateAverage(delCoralL2Data).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>L3</TableCell>
-                            {delCoralL3Data.map((data, index) => (
-                                <TableCell
-                                    key={index}
-                                    style={{ backgroundColor: getBackgroundColor(parseFloat(data), minMaxValues['DelCoralL3']?.max, minMaxValues['DelCoralL3']?.min) }}
-                                >
-                                    {data}
-                                </TableCell>
-                            ))}
-                            <TableCell
-                                style={{ backgroundColor: getBackgroundColor(calculateAverage(delCoralL3Data), minMaxValues['DelCoralL3']?.max, minMaxValues['DelCoralL3']?.min) }}
-                            >
+                            {delCoralL3Data.map((data, index) => {
+                                let cellClass = '';
+                                if (data == 0) {
+                                    cellClass = 'mpr black';
+                                } else if (data == 1) {
+                                    cellClass = 'mpr red';
+                                } else if (data == 2) {
+                                    cellClass = 'mpr yellow';
+                                } else if (data == 3) {
+                                    cellClass = 'mpr green';
+                                } else if (data >= 4) {
+                                    cellClass = 'mpr blue';
+                                }
+                                return (
+                                    <TableCell key={index} className={cellClass}>
+                                        {data}
+                                    </TableCell>
+                                );
+                            })}
+                            <TableCell className={
+                                calculateAverage(delCoralL3Data) < 1 ? 'mpr black' :
+                                    calculateAverage(delCoralL3Data) < 2 ? 'mpr red' :
+                                        calculateAverage(delCoralL3Data) < 3 ? 'mpr yellow' :
+                                            calculateAverage(delCoralL3Data) < 4 ? 'mpr green' :
+                                                'mpr blue'
+                            }>
                                 {calculateAverage(delCoralL3Data).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>L4</TableCell>
-                            {delCoralL4Data.map((data, index) => (
-                                <TableCell
-                                    key={index}
-                                    style={{ backgroundColor: getBackgroundColor(parseFloat(data), minMaxValues['DelCoralL4']?.max, minMaxValues['DelCoralL4']?.min) }}
-                                >
-                                    {data}
-                                </TableCell>
-                            ))}
-                            <TableCell
-                                style={{ backgroundColor: getBackgroundColor(calculateAverage(delCoralL4Data), minMaxValues['DelCoralL4']?.max, minMaxValues['DelCoralL4']?.min) }}
-                            >
+                            {delCoralL4Data.map((data, index) => {
+                                let cellClass = '';
+                                if (data == 0) {
+                                    cellClass = 'mpr black';
+                                } else if (data == 1) {
+                                    cellClass = 'mpr red';
+                                } else if (data == 2) {
+                                    cellClass = 'mpr yellow';
+                                } else if (data == 3) {
+                                    cellClass = 'mpr green';
+                                } else if (data >= 4) {
+                                    cellClass = 'mpr blue';
+                                }
+                                return (
+                                    <TableCell key={index} className={cellClass}>
+                                        {data}
+                                    </TableCell>
+                                );
+                            })}
+                            <TableCell className={
+                                calculateAverage(delCoralL4Data) < 1 ? 'mpr black' :
+                                    calculateAverage(delCoralL4Data) < 2 ? 'mpr red' :
+                                        calculateAverage(delCoralL4Data) < 3 ? 'mpr yellow' :
+                                            calculateAverage(delCoralL4Data) < 4 ? 'mpr green' :
+                                                'mpr blue'
+                            }>
                                 {calculateAverage(delCoralL4Data).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow style={{ borderBottom: '4px solid black' }}>
                             <TableCell>Floor/Drop</TableCell>
-                            {delCoralFData.map((data, index) => (
-                                <TableCell
-                                    key={index}
-                                    style={{ backgroundColor: getBackgroundColor(parseFloat(data), minMaxValues['DelCoralF']?.min, minMaxValues['DelCoralF']?.max) }}
-                                >
-                                    {data}
-                                </TableCell>
-                            ))}
-                            <TableCell
-                                style={{ backgroundColor: getBackgroundColor(calculateAverage(delCoralFData), minMaxValues['DelCoralF']?.min, minMaxValues['DelCoralF']?.max) }}
-                            >
+                            {delCoralFData.map((data, index) => {
+                                let cellClass = '';
+                                if (data > 4) {
+                                    cellClass = 'mpr black';
+                                } else if (data == 3) {
+                                    cellClass = 'mpr red';
+                                } else if (data == 2) {
+                                    cellClass = 'mpr yellow';
+                                } else if (data == 1) {
+                                    cellClass = 'mpr green';
+                                } else if (data == 0) {
+                                    cellClass = 'mpr blue';
+                                }
+                                return (
+                                    <TableCell key={index} className={cellClass}>
+                                        {data}
+                                    </TableCell>
+                                );
+                            })}
+                            <TableCell className={
+                                calculateAverage(delCoralFData) > 1 ? 'mpr black' :
+                                    calculateAverage(delCoralFData) > 2 ? 'mpr red' :
+                                        calculateAverage(delCoralFData) > 3 ? 'mpr yellow' :
+                                            calculateAverage(delCoralFData) > 4 ? 'mpr green' :
+                                                'mpr blue'
+                            }>
                                 {calculateAverage(delCoralFData).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>Processor</TableCell>
-                            {delAlgaePData.map((data, index) => (
-                                <TableCell
-                                    key={index}
-                                    style={{ backgroundColor: getBackgroundColor(parseFloat(data), minMaxValues['DelAlgaeP']?.max, minMaxValues['DelAlgaeP']?.min) }}
-                                >
-                                    {data}
-                                </TableCell>
-                            ))}
-                            <TableCell
-                                style={{ backgroundColor: getBackgroundColor(calculateAverage(delAlgaePData), minMaxValues['DelAlgaeP']?.max, minMaxValues['DelAlgaeP']?.min) }}
-                            >
+                            {delAlgaePData.map((data, index) => {
+                                let cellClass = '';
+                                if (data == 0) {
+                                    cellClass = 'mpr black';
+                                } else if (data >= 1 && data <= 2) {
+                                    cellClass = 'mpr red';
+                                } else if (data >= 3 && data <= 4) {
+                                    cellClass = 'mpr yellow';
+                                } else if (data >= 5 && data <= 6) {
+                                    cellClass = 'mpr green';
+                                } else if (data >= 7) {
+                                    cellClass = 'mpr blue';
+                                }
+                                return (
+                                    <TableCell key={index} className={cellClass}>
+                                        {data}
+                                    </TableCell>
+                                );
+                            })}
+                            <TableCell className={
+                                calculateAverage(delAlgaePData) < 1 ? 'mpr black' :
+                                    (calculateAverage(delAlgaePData) >= 1 && calculateAverage(delAlgaePData) <= 2) ? 'mpr red' :
+                                        (calculateAverage(delAlgaePData) >= 3 && calculateAverage(delAlgaePData) <= 4) ? 'mpr yellow' :
+                                            (calculateAverage(delAlgaePData) >= 5 && calculateAverage(delAlgaePData) <= 6) ? 'mpr green' :
+                                                'mpr blue'
+                            }>
                                 {calculateAverage(delAlgaePData).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>Net</TableCell>
-                            {delAlgaeNData.map((data, index) => (
-                                <TableCell
-                                    key={index}
-                                    style={{ backgroundColor: getBackgroundColor(parseFloat(data), minMaxValues['DelAlgaeN']?.max, minMaxValues['DelAlgaeN']?.min) }}
-                                >
-                                    {data}
-                                </TableCell>
-                            ))}
-                            <TableCell
-                                style={{ backgroundColor: getBackgroundColor(calculateAverage(delAlgaeNData), minMaxValues['DelAlgaeN']?.max, minMaxValues['DelAlgaeN']?.min) }}
-                            >
+                            {delAlgaeNData.map((data, index) => {
+                                let cellClass = '';
+                                if (data == 0) {
+                                    cellClass = 'mpr black';
+                                } else if (data >= 1 && data <= 2) {
+                                    cellClass = 'mpr red';
+                                } else if (data >= 3 && data <= 4) {
+                                    cellClass = 'mpr yellow';
+                                } else if (data >= 5 && data <= 6) {
+                                    cellClass = 'mpr green';
+                                } else if (data >= 7) {
+                                    cellClass = 'mpr blue';
+                                }
+                                return (
+                                    <TableCell key={index} className={cellClass}>
+                                        {data}
+                                    </TableCell>
+                                );
+                            })}
+                            <TableCell className={
+                                calculateAverage(delAlgaeNData) < 1 ? 'mpr black' :
+                                    (calculateAverage(delAlgaeNData) >= 1 && calculateAverage(delAlgaeNData) <= 2) ? 'mpr red' :
+                                        (calculateAverage(delAlgaeNData) >= 3 && calculateAverage(delAlgaeNData) <= 4) ? 'mpr yellow' :
+                                            (calculateAverage(delAlgaeNData) >= 5 && calculateAverage(delAlgaeNData) <= 6) ? 'mpr green' :
+                                                'mpr blue'
+                            }>
                                 {calculateAverage(delAlgaeNData).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>Floor/Drop</TableCell>
-                            {delAlgaeFData.map((data, index) => (
-                                <TableCell
-                                    key={index}
-                                    style={{ backgroundColor: getBackgroundColor(parseFloat(data), minMaxValues['DelAlgaeF']?.min, minMaxValues['DelAlgaeF']?.max) }}
-                                >
-                                    {data}
-                                </TableCell>
-                            ))}
-                            <TableCell
-                                style={{ backgroundColor: getBackgroundColor(calculateAverage(delAlgaeFData), minMaxValues['DelAlgaeF']?.min, minMaxValues['DelAlgaeF']?.max) }}
-                            >
+                            {delAlgaeFData.map((data, index) => {
+                                let cellClass = '';
+                                if (data == 0) {
+                                    cellClass = 'mpr black';
+                                } else if (data >= 1 && data <= 2) {
+                                    cellClass = 'mpr red';
+                                } else if (data >= 3 && data <= 4) {
+                                    cellClass = 'mpr yellow';
+                                } else if (data >= 5 && data <= 6) {
+                                    cellClass = 'mpr green';
+                                } else if (data >= 7) {
+                                    cellClass = 'mpr blue';
+                                }
+                                return (
+                                    <TableCell key={index} className={cellClass}>
+                                        {data}
+                                    </TableCell>
+                                );
+                            })}
+                            <TableCell className={
+                                calculateAverage(delAlgaeFData) < 1 ? 'mpr black' :
+                                    (calculateAverage(delAlgaeFData) >= 1 && calculateAverage(delAlgaeFData) <= 2) ? 'mpr red' :
+                                        (calculateAverage(delAlgaeFData) >= 3 && calculateAverage(delAlgaeFData) <= 4) ? 'mpr yellow' :
+                                            (calculateAverage(delAlgaeFData) >= 5 && calculateAverage(delAlgaeFData) <= 6) ? 'mpr green' :
+                                                'mpr blue'
+                            }>
                                 {calculateAverage(delAlgaeFData).toFixed(2)}
                             </TableCell>
                         </TableRow>
