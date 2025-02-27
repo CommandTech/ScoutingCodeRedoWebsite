@@ -10,6 +10,7 @@ interface SummaryProps {
 const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
   const [matchCount, setMatchCount] = useState<number>(0);
   const [pointScoredData, setPointScoredData] = useState<number[]>([]);
+  const [commentsData, setCommentsData] = useState<string[]>([]);
   const [driveStaValues, setDriveStaValues] = useState<string[]>([]);
   const [driveStaAverages, setDriveStaAverages] = useState<{ [key: string]: number }>({});
   const [driveStaCoralAverages, setDriveStaCoralAverages] = useState<{ [key: string]: number }>({});
@@ -91,6 +92,9 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
           const pointScored = teamDataEndMatch.map((row: any) => parseFloat(row['PointScored'])).filter((value: number) => !isNaN(value));
           setPointScoredData(pointScored);
 
+          const comments = teamDataEndMatch.map((row: any) => row['comments'] || 'No Comment');
+          setCommentsData(comments);
+
           const driveSta = Array.from(new Set(parsedData.map((row: any) => row['DriveSta'])))
             .filter(value => ['blue0', 'blue1', 'blue2', 'red0', 'red1', 'red2'].includes(value))
             .sort();
@@ -171,7 +175,7 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
 
   const teamName = selectedTeam.replace('frc', '');
   const imagePath = `/RobotPictures/${teamName}.png`;
-  
+
   return (
     <div>
       <TableContainer component={Paper}>
@@ -298,6 +302,14 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
       <div>
         <img src={imagePath} alt={`Robot of team ${teamName}`} />
       </div>
+      <div>&nbsp;</div>
+      {commentsData.map((comment, index) => (
+        <div
+          key={index}>{comment}
+          <div>&nbsp;</div>
+        </div>
+
+      ))}
     </div>
   );
 }
