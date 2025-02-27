@@ -3,6 +3,8 @@ import './CSS/OneTeamReport.css';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, FormControl } from '@mui/material';
 import { readCSVFile } from '../../utils/readCSV';
 import GraphsInterface from '../Graphs/GraphsInterface';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 interface OneTeamReportProps {
     color: string;
@@ -22,13 +24,41 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
     const [delCoralFDiffs, setDelCoralFDiffs] = useState<number[]>([]);
     const [delAlgaeNDiffs, setDelAlgaeNDiffs] = useState<number[]>([]);
     const [delAlgaePDiffs, setDelAlgaePDiffs] = useState<number[]>([]);
-    const [delAlgaeFDiffs, setDelAlgaeFDiffs] = useState<number[]>([]);
     const [climbStates, setClimbStates] = useState<string[]>([]);
     const [climbTimes, setClimbTimes] = useState<number[]>([]);
     const [recordTypes, setRecordTypes] = useState<string[]>([]);
     const [comments, setComments] = useState<string[]>([]);
+    const [config, setConfig] = useState({ baseURL: '', apiKey: ''});
+    const [nickname, setNickname] = useState<string>('');
 
-    const [hasAcqCoralF, setHasAcqCoralF] = useState<boolean>(false);
+    useEffect(() => {
+        const fetchConfig = async () => {
+            try {
+                const response = await axios.get('/config');
+                setConfig(response.data);
+            } catch (error) {
+                setError('Error fetching configuration');
+                console.error(error);
+            }
+        };
+
+        fetchConfig();
+    }, []);
+
+    useEffect(() => {
+        const fetchNickname = async () => {
+            try {
+                const response = await axios.get(`${config.baseURL}team/${robotNumber}/simple?X-TBA-Auth-Key=${config.apiKey}`);
+                setNickname(response.data.nickname);
+            } catch (error) {
+                console.error('Error fetching team nickname', error);
+            }
+        };
+
+        if (config.baseURL && config.apiKey) {
+            fetchNickname();
+        }
+    }, [config, robotNumber]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -82,14 +112,6 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
             const delAlgaePMatch = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => parseInt(row.DelAlgaeP));
             const delAlgaePDiff = delAlgaePMatch.map((value, index) => value - delAlgaePAuto[index]);
             setDelAlgaePDiffs(delAlgaePDiff);
-
-            const delAlgaeFAuto = filteredData.filter((row: any) => row.RecordType === 'EndAuto').map((row: any) => parseInt(row.DelAlgaeF));
-            const delAlgaeFMatch = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => parseInt(row.DelAlgaeF));
-            const delAlgaeFDiff = delAlgaeFMatch.map((value, index) => value - delAlgaeFAuto[index]);
-            setDelAlgaeFDiffs(delAlgaeFDiff);
-
-            const hasNonZeroAcqCoralF = filteredData.some((row: any) => parseInt(row.AcqCoralF) !== 0);
-            setHasAcqCoralF(hasNonZeroAcqCoralF);
 
             const climbStatesData = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => row.EndState);
             setClimbStates(climbStatesData);
@@ -148,7 +170,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
                         <TableHead>
                             <TableRow className="table-row-bordered2">
                                 <TableCell colSpan={columns.length} align="center" className={cellClass} style={{ fontWeight: 'bold', fontSize: '15px' }}>
-                                    {robotNumber}
+                                    {robotNumber}: {nickname}
                                 </TableCell>
                             </TableRow>
                         </TableHead>
@@ -414,3 +436,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
 };
 
 export default OneTeamReport;
+
+function setError(arg0: string) {
+    throw new Error('Function not implemented.');
+}

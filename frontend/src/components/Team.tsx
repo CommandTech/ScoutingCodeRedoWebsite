@@ -5,11 +5,27 @@ import Summary from './TeamPage/Summary';
 import Surfacing from './TeamPage/Surfacing';
 import Auto from './TeamPage/Auto';
 import Teleop from './TeamPage/Teleop';
+import axios from 'axios';
 
 const Team = () => {
-    const [teams, setTeams] = useState<string[]>([]);
+    const [teams, setTeams] = useState<{ name: string, nickname: string }[]>([]);
     const [selectedTeam, setSelectedTeam] = useState('');
     const [tabIndex, setTabIndex] = useState(0);
+    const [config, setConfig] = useState({ baseURL: '', apiKey: '' });
+
+    useEffect(() => {
+        const fetchConfig = async () => {
+            try {
+                const response = await axios.get('/config');
+                setConfig(response.data);
+            } catch (error) {
+                setError('Error fetching configuration');
+                console.error(error);
+            }
+        };
+
+        fetchConfig();
+    }, []);
 
     useEffect(() => {
         const fetchTeams = async () => {
@@ -34,14 +50,26 @@ const Team = () => {
                     return numA - numB;
                 });
 
-                setTeams(uniqueTeamNames);
+                const teamsWithNicknames = await Promise.all(uniqueTeamNames.map(async (teamName) => {
+                    try {
+                        const response = await axios.get(`${config.baseURL}team/${teamName}/simple?X-TBA-Auth-Key=${config.apiKey}`);
+                        return { name: teamName, nickname: response.data.nickname };
+                    } catch (error) {
+                        console.error(`Error fetching nickname for team ${teamName}`, error);
+                        return { name: teamName, nickname: '' };
+                    }
+                }));
+
+                setTeams(teamsWithNicknames);
             } catch (error) {
                 console.error('Error fetching teams:', error);
             }
         };
 
-        fetchTeams();
-    }, []);
+        if (config.baseURL && config.apiKey) {
+            fetchTeams();
+        }
+    }, [config]);
 
     const handleTeamChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
         const teamName = event.target.value;
@@ -65,8 +93,8 @@ const Team = () => {
             <select onChange={handleTeamChange} value={selectedTeam}>
                 <option value="">Select a team</option>
                 {teams.map((team, index) => (
-                    <option key={index} value={team}>
-                        {team}
+                    <option key={index} value={team.name}>
+                        {team.name}: {team.nickname}
                     </option>
                 ))}
             </select>
@@ -89,3 +117,7 @@ const Team = () => {
 };
 
 export default Team;
+
+function setError(arg0: string) {
+    throw new Error('Function not implemented.');
+}

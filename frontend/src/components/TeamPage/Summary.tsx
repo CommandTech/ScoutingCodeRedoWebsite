@@ -175,7 +175,7 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
     const numericData = data.map(value => parseFloat(value)).filter(value => !isNaN(value));
     const sum = numericData.reduce((acc, value) => acc + value, 0);
     const average = sum / numericData.length;
-    return isNaN(average) ? NaN : average;
+    return isNaN(average) ? NaN : parseFloat(average.toFixed(2));
   };
 
   const calculateMedian = (arr: number[]) => {
