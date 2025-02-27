@@ -25,6 +25,8 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
     const [delAlgaeNData, setDelAlgaeNData] = useState<any[]>([]);
     const [delAlgaeFData, setDelAlgaeFData] = useState<any[]>([]);
     const [disAlgaeData, setDisAlgaeData] = useState<any[]>([]);
+    const [comments, setComments] = useState<string[]>([]);
+
 
     const [Chart1, setSelectedChart1] = useState<string>('StartingLocation');
     const [Chart2, setSelectedChart2] = useState<string>('StartingLocation');
@@ -86,6 +88,10 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                         throw new Error('Parsed data is not an array or is undefined');
                     }
 
+                    const teamDataEndMatch = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'EndMatch');
+                    const commentsData = teamDataEndMatch.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => row.comments);
+                    setComments(commentsData);
+
                     const teamData = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'EndAuto');
                     const uniqueMatches = Array.from(new Set(teamData.map((row: any) => row['Match'])));
                     setMatchCount(uniqueMatches.length);
@@ -145,7 +151,9 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                     <TableHead>
                         <TableRow className="table-row-bordered">
                             {columns.map((column, index) => (
-                                <TableCell key={index}>{column}</TableCell>
+                                <TableCell key={index} className={comments[index] !== 'ControllerScouting' && index > 0 && index < columns.length - 1 ? 'orange-cell' : ''}>
+                                    {column}
+                                </TableCell>
                             ))}
                         </TableRow>
                     </TableHead>

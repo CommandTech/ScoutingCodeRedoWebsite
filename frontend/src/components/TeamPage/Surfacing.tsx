@@ -17,6 +17,7 @@ const Surfacing: React.FC<SurfacingProps> = ({ selectedTeam }) => {
     const [averageDZTimes, setAverageDZTimes] = useState<number[]>([]);
     const [teamData, setTeamData] = useState<any[]>([]);
     const [strategyCounts, setStrategyCounts] = useState<{ [key: string]: number }>({});
+    const [comments, setComments] = useState<string[]>([]);
 
     const [Chart1, setSelectedChart1] = useState<string>('PointsPerMatch');
     const [Chart2, setSelectedChart2] = useState<string>('PointsPerMatch');
@@ -69,6 +70,10 @@ const Surfacing: React.FC<SurfacingProps> = ({ selectedTeam }) => {
                     }
 
                     const teamData = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'EndMatch');
+
+                    const commentsData = teamData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => row.comments);
+                    setComments(commentsData);
+
                     const states = teamData.map((row: any) => row['EndState']);
                     const times = teamData.map((row: any) => parseFloat(row['ClimbT']).toFixed(2));
                     const cages = teamData.map((row: any) => row['SelectedCage']);
@@ -133,7 +138,9 @@ const Surfacing: React.FC<SurfacingProps> = ({ selectedTeam }) => {
                     <TableHead>
                         <TableRow className="table-row-bordered">
                             {columns.map((column, index) => (
-                                <TableCell key={index}>{column}</TableCell>
+                                <TableCell key={index} className={comments[index] !== 'ControllerScouting' && index > 0 ? 'orange-cell' : ''}>
+                                    {column}
+                                </TableCell>
                             ))}
                         </TableRow>
                     </TableHead>

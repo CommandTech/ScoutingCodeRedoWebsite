@@ -30,3 +30,7 @@
     color: white;
     border-right: white 1px solid;
 }
+
+.orange-cell {
+    background-color: orange;
+}
