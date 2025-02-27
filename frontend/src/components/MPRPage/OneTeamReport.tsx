@@ -135,6 +135,11 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
                     <Table>
                         <TableHead>
                             <TableRow className="table-row-bordered2">
+                                <TableCell colSpan={columns.length} align="center" className={cellClass} style={{ fontWeight: 'bold', fontSize: '15px' }}>
+                                    {robotNumber}
+                                </TableCell>
+                            </TableRow>
+                            <TableRow className="table-row-bordered2">
                                 {columns.map((column, index) => (
                                     <TableCell key={index} className={comments[index] !== 'ControllerScouting' && index > 0 ? 'orange-cell' : ''}>
                                         {column}
@@ -143,11 +148,6 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            <TableRow className="table-row-bordered2">
-                                <TableCell colSpan={columns.length} align="left" className={cellClass} style={{ fontWeight: 'bold', fontSize: '15px' }}>
-                                    {robotNumber}
-                                </TableCell>
-                            </TableRow>
                             <TableRow className="table-row-bordered2">
                                 <TableCell colSpan={columns.length} align="center" style={{ backgroundColor: '#ff00ff' }}>
                                     Auto
