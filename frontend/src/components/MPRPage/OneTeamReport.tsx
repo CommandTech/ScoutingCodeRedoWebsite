@@ -136,7 +136,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
         comments.length
     );
 
-    const columns = ['Matches:', ...Array.from({ length: maxMatches }, (_, i) => `${i + 1}`), 'Average', 'Median'];
+    const columns = ['Matches', ...Array.from({ length: maxMatches }, (_, i) => `${i + 1}`), 'Avg', 'Med'];
 
     const cellClass = color === 'Red' ? 'robot-number-cell red' : 'robot-number-cell blue';
 
@@ -151,6 +151,8 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
                                     {robotNumber}
                                 </TableCell>
                             </TableRow>
+                        </TableHead>
+                        <TableBody>
                             <TableRow className="table-row-bordered2">
                                 {columns.map((column, index) => (
                                     <TableCell key={index} className={comments[index] !== 'ControllerScouting' && index > 0 && index < columns.length - 2 ? 'orange-cell' : ''}>
@@ -158,23 +160,21 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
                                     </TableCell>
                                 ))}
                             </TableRow>
-                        </TableHead>
-                        <TableBody>
                             <TableRow className="table-row-bordered2">
                                 <TableCell colSpan={columns.length} align="center" style={{ backgroundColor: '#ff00ff' }}>
                                     Auto
                                 </TableCell>
                             </TableRow>
                             <TableRow className="table-row-bordered2">
-                                <TableCell>Starting Location</TableCell>
+                                <TableCell>Start Loc</TableCell>
                                 {startingLocations.map((loc, index) => (
-                                    <TableCell key={index}>{loc}</TableCell>
+                                    <TableCell key={index}>{loc === "Center" ? "Ce" : loc}</TableCell>
                                 ))}
                                 <TableCell>{calculateAverage(startingLocations.map(loc => parseInt(loc)))}</TableCell>
                                 <TableCell>{calculateMedian(startingLocations.map(loc => parseInt(loc)))}</TableCell>
                             </TableRow>
                             <TableRow className="table-row-bordered2">
-                                <TableCell>Leave Location</TableCell>
+                                <TableCell>Leave Loc</TableCell>
                                 {leaveLocations.map((loc, index) => (
                                     <TableCell key={index} className={`leave-location-cell ${loc === 'Y' ? 'yes' : 'no'}`}>
                                         {loc}
@@ -184,7 +184,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
                                 <TableCell>{calculateMedian(leaveLocations.map(loc => parseInt(loc)))}</TableCell>
                             </TableRow>
                             <TableRow className="table-row-bordered2">
-                                <TableCell>Number of Coral</TableCell>
+                                <TableCell># of Coral</TableCell>
                                 {filteredCoralCounts.map((count, index) => {
                                     let cellClass = '';
                                     if (count == 0) {
@@ -365,20 +365,25 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
                                 <TableCell>Climb State</TableCell>
                                 {climbStates.map((state, index) => {
                                     let cellClass = '';
-                                    if (state == 'Elsewhere') {
+                                    let displayState = state;
+                                    if (state === 'Elsewhere') {
                                         cellClass = 'mpr black';
-                                    } else if (state == '') {
+                                        displayState = 'E';
+                                    } else if (state === '') {
                                         cellClass = 'mpr red';
-                                    } else if (state == 'Park') {
+                                    } else if (state === 'Park') {
                                         cellClass = 'mpr yellow';
-                                    } else if (state == 'Shallow') {
+                                        displayState = 'P';
+                                    } else if (state === 'Shallow') {
                                         cellClass = 'mpr green';
-                                    } else if (state == 'Deep') {
+                                        displayState = 'S';
+                                    } else if (state === 'Deep') {
                                         cellClass = 'mpr blue';
+                                        displayState = 'D';
                                     }
                                     return (
                                         <TableCell key={index} className={cellClass}>
-                                            {state}
+                                            {displayState}
                                         </TableCell>
                                     );
                                 })}
