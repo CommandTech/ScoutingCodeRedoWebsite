@@ -169,13 +169,20 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
     fetchMatchEventData();
   }, [selectedTeam]);
 
-  const columns = ['Matches:', ...Array.from({ length: matchCount }, (_, i) => `Match ${i + 1}`), 'Average'];
+  const columns = ['Matches:', ...Array.from({ length: matchCount }, (_, i) => `Match ${i + 1}`), 'Average', 'Median'];
 
   const calculateAverage = (data: any[]): number => {
     const numericData = data.map(value => parseFloat(value)).filter(value => !isNaN(value));
     const sum = numericData.reduce((acc, value) => acc + value, 0);
     const average = sum / numericData.length;
     return isNaN(average) ? NaN : average;
+  };
+
+  const calculateMedian = (arr: number[]) => {
+    const sorted = [...arr].sort((a, b) => a - b);
+    const mid = Math.floor(sorted.length / 2);
+    const median = sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+    return isNaN(median) ? 'N/A' : median.toFixed(2);
   };
 
   const teamName = selectedTeam.replace('frc', '');
@@ -188,7 +195,7 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
           <TableHead>
             <TableRow className="table-row-bordered">
               {columns.map((column, index) => (
-                <TableCell key={index} className={comments[index] !== 'ControllerScouting' && index > 0 && index < columns.length - 1 ? 'orange-cell' : ''}>
+                <TableCell key={index} className={comments[index] !== 'ControllerScouting' && index > 0 && index < columns.length - 2 ? 'orange-cell' : ''}>
                   {column}
                 </TableCell>
               ))}
@@ -204,6 +211,9 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
               ))}
               <TableCell>
                 {isNaN(calculateAverage(pointScoredData)) ? 'NaN' : calculateAverage(pointScoredData)}
+              </TableCell>
+              <TableCell>
+                {isNaN(parseFloat(calculateMedian(pointScoredData))) ? 'NaN' : calculateMedian(pointScoredData)}
               </TableCell>
             </TableRow>
           </TableBody>

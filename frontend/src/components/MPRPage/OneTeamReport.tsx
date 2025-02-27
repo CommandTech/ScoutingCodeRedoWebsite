@@ -390,8 +390,8 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
                                 {climbTimes.map((time, index) => {
                                     return <TableCell key={index}>{time}</TableCell>;
                                 })}
-                                <TableCell>{calculateAverage(climbTimes)}</TableCell>
-                                <TableCell>{calculateMedian(climbTimes)}</TableCell>
+                                <TableCell>{calculateAverage([])}</TableCell>
+                                <TableCell>{calculateMedian([])}</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>

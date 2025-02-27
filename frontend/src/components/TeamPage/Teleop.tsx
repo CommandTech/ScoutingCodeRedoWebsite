@@ -129,12 +129,19 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
         fetchTeamData();
     }, [selectedTeam]);
 
-    const columns = ['Matches:', ...Array.from({ length: matchCount }, (_, i) => `Match ${i + 1}`), 'Average'];
+    const columns = ['Matches:', ...Array.from({ length: matchCount }, (_, i) => `Match ${i + 1}`), 'Average', 'Median'];
 
     const calculateAverage = (data: any[]) => {
         const numericData = data.map(value => parseFloat(value)).filter(value => !isNaN(value));
         const sum = numericData.reduce((acc, value) => acc + value, 0);
         return sum / numericData.length;
+    };
+
+    const calculateMedian = (arr: any[]) => {
+        const sorted = [...arr].sort((a, b) => a - b);
+        const mid = Math.floor(sorted.length / 2);
+        const median = sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+        return isNaN(median) ? 'N/A' : median.toFixed(2);
     };
 
     const handleChange1 = (event: SelectChangeEvent<string>) => {
@@ -151,12 +158,12 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
 
     return (
         <div>
-            <TableContainer component={Paper} className='center'>
+            <TableContainer component={Paper} className="center">
                 <Table>
                     <TableHead>
                         <TableRow className="table-row-bordered">
                             {columns.map((column, index) => (
-                                <TableCell key={index} className={comments[index] !== 'ControllerScouting' && index > 0 && index < columns.length - 1 ? 'orange-cell' : ''}>
+                                <TableCell key={index} className={comments[index] !== 'ControllerScouting' && index > 0 && index < columns.length - 2 ? 'orange-cell' : ''}>
                                     {column}
                                 </TableCell>
                             ))}
@@ -173,15 +180,15 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                             {acqCoralSData.map((data, index) => {
                                 let cellClass = '';
                                 if (data == 0) {
-                                    cellClass = 'teleop black';
+                                    cellClass = 'auto black';
                                 } else if (data == 1) {
-                                    cellClass = 'teleop red';
+                                    cellClass = 'auto red';
                                 } else if (data == 2) {
-                                    cellClass = 'teleop yellow';
+                                    cellClass = 'auto yellow';
                                 } else if (data == 3) {
-                                    cellClass = 'teleop green';
+                                    cellClass = 'auto green';
                                 } else if (data >= 4) {
-                                    cellClass = 'teleop blue';
+                                    cellClass = 'auto blue';
                                 }
                                 return (
                                     <TableCell key={index} className={cellClass}>
@@ -190,13 +197,22 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                                 );
                             })}
                             <TableCell className={
-                                calculateAverage(acqCoralSData) < 1 ? 'teleop black' :
-                                    calculateAverage(acqCoralSData) < 2 ? 'teleop red' :
-                                        calculateAverage(acqCoralSData) < 3 ? 'teleop yellow' :
-                                            calculateAverage(acqCoralSData) < 4 ? 'teleop green' :
-                                                'teleop blue'
+                                calculateAverage(acqCoralSData) < 1 ? 'auto black' :
+                                    calculateAverage(acqCoralSData) < 2 ? 'auto red' :
+                                        calculateAverage(acqCoralSData) < 3 ? 'auto yellow' :
+                                            calculateAverage(acqCoralSData) < 4 ? 'auto green' :
+                                                'auto blue'
                             }>
                                 {calculateAverage(acqCoralSData).toFixed(2)}
+                            </TableCell>
+                            <TableCell className={
+                                calculateMedian(acqCoralSData) < 1 ? 'auto black' :
+                                    calculateMedian(acqCoralSData) < 2 ? 'auto red' :
+                                        calculateMedian(acqCoralSData) < 3 ? 'auto yellow' :
+                                            calculateMedian(acqCoralSData) < 4 ? 'auto green' :
+                                                'auto blue'
+                            }>
+                                {calculateMedian(acqCoralSData)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
@@ -204,15 +220,15 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                             {acqCoralFData.map((data, index) => {
                                 let cellClass = '';
                                 if (data == 0) {
-                                    cellClass = 'teleop black';
+                                    cellClass = 'auto black';
                                 } else if (data == 1) {
-                                    cellClass = 'teleop red';
+                                    cellClass = 'auto red';
                                 } else if (data == 2) {
-                                    cellClass = 'teleop yellow';
+                                    cellClass = 'auto yellow';
                                 } else if (data == 3) {
-                                    cellClass = 'teleop green';
+                                    cellClass = 'auto green';
                                 } else if (data >= 4) {
-                                    cellClass = 'teleop blue';
+                                    cellClass = 'auto blue';
                                 }
                                 return (
                                     <TableCell key={index} className={cellClass}>
@@ -221,13 +237,22 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                                 );
                             })}
                             <TableCell className={
-                                calculateAverage(acqCoralFData) < 1 ? 'teleop black' :
-                                    calculateAverage(acqCoralFData) < 2 ? 'teleop red' :
-                                        calculateAverage(acqCoralFData) < 3 ? 'teleop yellow' :
-                                            calculateAverage(acqCoralFData) < 4 ? 'teleop green' :
-                                                'teleop blue'
+                                calculateAverage(acqCoralFData) < 1 ? 'auto black' :
+                                    calculateAverage(acqCoralFData) < 2 ? 'auto red' :
+                                        calculateAverage(acqCoralFData) < 3 ? 'auto yellow' :
+                                            calculateAverage(acqCoralFData) < 4 ? 'auto green' :
+                                                'auto blue'
                             }>
                                 {calculateAverage(acqCoralFData).toFixed(2)}
+                            </TableCell>
+                            <TableCell className={
+                                calculateMedian(acqCoralFData) < 1 ? 'auto black' :
+                                    calculateMedian(acqCoralFData) < 2 ? 'auto red' :
+                                        calculateMedian(acqCoralFData) < 3 ? 'auto yellow' :
+                                            calculateMedian(acqCoralFData) < 4 ? 'auto green' :
+                                                'auto blue'
+                            }>
+                                {calculateMedian(acqCoralFData)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
@@ -260,21 +285,30 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                             }>
                                 {calculateAverage(acqAlgaeRData).toFixed(2)}
                             </TableCell>
+                            <TableCell className={
+                                calculateMedian(acqAlgaeRData) < 1 ? 'auto black' :
+                                    (calculateMedian(acqAlgaeRData) >= 1 && calculateMedian(acqAlgaeRData) <= 2) ? 'auto red' :
+                                        (calculateMedian(acqAlgaeRData) >= 3 && calculateMedian(acqAlgaeRData) <= 4) ? 'auto yellow' :
+                                            (calculateMedian(acqAlgaeRData) >= 5 && calculateMedian(acqAlgaeRData) <= 6) ? 'auto green' :
+                                                'auto blue'
+                            }>
+                                {calculateMedian(acqAlgaeRData)}
+                            </TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>Algae Floor</TableCell>
                             {acqAlgaeFData.map((data, index) => {
                                 let cellClass = '';
                                 if (data == 0) {
-                                    cellClass = 'teleop black';
+                                    cellClass = 'auto black';
                                 } else if (data >= 1 && data <= 2) {
-                                    cellClass = 'teleop red';
+                                    cellClass = 'auto red';
                                 } else if (data >= 3 && data <= 4) {
-                                    cellClass = 'teleop yellow';
+                                    cellClass = 'auto yellow';
                                 } else if (data >= 5 && data <= 6) {
-                                    cellClass = 'teleop green';
+                                    cellClass = 'auto green';
                                 } else if (data >= 7) {
-                                    cellClass = 'teleop blue';
+                                    cellClass = 'auto blue';
                                 }
                                 return (
                                     <TableCell key={index} className={cellClass}>
@@ -283,13 +317,22 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                                 );
                             })}
                             <TableCell className={
-                                calculateAverage(acqAlgaeFData) < 1 ? 'teleop black' :
-                                    (calculateAverage(acqAlgaeFData) >= 1 && calculateAverage(acqAlgaeFData) <= 2) ? 'teleop red' :
-                                        (calculateAverage(acqAlgaeFData) >= 3 && calculateAverage(acqAlgaeFData) <= 4) ? 'teleop yellow' :
-                                            (calculateAverage(acqAlgaeFData) >= 5 && calculateAverage(acqAlgaeFData) <= 6) ? 'teleop green' :
-                                                'teleop blue'
+                                calculateAverage(acqAlgaeFData) < 1 ? 'auto black' :
+                                    (calculateAverage(acqAlgaeFData) >= 1 && calculateAverage(acqAlgaeFData) <= 2) ? 'auto red' :
+                                        (calculateAverage(acqAlgaeFData) >= 3 && calculateAverage(acqAlgaeFData) <= 4) ? 'auto yellow' :
+                                            (calculateAverage(acqAlgaeFData) >= 5 && calculateAverage(acqAlgaeFData) <= 6) ? 'auto green' :
+                                                'auto blue'
                             }>
                                 {calculateAverage(acqAlgaeFData).toFixed(2)}
+                            </TableCell>
+                            <TableCell className={
+                                calculateMedian(acqAlgaeFData) < 1 ? 'auto black' :
+                                    (calculateMedian(acqAlgaeFData) >= 1 && calculateMedian(acqAlgaeFData) <= 2) ? 'auto red' :
+                                        (calculateMedian(acqAlgaeFData) >= 3 && calculateMedian(acqAlgaeFData) <= 4) ? 'auto yellow' :
+                                            (calculateMedian(acqAlgaeFData) >= 5 && calculateMedian(acqAlgaeFData) <= 6) ? 'auto green' :
+                                                'auto blue'
+                            }>
+                                {calculateMedian(acqAlgaeFData)}
                             </TableCell>
                         </TableRow>
                         <TableRow className="table-row-bordered">
@@ -304,6 +347,9 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                             <TableCell>
                                 {calculateAverage(disAlgaeData).toFixed(2)}
                             </TableCell>
+                            <TableCell>
+                                {calculateMedian(disAlgaeData)}
+                            </TableCell>
                         </TableRow>
                         <TableRow className="table-row-bordered">
                             <TableCell colSpan={columns.length} align="center">
@@ -315,15 +361,15 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                             {delCoralL1Data.map((data, index) => {
                                 let cellClass = '';
                                 if (data == 0) {
-                                    cellClass = 'teleop black';
+                                    cellClass = 'auto black';
                                 } else if (data == 1) {
-                                    cellClass = 'teleop red';
+                                    cellClass = 'auto red';
                                 } else if (data == 2) {
-                                    cellClass = 'teleop yellow';
+                                    cellClass = 'auto yellow';
                                 } else if (data == 3) {
-                                    cellClass = 'teleop green';
+                                    cellClass = 'auto green';
                                 } else if (data >= 4) {
-                                    cellClass = 'teleop blue';
+                                    cellClass = 'auto blue';
                                 }
                                 return (
                                     <TableCell key={index} className={cellClass}>
@@ -332,13 +378,22 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                                 );
                             })}
                             <TableCell className={
-                                calculateAverage(delCoralL1Data) < 1 ? 'teleop black' :
-                                    calculateAverage(delCoralL1Data) < 2 ? 'teleop red' :
-                                        calculateAverage(delCoralL1Data) < 3 ? 'teleop yellow' :
-                                            calculateAverage(delCoralL1Data) < 4 ? 'teleop green' :
-                                                'teleop blue'
+                                calculateAverage(delCoralL1Data) < 1 ? 'auto black' :
+                                    calculateAverage(delCoralL1Data) < 2 ? 'auto red' :
+                                        calculateAverage(delCoralL1Data) < 3 ? 'auto yellow' :
+                                            calculateAverage(delCoralL1Data) < 4 ? 'auto green' :
+                                                'auto blue'
                             }>
                                 {calculateAverage(delCoralL1Data).toFixed(2)}
+                            </TableCell>
+                            <TableCell className={
+                                calculateMedian(delCoralL1Data) < 1 ? 'auto black' :
+                                    calculateMedian(delCoralL1Data) < 2 ? 'auto red' :
+                                        calculateMedian(delCoralL1Data) < 3 ? 'auto yellow' :
+                                            calculateMedian(delCoralL1Data) < 4 ? 'auto green' :
+                                                'auto blue'
+                            }>
+                                {calculateMedian(delCoralL1Data)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
@@ -346,15 +401,15 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                             {delCoralL2Data.map((data, index) => {
                                 let cellClass = '';
                                 if (data == 0) {
-                                    cellClass = 'teleop black';
+                                    cellClass = 'auto black';
                                 } else if (data == 1) {
-                                    cellClass = 'teleop red';
+                                    cellClass = 'auto red';
                                 } else if (data == 2) {
-                                    cellClass = 'teleop yellow';
+                                    cellClass = 'auto yellow';
                                 } else if (data == 3) {
-                                    cellClass = 'teleop green';
+                                    cellClass = 'auto green';
                                 } else if (data >= 4) {
-                                    cellClass = 'teleop blue';
+                                    cellClass = 'auto blue';
                                 }
                                 return (
                                     <TableCell key={index} className={cellClass}>
@@ -363,13 +418,22 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                                 );
                             })}
                             <TableCell className={
-                                calculateAverage(delCoralL2Data) < 1 ? 'teleop black' :
-                                    calculateAverage(delCoralL2Data) < 2 ? 'teleop red' :
-                                        calculateAverage(delCoralL2Data) < 3 ? 'teleop yellow' :
-                                            calculateAverage(delCoralL2Data) < 4 ? 'teleop green' :
-                                                'teleop blue'
+                                calculateAverage(delCoralL2Data) < 1 ? 'auto black' :
+                                    calculateAverage(delCoralL2Data) < 2 ? 'auto red' :
+                                        calculateAverage(delCoralL2Data) < 3 ? 'auto yellow' :
+                                            calculateAverage(delCoralL2Data) < 4 ? 'auto green' :
+                                                'auto blue'
                             }>
                                 {calculateAverage(delCoralL2Data).toFixed(2)}
+                            </TableCell>
+                            <TableCell className={
+                                calculateMedian(delCoralL2Data) < 1 ? 'auto black' :
+                                    calculateMedian(delCoralL2Data) < 2 ? 'auto red' :
+                                        calculateMedian(delCoralL2Data) < 3 ? 'auto yellow' :
+                                            calculateMedian(delCoralL2Data) < 4 ? 'auto green' :
+                                                'auto blue'
+                            }>
+                                {calculateMedian(delCoralL2Data)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
@@ -377,15 +441,15 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                             {delCoralL3Data.map((data, index) => {
                                 let cellClass = '';
                                 if (data == 0) {
-                                    cellClass = 'teleop black';
+                                    cellClass = 'auto black';
                                 } else if (data == 1) {
-                                    cellClass = 'teleop red';
+                                    cellClass = 'auto red';
                                 } else if (data == 2) {
-                                    cellClass = 'teleop yellow';
+                                    cellClass = 'auto yellow';
                                 } else if (data == 3) {
-                                    cellClass = 'teleop green';
+                                    cellClass = 'auto green';
                                 } else if (data >= 4) {
-                                    cellClass = 'teleop blue';
+                                    cellClass = 'auto blue';
                                 }
                                 return (
                                     <TableCell key={index} className={cellClass}>
@@ -394,13 +458,22 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                                 );
                             })}
                             <TableCell className={
-                                calculateAverage(delCoralL3Data) < 1 ? 'teleop black' :
-                                    calculateAverage(delCoralL3Data) < 2 ? 'teleop red' :
-                                        calculateAverage(delCoralL3Data) < 3 ? 'teleop yellow' :
-                                            calculateAverage(delCoralL3Data) < 4 ? 'teleop green' :
-                                                'teleop blue'
+                                calculateAverage(delCoralL3Data) < 1 ? 'auto black' :
+                                    calculateAverage(delCoralL3Data) < 2 ? 'auto red' :
+                                        calculateAverage(delCoralL3Data) < 3 ? 'auto yellow' :
+                                            calculateAverage(delCoralL3Data) < 4 ? 'auto green' :
+                                                'auto blue'
                             }>
                                 {calculateAverage(delCoralL3Data).toFixed(2)}
+                            </TableCell>
+                            <TableCell className={
+                                calculateMedian(delCoralL3Data) < 1 ? 'auto black' :
+                                    calculateMedian(delCoralL3Data) < 2 ? 'auto red' :
+                                        calculateMedian(delCoralL3Data) < 3 ? 'auto yellow' :
+                                            calculateMedian(delCoralL3Data) < 4 ? 'auto green' :
+                                                'auto blue'
+                            }>
+                                {calculateMedian(delCoralL3Data)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
@@ -408,15 +481,15 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                             {delCoralL4Data.map((data, index) => {
                                 let cellClass = '';
                                 if (data == 0) {
-                                    cellClass = 'teleop black';
+                                    cellClass = 'auto black';
                                 } else if (data == 1) {
-                                    cellClass = 'teleop red';
+                                    cellClass = 'auto red';
                                 } else if (data == 2) {
-                                    cellClass = 'teleop yellow';
+                                    cellClass = 'auto yellow';
                                 } else if (data == 3) {
-                                    cellClass = 'teleop green';
+                                    cellClass = 'auto green';
                                 } else if (data >= 4) {
-                                    cellClass = 'teleop blue';
+                                    cellClass = 'auto blue';
                                 }
                                 return (
                                     <TableCell key={index} className={cellClass}>
@@ -425,13 +498,22 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                                 );
                             })}
                             <TableCell className={
-                                calculateAverage(delCoralL4Data) < 1 ? 'teleop black' :
-                                    calculateAverage(delCoralL4Data) < 2 ? 'teleop red' :
-                                        calculateAverage(delCoralL4Data) < 3 ? 'teleop yellow' :
-                                            calculateAverage(delCoralL4Data) < 4 ? 'teleop green' :
-                                                'teleop blue'
+                                calculateAverage(delCoralL4Data) < 1 ? 'auto black' :
+                                    calculateAverage(delCoralL4Data) < 2 ? 'auto red' :
+                                        calculateAverage(delCoralL4Data) < 3 ? 'auto yellow' :
+                                            calculateAverage(delCoralL4Data) < 4 ? 'auto green' :
+                                                'auto blue'
                             }>
                                 {calculateAverage(delCoralL4Data).toFixed(2)}
+                            </TableCell>
+                            <TableCell className={
+                                calculateMedian(delCoralL4Data) < 1 ? 'auto black' :
+                                    calculateMedian(delCoralL4Data) < 2 ? 'auto red' :
+                                        calculateMedian(delCoralL4Data) < 3 ? 'auto yellow' :
+                                            calculateMedian(delCoralL4Data) < 4 ? 'auto green' :
+                                                'auto blue'
+                            }>
+                                {calculateMedian(delCoralL4Data)}
                             </TableCell>
                         </TableRow>
                         <TableRow style={{ borderBottom: '4px solid black' }}>
@@ -439,15 +521,15 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                             {delCoralFData.map((data, index) => {
                                 let cellClass = '';
                                 if (data > 4) {
-                                    cellClass = 'teleop black';
+                                    cellClass = 'auto black';
                                 } else if (data == 3) {
-                                    cellClass = 'teleop red';
+                                    cellClass = 'auto red';
                                 } else if (data == 2) {
-                                    cellClass = 'teleop yellow';
+                                    cellClass = 'auto yellow';
                                 } else if (data == 1) {
-                                    cellClass = 'teleop green';
+                                    cellClass = 'auto green';
                                 } else if (data == 0) {
-                                    cellClass = 'teleop blue';
+                                    cellClass = 'auto blue';
                                 }
                                 return (
                                     <TableCell key={index} className={cellClass}>
@@ -456,13 +538,22 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                                 );
                             })}
                             <TableCell className={
-                                calculateAverage(delCoralFData) > 1 ? 'teleop black' :
-                                    calculateAverage(delCoralFData) > 2 ? 'teleop red' :
-                                        calculateAverage(delCoralFData) > 3 ? 'teleop yellow' :
-                                            calculateAverage(delCoralFData) > 4 ? 'teleop green' :
-                                                'teleop blue'
+                                calculateAverage(delCoralFData) > 1 ? 'auto black' :
+                                    calculateAverage(delCoralFData) > 2 ? 'auto red' :
+                                        calculateAverage(delCoralFData) > 3 ? 'auto yellow' :
+                                            calculateAverage(delCoralFData) > 4 ? 'auto green' :
+                                                'auto blue'
                             }>
                                 {calculateAverage(delCoralFData).toFixed(2)}
+                            </TableCell>
+                            <TableCell className={
+                                calculateMedian(delCoralFData) > 1 ? 'auto black' :
+                                    calculateMedian(delCoralFData) > 2 ? 'auto red' :
+                                        calculateMedian(delCoralFData) > 3 ? 'auto yellow' :
+                                            calculateMedian(delCoralFData) > 4 ? 'auto green' :
+                                                'auto blue'
+                            }>
+                                {calculateMedian(delCoralFData)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
@@ -470,15 +561,15 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                             {delAlgaePData.map((data, index) => {
                                 let cellClass = '';
                                 if (data == 0) {
-                                    cellClass = 'teleop black';
+                                    cellClass = 'auto black';
                                 } else if (data >= 1 && data <= 2) {
-                                    cellClass = 'teleop red';
+                                    cellClass = 'auto red';
                                 } else if (data >= 3 && data <= 4) {
-                                    cellClass = 'teleop yellow';
+                                    cellClass = 'auto yellow';
                                 } else if (data >= 5 && data <= 6) {
-                                    cellClass = 'teleop green';
+                                    cellClass = 'auto green';
                                 } else if (data >= 7) {
-                                    cellClass = 'teleop blue';
+                                    cellClass = 'auto blue';
                                 }
                                 return (
                                     <TableCell key={index} className={cellClass}>
@@ -487,13 +578,22 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                                 );
                             })}
                             <TableCell className={
-                                calculateAverage(delAlgaePData) < 1 ? 'teleop black' :
-                                    (calculateAverage(delAlgaePData) >= 1 && calculateAverage(delAlgaePData) <= 2) ? 'teleop red' :
-                                        (calculateAverage(delAlgaePData) >= 3 && calculateAverage(delAlgaePData) <= 4) ? 'teleop yellow' :
-                                            (calculateAverage(delAlgaePData) >= 5 && calculateAverage(delAlgaePData) <= 6) ? 'teleop green' :
-                                                'teleop blue'
+                                calculateAverage(delAlgaePData) < 1 ? 'auto black' :
+                                    (calculateAverage(delAlgaePData) >= 1 && calculateAverage(delAlgaePData) <= 2) ? 'auto red' :
+                                        (calculateAverage(delAlgaePData) >= 3 && calculateAverage(delAlgaePData) <= 4) ? 'auto yellow' :
+                                            (calculateAverage(delAlgaePData) >= 5 && calculateAverage(delAlgaePData) <= 6) ? 'auto green' :
+                                                'auto blue'
                             }>
                                 {calculateAverage(delAlgaePData).toFixed(2)}
+                            </TableCell>
+                            <TableCell className={
+                                calculateMedian(delAlgaePData) < 1 ? 'auto black' :
+                                    (calculateMedian(delAlgaePData) >= 1 && calculateMedian(delAlgaePData) <= 2) ? 'auto red' :
+                                        (calculateMedian(delAlgaePData) >= 3 && calculateMedian(delAlgaePData) <= 4) ? 'auto yellow' :
+                                            (calculateMedian(delAlgaePData) >= 5 && calculateMedian(delAlgaePData) <= 6) ? 'auto green' :
+                                                'auto blue'
+                            }>
+                                {calculateMedian(delAlgaePData)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
@@ -501,15 +601,15 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                             {delAlgaeNData.map((data, index) => {
                                 let cellClass = '';
                                 if (data == 0) {
-                                    cellClass = 'teleop black';
+                                    cellClass = 'auto black';
                                 } else if (data >= 1 && data <= 2) {
-                                    cellClass = 'teleop red';
+                                    cellClass = 'auto red';
                                 } else if (data >= 3 && data <= 4) {
-                                    cellClass = 'teleop yellow';
+                                    cellClass = 'auto yellow';
                                 } else if (data >= 5 && data <= 6) {
-                                    cellClass = 'teleop green';
+                                    cellClass = 'auto green';
                                 } else if (data >= 7) {
-                                    cellClass = 'teleop blue';
+                                    cellClass = 'auto blue';
                                 }
                                 return (
                                     <TableCell key={index} className={cellClass}>
@@ -518,13 +618,22 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                                 );
                             })}
                             <TableCell className={
-                                calculateAverage(delAlgaeNData) < 1 ? 'teleop black' :
-                                    (calculateAverage(delAlgaeNData) >= 1 && calculateAverage(delAlgaeNData) <= 2) ? 'teleop red' :
-                                        (calculateAverage(delAlgaeNData) >= 3 && calculateAverage(delAlgaeNData) <= 4) ? 'teleop yellow' :
-                                            (calculateAverage(delAlgaeNData) >= 5 && calculateAverage(delAlgaeNData) <= 6) ? 'teleop green' :
-                                                'teleop blue'
+                                calculateAverage(delAlgaeNData) < 1 ? 'auto black' :
+                                    (calculateAverage(delAlgaeNData) >= 1 && calculateAverage(delAlgaeNData) <= 2) ? 'auto red' :
+                                        (calculateAverage(delAlgaeNData) >= 3 && calculateAverage(delAlgaeNData) <= 4) ? 'auto yellow' :
+                                            (calculateAverage(delAlgaeNData) >= 5 && calculateAverage(delAlgaeNData) <= 6) ? 'auto green' :
+                                                'auto blue'
                             }>
                                 {calculateAverage(delAlgaeNData).toFixed(2)}
+                            </TableCell>
+                            <TableCell className={
+                                calculateMedian(delAlgaeNData) < 1 ? 'auto black' :
+                                    (calculateMedian(delAlgaeNData) >= 1 && calculateMedian(delAlgaeNData) <= 2) ? 'auto red' :
+                                        (calculateMedian(delAlgaeNData) >= 3 && calculateMedian(delAlgaeNData) <= 4) ? 'auto yellow' :
+                                            (calculateMedian(delAlgaeNData) >= 5 && calculateMedian(delAlgaeNData) <= 6) ? 'auto green' :
+                                                'auto blue'
+                            }>
+                                {calculateMedian(delAlgaeNData)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
@@ -532,15 +641,15 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                             {delAlgaeFData.map((data, index) => {
                                 let cellClass = '';
                                 if (data == 0) {
-                                    cellClass = 'teleop black';
+                                    cellClass = 'auto black';
                                 } else if (data >= 1 && data <= 2) {
-                                    cellClass = 'teleop red';
+                                    cellClass = 'auto red';
                                 } else if (data >= 3 && data <= 4) {
-                                    cellClass = 'teleop yellow';
+                                    cellClass = 'auto yellow';
                                 } else if (data >= 5 && data <= 6) {
-                                    cellClass = 'teleop green';
+                                    cellClass = 'auto green';
                                 } else if (data >= 7) {
-                                    cellClass = 'teleop blue';
+                                    cellClass = 'auto blue';
                                 }
                                 return (
                                     <TableCell key={index} className={cellClass}>
@@ -549,13 +658,22 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                                 );
                             })}
                             <TableCell className={
-                                calculateAverage(delAlgaeFData) < 1 ? 'teleop black' :
-                                    (calculateAverage(delAlgaeFData) >= 1 && calculateAverage(delAlgaeFData) <= 2) ? 'teleop red' :
-                                        (calculateAverage(delAlgaeFData) >= 3 && calculateAverage(delAlgaeFData) <= 4) ? 'teleop yellow' :
-                                            (calculateAverage(delAlgaeFData) >= 5 && calculateAverage(delAlgaeFData) <= 6) ? 'teleop green' :
-                                                'teleop blue'
+                                calculateAverage(delAlgaeFData) < 1 ? 'auto black' :
+                                    (calculateAverage(delAlgaeFData) >= 1 && calculateAverage(delAlgaeFData) <= 2) ? 'auto red' :
+                                        (calculateAverage(delAlgaeFData) >= 3 && calculateAverage(delAlgaeFData) <= 4) ? 'auto yellow' :
+                                            (calculateAverage(delAlgaeFData) >= 5 && calculateAverage(delAlgaeFData) <= 6) ? 'auto green' :
+                                                'auto blue'
                             }>
                                 {calculateAverage(delAlgaeFData).toFixed(2)}
+                            </TableCell>
+                            <TableCell className={
+                                calculateMedian(delAlgaeFData) < 1 ? 'auto black' :
+                                    (calculateMedian(delAlgaeFData) >= 1 && calculateMedian(delAlgaeFData) <= 2) ? 'auto red' :
+                                        (calculateMedian(delAlgaeFData) >= 3 && calculateMedian(delAlgaeFData) <= 4) ? 'auto yellow' :
+                                            (calculateMedian(delAlgaeFData) >= 5 && calculateMedian(delAlgaeFData) <= 6) ? 'auto green' :
+                                                'auto blue'
+                            }>
+                                {calculateMedian(delAlgaeFData)}
                             </TableCell>
                         </TableRow>
                     </TableBody>
