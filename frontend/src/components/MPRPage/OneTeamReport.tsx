@@ -25,6 +25,8 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
     const [delAlgaeFDiffs, setDelAlgaeFDiffs] = useState<number[]>([]);
     const [climbStates, setClimbStates] = useState<string[]>([]);
     const [climbTimes, setClimbTimes] = useState<number[]>([]);
+    const [recordTypes, setRecordTypes] = useState<string[]>([]);
+    const [comments, setComments] = useState<string[]>([]);
 
     const [hasAcqCoralF, setHasAcqCoralF] = useState<boolean>(false);
 
@@ -94,6 +96,12 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
 
             const climbTimesData = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => parseFloat(row.ClimbT));
             setClimbTimes(climbTimesData.map(time => parseFloat(time.toFixed(2))));
+
+            const recordTypesData = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => row.RecordType);
+            setRecordTypes(recordTypesData);
+
+            const commentsData = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => row.comments);
+            setComments(commentsData);
         };
 
         fetchData();
@@ -111,7 +119,9 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
         delAlgaeNDiffs.length,
         delAlgaePDiffs.length,
         climbStates.length,
-        climbTimes.length
+        climbTimes.length,
+        recordTypes.length,
+        comments.length
     );
 
     const columns = ['Matches:', ...Array.from({ length: maxMatches }, (_, i) => `${i + 1}`)];
@@ -126,7 +136,9 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
                         <TableHead>
                             <TableRow className="table-row-bordered2">
                                 {columns.map((column, index) => (
-                                    <TableCell key={index}>{column}</TableCell>
+                                    <TableCell key={index} className={comments[index] !== 'ControllerScouting' && index > 0 ? 'orange-cell' : ''}>
+                                        {column}
+                                    </TableCell>
                                 ))}
                             </TableRow>
                         </TableHead>
