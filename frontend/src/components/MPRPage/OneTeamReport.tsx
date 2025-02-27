@@ -107,6 +107,18 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
         fetchData();
     }, [robotNumber]);
 
+    const calculateAverage = (arr: number[]) => {
+        const avg = arr.reduce((a, b) => a + b, 0) / arr.length;
+        return isNaN(avg) ? 'N/A' : avg.toFixed(2);
+    };
+
+    const calculateMedian = (arr: number[]) => {
+        const sorted = [...arr].sort((a, b) => a - b);
+        const mid = Math.floor(sorted.length / 2);
+        const median = sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+        return isNaN(median) ? 'N/A' : median.toFixed(2);
+    };
+
     const maxMatches = Math.max(
         startingLocations.length,
         leaveLocations.length,
@@ -124,7 +136,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
         comments.length
     );
 
-    const columns = ['Matches:', ...Array.from({ length: maxMatches }, (_, i) => `${i + 1}`)];
+    const columns = ['Matches:', ...Array.from({ length: maxMatches }, (_, i) => `${i + 1}`), 'Average', 'Median'];
 
     const cellClass = color === 'Red' ? 'robot-number-cell red' : 'robot-number-cell blue';
 
@@ -141,7 +153,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
                             </TableRow>
                             <TableRow className="table-row-bordered2">
                                 {columns.map((column, index) => (
-                                    <TableCell key={index} className={comments[index] !== 'ControllerScouting' && index > 0 ? 'orange-cell' : ''}>
+                                    <TableCell key={index} className={comments[index] !== 'ControllerScouting' && index > 0 && index < columns.length - 2 ? 'orange-cell' : ''}>
                                         {column}
                                     </TableCell>
                                 ))}
@@ -158,6 +170,8 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
                                 {startingLocations.map((loc, index) => (
                                     <TableCell key={index}>{loc}</TableCell>
                                 ))}
+                                <TableCell>{calculateAverage(startingLocations.map(loc => parseInt(loc)))}</TableCell>
+                                <TableCell>{calculateMedian(startingLocations.map(loc => parseInt(loc)))}</TableCell>
                             </TableRow>
                             <TableRow className="table-row-bordered2">
                                 <TableCell>Leave Location</TableCell>
@@ -166,6 +180,8 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
                                         {loc}
                                     </TableCell>
                                 ))}
+                                <TableCell>{calculateAverage(leaveLocations.map(loc => parseInt(loc)))}</TableCell>
+                                <TableCell>{calculateMedian(leaveLocations.map(loc => parseInt(loc)))}</TableCell>
                             </TableRow>
                             <TableRow className="table-row-bordered2">
                                 <TableCell>Number of Coral</TableCell>
@@ -188,6 +204,8 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
                                         </TableCell>
                                     );
                                 })}
+                                <TableCell>{calculateAverage(filteredCoralCounts)}</TableCell>
+                                <TableCell>{calculateMedian(filteredCoralCounts)}</TableCell>
                             </TableRow>
                             <TableRow className="table-row-bordered2" style={{ backgroundColor: '#ff00ff' }}>
                                 <TableCell colSpan={columns.length} align="center">
@@ -215,6 +233,8 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
                                         </TableCell>
                                     );
                                 })}
+                                <TableCell>{calculateAverage(delCoralL4Diffs)}</TableCell>
+                                <TableCell>{calculateMedian(delCoralL4Diffs)}</TableCell>
                             </TableRow>
                             <TableRow className="table-row-bordered2">
                                 <TableCell>L3</TableCell>
@@ -237,6 +257,8 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
                                         </TableCell>
                                     );
                                 })}
+                                <TableCell>{calculateAverage(delCoralL3Diffs)}</TableCell>
+                                <TableCell>{calculateMedian(delCoralL3Diffs)}</TableCell>
                             </TableRow>
                             <TableRow className="table-row-bordered2">
                                 <TableCell>L2</TableCell>
@@ -259,6 +281,8 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
                                         </TableCell>
                                     );
                                 })}
+                                <TableCell>{calculateAverage(delCoralL2Diffs)}</TableCell>
+                                <TableCell>{calculateMedian(delCoralL2Diffs)}</TableCell>
                             </TableRow>
                             <TableRow className="table-row-bordered2">
                                 <TableCell>L1</TableCell>
@@ -281,6 +305,8 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
                                         </TableCell>
                                     );
                                 })}
+                                <TableCell>{calculateAverage(delCoralL1Diffs)}</TableCell>
+                                <TableCell>{calculateMedian(delCoralL1Diffs)}</TableCell>
                             </TableRow>
                             <TableRow className="table-row-bordered2">
                                 <TableCell>Net</TableCell>
@@ -303,6 +329,8 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
                                         </TableCell>
                                     );
                                 })}
+                                <TableCell>{calculateAverage(delAlgaeNDiffs)}</TableCell>
+                                <TableCell>{calculateMedian(delAlgaeNDiffs)}</TableCell>
                             </TableRow>
                             <TableRow className="table-row-bordered2">
                                 <TableCell>Processor</TableCell>
@@ -325,6 +353,8 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
                                         </TableCell>
                                     );
                                 })}
+                                <TableCell>{calculateAverage(delAlgaePDiffs)}</TableCell>
+                                <TableCell>{calculateMedian(delAlgaePDiffs)}</TableCell>
                             </TableRow>
                             <TableRow className="table-row-bordered2">
                                 <TableCell colSpan={columns.length} align="center" style={{ backgroundColor: '#ff00ff' }}>
@@ -352,12 +382,16 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
                                         </TableCell>
                                     );
                                 })}
+                                <TableCell>{calculateAverage(climbStates.map(state => parseFloat(state)))}</TableCell>
+                                <TableCell>{calculateMedian(climbStates.map(state => parseFloat(state)))}</TableCell>
                             </TableRow>
                             <TableRow className="table-row-bordered2">
                                 <TableCell>Climb Time</TableCell>
                                 {climbTimes.map((time, index) => {
                                     return <TableCell key={index}>{time}</TableCell>;
                                 })}
+                                <TableCell>{calculateAverage(climbTimes)}</TableCell>
+                                <TableCell>{calculateMedian(climbTimes)}</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
