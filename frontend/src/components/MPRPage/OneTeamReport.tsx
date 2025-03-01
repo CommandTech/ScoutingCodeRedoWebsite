@@ -37,7 +37,6 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
                 const response = await axios.get('/config');
                 setConfig(response.data);
             } catch (error) {
-                setError('Error fetching configuration');
                 console.error(error);
             }
         };
@@ -436,7 +435,3 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
 };
 
 export default OneTeamReport;
-
-function setError(arg0: string) {
-    throw new Error('Function not implemented.');
-}
