@@ -8,7 +8,6 @@ interface RankProps {
 const Rank: React.FC<RankProps> = ({ teamNumber }) => {
   const [rankings, setRankings] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchRankings = async () => {
@@ -24,7 +23,6 @@ const Rank: React.FC<RankProps> = ({ teamNumber }) => {
 
         setRankings(rankingsData);
       } catch (error) {
-        setError('Error fetching rankings');
         console.error('Error fetching rankings:', error);
       } finally {
         setLoading(false);
@@ -36,10 +34,6 @@ const Rank: React.FC<RankProps> = ({ teamNumber }) => {
 
   if (loading) {
     return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
   }
 
   const teamRanking = rankings.find(ranking => ranking.team_key === `frc${teamNumber}`);

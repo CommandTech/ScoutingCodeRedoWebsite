@@ -6,7 +6,6 @@ const Schedule: React.FC = () => {
     const { eventCode } = useParams<{ eventCode: string }>();
     const [matches, setMatches] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
     const [config, setConfig] = useState({ baseURL: '', apiKey: '', year: '' });
 
     useEffect(() => {
@@ -19,7 +18,6 @@ const Schedule: React.FC = () => {
                     year: response.data.year
                 });
             } catch (error) {
-                setError('Error fetching configuration');
                 console.error(error);
             }
         };
@@ -44,7 +42,6 @@ const Schedule: React.FC = () => {
                     });
                     setMatches(sortedMatches);
                 } catch (error) {
-                    setError('Error fetching matches');
                     console.error(error);
                 } finally {
                     setLoading(false);
@@ -59,10 +56,6 @@ const Schedule: React.FC = () => {
 
     if (loading) {
         return <div>Loading...</div>;
-    }
-
-    if (error) {
-        return <div>{error}</div>;
     }
 
     const groupedMatches = matches.reduce((acc: any, match: any) => {

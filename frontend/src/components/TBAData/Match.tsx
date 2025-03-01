@@ -6,7 +6,6 @@ const Match: React.FC = () => {
     const { eventCode, matchType, matchNumber } = useParams<Record<string, string>>();
     const [matchData, setMatchData] = useState<any>(null);
     const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
     const [config, setConfig] = useState({ baseURL: '', apiKey: '', year: '' });
 
     useEffect(() => {
@@ -15,7 +14,6 @@ const Match: React.FC = () => {
                 const response = await axios.get('/config');
                 setConfig(response.data);
             } catch (error) {
-                setError('Error fetching configuration');
                 console.error(error);
             }
         };
@@ -43,7 +41,6 @@ const Match: React.FC = () => {
                     );
                     setMatchData(filteredMatch);
                 } catch (error) {
-                    setError('Error fetching match data');
                     console.error(error);
                 } finally {
                     setLoading(false);
@@ -72,7 +69,6 @@ const Match: React.FC = () => {
             <h3>{getMatchTitle()}</h3>
             <Link to={link}>{link}</Link>
             {loading && <p>Loading...</p>}
-            {error && <p>{error}</p>}
             {matchData && (
                 <pre>{JSON.stringify(matchData, null, 2)}</pre>
             )}

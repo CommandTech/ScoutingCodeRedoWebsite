@@ -7,7 +7,6 @@ const Rankings: React.FC = () => {
     const { eventCode } = useParams<{ eventCode: string }>();
     const [rankings, setRankings] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
     const [config, setConfig] = useState({ baseURL: '', apiKey: '', year: '' });
 
     useEffect(() => {
@@ -20,7 +19,6 @@ const Rankings: React.FC = () => {
                     year: response.data.year
                 });
             } catch (error) {
-                setError('Error fetching configuration');
                 console.error(error);
             }
         };
@@ -38,7 +36,6 @@ const Rankings: React.FC = () => {
                     const response = await axios.get(link);
                     setRankings(response.data.rankings);
                 } catch (error) {
-                    setError('Error fetching rankings');
                     console.error(error);
                 } finally {
                     setLoading(false);
@@ -51,10 +48,6 @@ const Rankings: React.FC = () => {
 
     if (loading) {
         return <div>Loading...</div>;
-    }
-
-    if (error) {
-        return <div>{error}</div>;
     }
 
     return (

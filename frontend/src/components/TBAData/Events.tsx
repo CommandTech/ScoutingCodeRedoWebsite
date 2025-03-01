@@ -21,7 +21,6 @@ const Events: React.FC<EventsProps> = ({ baseURL, apiKey, onEventSelect }) => {
     const [data, setData] = useState<EventData[]>([]);
     const [selectedEvent, setSelectedEvent] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
     const [year, setYear] = useState<string>('');
     const navigate = useNavigate();
 
@@ -32,7 +31,6 @@ const Events: React.FC<EventsProps> = ({ baseURL, apiKey, onEventSelect }) => {
                 const serverIP = configResponse.data.server_ip;
                 setYear(configResponse.data.year);
             } catch (error) {
-                setError('Error fetching configuration');
                 console.error(error);
             }
         };
@@ -47,7 +45,6 @@ const Events: React.FC<EventsProps> = ({ baseURL, apiKey, onEventSelect }) => {
                     }));
                     setData(formattedData);
                 } catch (error) {
-                    setError('Error fetching data');
                     console.error(error);
                 } finally {
                     setLoading(false);
@@ -76,9 +73,7 @@ const Events: React.FC<EventsProps> = ({ baseURL, apiKey, onEventSelect }) => {
         return <div>Loading...</div>;
     }
 
-    if (error) {
-        return <div>{error}</div>;
-    }
+
 
     return (
         <div>
