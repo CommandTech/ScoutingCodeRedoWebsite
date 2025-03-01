@@ -4,12 +4,14 @@ import { readCSVFile } from '../utils/readCSV';
 import { calculateDifferences, calculateClimbTimes, calculateCoralCounts } from '../utils/reportingFunctions';
 import './CSS/MPR.css';
 import { InputLabel, Select, MenuItem, SelectChangeEvent, Button } from '@mui/material';
+import axios from 'axios';
 
 const MPR = () => {
-  const [teams, setTeams] = useState<string[]>([]);
+  const [teams, setTeams] = useState<number[]>([]);
   const [selectedMatch, setSelectedMatch] = useState('');
   const [selectedColor, setSelectedColor] = useState('All');
-  const [teamNumbers, setTeamNumbers] = useState<string[]>(['', '', '', '', '', '']);
+  const [blueTeams, setBlueTeams] = useState<string[]>(['', '', '']);
+  const [redTeams, setRedTeams] = useState<string[]>(['', '', '']);
   const [Chart1, setSelectedChart1] = useState<string>('StartingLocation');
   const chartOptions = [
     { value: 'StartingLocation', label: 'Starting Location (Auto)' },
@@ -37,60 +39,53 @@ const MPR = () => {
     { value: 'RobotPictures', label: 'Robot Pictures (Summary)' },
   ];
   const [showGraphs, setShowGraphs] = useState<boolean>(true);
+  const [config, setConfig] = useState({ baseURL: '', apiKey: '', EventCode: '', year: '' });
 
   useEffect(() => {
-    const fetchTeams = async () => {
+    const fetchConfig = async () => {
       try {
-        const response = await fetch('/ExcelCSVFiles/Activities.csv');
-        const csvData = await response.text();
-        const parsedData = await readCSVFile(new File([csvData], 'Activities.csv', { type: 'text/csv' }));
-
-        if (!parsedData || !Array.isArray(parsedData)) {
-          throw new Error('Parsed data is not an array or is undefined');
-        }
-
-        const matchNumbers = Array.from(new Set(parsedData.map((row: any) => row['Match']).filter(Boolean)));
-        setTeams(matchNumbers);
+        const response = await axios.get('/config');
+        setConfig(response.data);
       } catch (error) {
-        console.error('Error fetching teams:', error);
+        console.error(error);
       }
     };
 
-    fetchTeams();
+    fetchConfig();
   }, []);
 
   useEffect(() => {
-    setSelectedColor('All');
-  }, []);
+    const fetchMatches = async () => {
+      try {
+        const response = await axios.get(`${config.baseURL}event/${config.year}${config.EventCode}/matches/simple?X-TBA-Auth-Key=${config.apiKey}`);
+        const matches = response.data.filter((match: any) => match.comp_level === 'qm');
+        const matchNumbers = matches.map((match: any) => match.match_number).sort((a: number, b: number) => a - b);
+        console.log(`${config.baseURL}event/${config.year}${config.EventCode}/matches/simple?X-TBA-Auth-Key=${config.apiKey}`);
+        setTeams(matchNumbers);
+      } catch (error) {
+        console.error('Error fetching matches:', error);
+        console.log(`${config.baseURL}event/${config.year}${config.EventCode}/matches/simple?X-TBA-Auth-Key=${config.apiKey}`);
+      }
+    };
+
+    if (config.baseURL && config.apiKey && config.EventCode) {
+      fetchMatches();
+    }
+  }, [config]);
 
   const handleTeamChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     const matchNumber = event.target.value;
     setSelectedMatch(matchNumber);
 
     try {
-      const response = await fetch('/ExcelCSVFiles/Activities.csv');
-      const csvData = await response.text();
-      const parsedData = await readCSVFile(new File([csvData], 'Activities.csv', { type: 'text/csv' }));
-
-      if (!parsedData || !Array.isArray(parsedData)) {
-        throw new Error('Parsed data is not an array or is undefined');
-      }
-
-      const matchData = parsedData.filter((row: any) => row['Match'] === matchNumber);
-      if (matchData.length > 0) {
-        const teamNumbers = [
-          'blue0',
-          'blue1',
-          'blue2',
-          'red0',
-          'red1',
-          'red2',
-        ].map((driveSta: string) => {
-          const teamData = matchData.find((row: any) => row['DriveSta'] === driveSta);
-          return teamData ? teamData['Team'] : '';
-        });
-        console.log('teamNumbers:', teamNumbers);
-        setTeamNumbers(teamNumbers);
+      const response = await axios.get(`${config.baseURL}event/${config.year}${config.EventCode}/matches/simple?X-TBA-Auth-Key=${config.apiKey}`);
+      const match = response.data.find((match: any) => match.match_number === parseInt(matchNumber));
+      if (match) {
+        const blueTeams = match.alliances.blue.team_keys.map((team: string) => team);
+        const redTeams = match.alliances.red.team_keys.map((team: string) => team.replace('frc', ''));
+        console.log(blueTeams, redTeams);
+        setBlueTeams(blueTeams);
+        setRedTeams(redTeams);
       }
     } catch (error) {
       console.error('Error fetching team data:', error);
@@ -146,20 +141,32 @@ const MPR = () => {
         {selectedColor === 'All' ? (
           <div className="report-container">
             <div className="report-column">
-              <OneTeamReport color="Blue" robotNumber={teamNumbers[0]} chart={Chart1} graphStatus={showGraphs} />
-              <OneTeamReport color="Blue" robotNumber={teamNumbers[1]} chart={Chart1} graphStatus={showGraphs} />
-              <OneTeamReport color="Blue" robotNumber={teamNumbers[2]} chart={Chart1} graphStatus={showGraphs} />
+              <OneTeamReport color="Blue" robotNumber={blueTeams[0]} chart={Chart1} graphStatus={showGraphs} />
+              <OneTeamReport color="Blue" robotNumber={blueTeams[1]} chart={Chart1} graphStatus={showGraphs} />
+              <OneTeamReport color="Blue" robotNumber={blueTeams[2]} chart={Chart1} graphStatus={showGraphs} />
             </div>
             <div className="report-column">
-              <OneTeamReport color="Red" robotNumber={teamNumbers[3]} chart={Chart1} graphStatus={showGraphs} />
-              <OneTeamReport color="Red" robotNumber={teamNumbers[4]} chart={Chart1} graphStatus={showGraphs} />
-              <OneTeamReport color="Red" robotNumber={teamNumbers[5]} chart={Chart1} graphStatus={showGraphs} />
+              <OneTeamReport color="Red" robotNumber={redTeams[0]} chart={Chart1} graphStatus={showGraphs} />
+              <OneTeamReport color="Red" robotNumber={redTeams[1]} chart={Chart1} graphStatus={showGraphs} />
+              <OneTeamReport color="Red" robotNumber={redTeams[2]} chart={Chart1} graphStatus={showGraphs} />
             </div>
           </div>
         ) : (
-          <>
-            hi
-          </>
+          <div className="report-container">
+            {selectedColor === 'Blue' ? (
+              <div className="report-column">
+                <OneTeamReport color="Blue" robotNumber={blueTeams[0]} chart={Chart1} graphStatus={showGraphs} />
+                <OneTeamReport color="Blue" robotNumber={blueTeams[1]} chart={Chart1} graphStatus={showGraphs} />
+                <OneTeamReport color="Blue" robotNumber={blueTeams[2]} chart={Chart1} graphStatus={showGraphs} />
+              </div>
+            ) : (
+              <div className="report-column">
+                <OneTeamReport color="Red" robotNumber={redTeams[0]} chart={Chart1} graphStatus={showGraphs} />
+                <OneTeamReport color="Red" robotNumber={redTeams[1]} chart={Chart1} graphStatus={showGraphs} />
+                <OneTeamReport color="Red" robotNumber={redTeams[2]} chart={Chart1} graphStatus={showGraphs} />
+              </div>
+            )}
+          </div>
         )}
       </div>
     </div>

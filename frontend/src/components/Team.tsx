@@ -19,7 +19,6 @@ const Team = () => {
                 const response = await axios.get('/config');
                 setConfig(response.data);
             } catch (error) {
-                setError('Error fetching configuration');
                 console.error(error);
             }
         };
@@ -117,7 +116,3 @@ const Team = () => {
 };
 
 export default Team;
-
-function setError(arg0: string) {
-    throw new Error('Function not implemented.');
-}
