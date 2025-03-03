@@ -82,7 +82,7 @@ const MPR = () => {
       const match = response.data.find((match: any) => match.match_number === parseInt(matchNumber));
       if (match) {
         const blueTeams = match.alliances.blue.team_keys.map((team: string) => team);
-        const redTeams = match.alliances.red.team_keys.map((team: string) => team.replace('frc', ''));
+        const redTeams = match.alliances.red.team_keys.map((team: string) => team);
         console.log(blueTeams, redTeams);
         setBlueTeams(blueTeams);
         setRedTeams(redTeams);
