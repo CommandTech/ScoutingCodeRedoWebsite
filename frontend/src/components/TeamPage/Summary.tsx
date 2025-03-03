@@ -85,7 +85,6 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
             throw new Error('Parsed data is not an array or is undefined');
           }
 
-          const teamDataEndAuto = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'EndAuto');
           const teamDataEndMatch = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'EndMatch');
 
           const uniqueMatches = Array.from(new Set(teamDataEndMatch.map((row: any) => row['Match'])));
