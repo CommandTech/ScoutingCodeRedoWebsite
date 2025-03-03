@@ -88,7 +88,7 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
           const teamDataEndAuto = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'EndAuto');
           const teamDataEndMatch = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'EndMatch');
 
-          const uniqueMatches = Array.from(new Set(teamDataEndAuto.map((row: any) => row['Match'])));
+          const uniqueMatches = Array.from(new Set(teamDataEndMatch.map((row: any) => row['Match'])));
           setMatchCount(uniqueMatches.length);
 
           const pointScored = teamDataEndMatch.map((row: any) => parseFloat(row['PointScored'])).filter((value: number) => !isNaN(value));
