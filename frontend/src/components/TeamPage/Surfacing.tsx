@@ -17,7 +17,7 @@ const Surfacing: React.FC<SurfacingProps> = ({ selectedTeam }) => {
     const [averageDZTimes, setAverageDZTimes] = useState<number[]>([]);
     const [teamData, setTeamData] = useState<any[]>([]);
     const [strategyCounts, setStrategyCounts] = useState<{ [key: string]: number }>({});
-    const [comments, setComments] = useState<string[]>([]);
+    const [commentsData, setCommentsData] = useState<string[]>([]);
 
     const [Chart1, setSelectedChart1] = useState<string>('PointsPerMatch');
     const [Chart2, setSelectedChart2] = useState<string>('PointsPerMatch');
@@ -41,14 +41,6 @@ const Surfacing: React.FC<SurfacingProps> = ({ selectedTeam }) => {
                 if (!parsedData || !Array.isArray(parsedData)) {
                     throw new Error('Parsed data is not an array or is undefined');
                 }
-
-                const shallowTimes = parsedData
-                    .filter((row: any) => row['EndState'] === 'Shallow')
-                    .map((row: any) => parseFloat(row['ClimbT']));
-
-                const deepTimes = parsedData
-                    .filter((row: any) => row['EndState'] === 'Deep')
-                    .map((row: any) => parseFloat(row['ClimbT']));
             } catch (error) {
                 console.error('Error fetching global data:', error);
             }
@@ -71,8 +63,8 @@ const Surfacing: React.FC<SurfacingProps> = ({ selectedTeam }) => {
 
                     const teamData = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'EndMatch');
 
-                    const commentsData = teamData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => row.comments);
-                    setComments(commentsData);
+                    const commentsData = teamData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => row.Comments);
+                    setCommentsData(commentsData);
 
                     const states = teamData.map((row: any) => row['EndState']);
                     const times = teamData.map((row: any) => parseFloat(row['ClimbT']).toFixed(2));
@@ -138,7 +130,7 @@ const Surfacing: React.FC<SurfacingProps> = ({ selectedTeam }) => {
                     <TableHead>
                         <TableRow className="table-row-bordered">
                             {columns.map((column, index) => (
-                                <TableCell key={index} className={comments[index] !== 'ControllerScouting' && index > 0 ? 'orange-cell' : ''}>
+                                <TableCell key={index} className={commentsData[index-1] !== 'ControllerScouting' && index > 0 ? 'orange-cell' : ''}>
                                     {column}
                                 </TableCell>
                             ))}

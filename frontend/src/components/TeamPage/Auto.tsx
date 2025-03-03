@@ -26,7 +26,7 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
     const [delAlgaeNData, setDelAlgaeNData] = useState<any[]>([]);
     const [delAlgaeFData, setDelAlgaeFData] = useState<any[]>([]);
     const [disAlgaeData, setDisAlgaeData] = useState<any[]>([]);
-    const [comments, setComments] = useState<string[]>([]);
+    const [commentsData, setCommentsData] = useState<string[]>([]);
 
 
     const [Chart1, setSelectedChart1] = useState<string>('StartingLocation');
@@ -90,8 +90,8 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                     }
 
                     const teamDataEndMatch = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'EndMatch');
-                    const commentsData = teamDataEndMatch.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => row.comments);
-                    setComments(commentsData);
+                    const commentsData = teamDataEndMatch.map((row: any) => row['Comments']);
+                    setCommentsData(commentsData);
 
                     const teamData = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'EndAuto');
                     const uniqueMatches = Array.from(new Set(teamData.map((row: any) => row['Match'])));
@@ -160,8 +160,8 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                     <TableHead>
                         <TableRow className="table-row-bordered">
                             {columns.map((column, index) => (
-                                <TableCell key={index} className={comments[index] !== 'ControllerScouting' && index > 0 && index < columns.length - 2 ? 'orange-cell' : ''}>
-                                    {column} ({realMatchNumber[index-1]})
+                                <TableCell key={index} className={commentsData[index - 1] !== 'ControllerScouting' && index > 0 && index < columns.length - 2 ? 'orange-cell' : ''}>
+                                    {column} ({realMatchNumber[index - 1]})
                                 </TableCell>
                             ))}
                         </TableRow>

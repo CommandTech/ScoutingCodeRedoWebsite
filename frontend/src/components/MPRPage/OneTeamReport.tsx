@@ -27,7 +27,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
     const [climbStates, setClimbStates] = useState<string[]>([]);
     const [climbTimes, setClimbTimes] = useState<number[]>([]);
     const [recordTypes, setRecordTypes] = useState<string[]>([]);
-    const [comments, setComments] = useState<string[]>([]);
+    const [commentsData, setCommentsData] = useState<string[]>([]);
     const [config, setConfig] = useState({ baseURL: '', apiKey: ''});
     const [nickname, setNickname] = useState<string>('');
 
@@ -121,8 +121,8 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
             const recordTypesData = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => row.RecordType);
             setRecordTypes(recordTypesData);
 
-            const commentsData = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => row.comments);
-            setComments(commentsData);
+            const commentsData = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => row.Comments);
+            setCommentsData(commentsData);
         };
 
         fetchData();
@@ -154,7 +154,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
         climbStates.length,
         climbTimes.length,
         recordTypes.length,
-        comments.length
+        commentsData.length
     );
 
     const columns = ['Matches', ...Array.from({ length: maxMatches }, (_, i) => `${i + 1}`), 'Avg', 'Med'];
@@ -176,7 +176,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
                         <TableBody>
                             <TableRow className="table-row-bordered2">
                                 {columns.map((column, index) => (
-                                    <TableCell key={index} className={comments[index] !== 'ControllerScouting' && index > 0 && index < columns.length - 2 ? 'orange-cell' : ''}>
+                                    <TableCell key={index} className={commentsData[index-1] !== 'ControllerScouting' && index > 0 && index < columns.length - 2 ? 'orange-cell' : ''}>
                                         {column}
                                     </TableCell>
                                 ))}

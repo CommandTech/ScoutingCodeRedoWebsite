@@ -24,7 +24,7 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
     const [delAlgaeNData, setDelAlgaeNData] = useState<any[]>([]);
     const [delAlgaeFData, setDelAlgaeFData] = useState<any[]>([]);
     const [disAlgaeData, setDisAlgaeData] = useState<any[]>([]);
-    const [comments, setComments] = useState<string[]>([]);
+    const [commentsData, setCommentsData] = useState<string[]>([]);
 
     const [Chart1, setSelectedChart1] = useState<string>('PointsPerDriverStation');
     const [Chart2, setSelectedChart2] = useState<string>('PointsPerDriverStation');
@@ -94,8 +94,8 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                     setMatchCount(uniqueMatches.length);
                     setRealMatchNumber(uniqueMatches);
 
-                    const commentsData = teamDataEndMatch.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => row.comments);
-                    setComments(commentsData);
+                    const commentsData = teamDataEndMatch.map((row: any) => row['Comments']);
+                    setCommentsData(commentsData);
 
                     const calculateDifference = (column: string) => {
                         return teamDataEndMatch.map((endMatchRow: any) => {
@@ -165,7 +165,7 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                     <TableHead>
                         <TableRow className="table-row-bordered">
                             {columns.map((column, index) => (
-                                <TableCell key={index} className={comments[index] !== 'ControllerScouting' && index > 0 && index < columns.length - 2 ? 'orange-cell' : ''}>
+                                <TableCell key={index} className={commentsData[index-1] !== 'ControllerScouting' && index > 0 && index < columns.length - 2 ? 'orange-cell' : ''}>
                                     {column} ({realMatchNumber[index-1]})
                                 </TableCell>
                             ))}

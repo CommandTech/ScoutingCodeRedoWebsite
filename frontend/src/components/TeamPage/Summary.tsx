@@ -16,7 +16,6 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
   const [driveStaCoralAverages, setDriveStaCoralAverages] = useState<{ [key: string]: number }>({});
   const [driveStaAlgaeAverages, setDriveStaAlgaeAverages] = useState<{ [key: string]: number }>({});
   const [matchEventCounts, setMatchEventCounts] = useState<{ [key: string]: number }>({});
-  const [comments, setComments] = useState<string[]>([]);
 
 
   useEffect(() => {
@@ -93,11 +92,8 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
           const pointScored = teamDataEndMatch.map((row: any) => parseFloat(row['PointScored'])).filter((value: number) => !isNaN(value));
           setPointScoredData(pointScored);
 
-          const comments = teamDataEndMatch.map((row: any) => row['comments'] || 'No Comment');
+          const comments = teamDataEndMatch.map((row: any) => row['Comments']);
           setCommentsData(comments);
-
-          const commentsData = teamDataEndMatch.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => row.comments);
-          setComments(commentsData);
 
           const driveSta = Array.from(new Set(parsedData.map((row: any) => row['DriveSta'])))
             .filter(value => ['blue0', 'blue1', 'blue2', 'red0', 'red1', 'red2'].includes(value))
@@ -194,7 +190,7 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
           <TableHead>
             <TableRow className="table-row-bordered">
               {columns.map((column, index) => (
-                <TableCell key={index} className={comments[index] !== 'ControllerScouting' && index > 0 && index < columns.length - 2 ? 'orange-cell' : ''}>
+                <TableCell key={index} className={commentsData[index-1] !== 'ControllerScouting' && index > 0 && index < columns.length - 2 ? 'orange-cell' : ''}>
                   {column}
                 </TableCell>
               ))}
