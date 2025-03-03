@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import OneTeamReport from './MPRPage/OneTeamReport';
-import { readCSVFile } from '../utils/readCSV';
-import { calculateDifferences, calculateClimbTimes, calculateCoralCounts } from '../utils/reportingFunctions';
 import './CSS/MPR.css';
 import { InputLabel, Select, MenuItem, SelectChangeEvent, Button } from '@mui/material';
 import axios from 'axios';
