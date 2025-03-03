@@ -10,6 +10,7 @@ interface AutoProps {
 
 const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
     const [matchCount, setMatchCount] = useState<number>(0);
+    const [realMatchNumber, setRealMatchNumber] = useState<number[]>([]);
     const [leaveData, setLeaveData] = useState<any[]>([]);
     const [startingLocData, setStartingLocData] = useState<any[]>([]);
     const [acqCoralSData, setAcqCoralSData] = useState<any[]>([]);
@@ -54,7 +55,7 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                     throw new Error('Parsed data is not an array or is undefined');
                 }
 
-                const columns = ['AcqCoralS', 'AcqCoralF', 'AcqAlgaeR', 'AcqAlgaeF', 'DelCoralL1', 'DelCoralL2', 'DelCoralL3', 'DelCoralL4', 'DelCoralF', 'DelAlgaeP', 'DelAlgaeN', 'DelAlgaeF', 'DisAlgae'];
+                const columns = ['AcqCoralS', 'AcqCoralF', 'AcqAlgaeR', 'AcqAlgaeF', 'DelCoralL1', 'DelCoralL2', 'DelCoralL3', 'DelCoralL4', 'DelCoralF', 'DelAlgaeP', 'DelAlgaeN', 'DelAlgaeF', 'DisAlg'];
                 const minMax: { [key: string]: { min: number; max: number } } = {};
 
                 columns.forEach(column => {
@@ -95,6 +96,7 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                     const teamData = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'EndAuto');
                     const uniqueMatches = Array.from(new Set(teamData.map((row: any) => row['Match'])));
                     setMatchCount(uniqueMatches.length);
+                    setRealMatchNumber(uniqueMatches);
 
                     const leaveColumnData = teamData.map((row: any) => row['Leave']);
                     setLeaveData(leaveColumnData);
@@ -114,7 +116,7 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                     setDelAlgaePData(teamData.map((row: any) => row['DelAlgaeP']));
                     setDelAlgaeNData(teamData.map((row: any) => row['DelAlgaeN']));
                     setDelAlgaeFData(teamData.map((row: any) => row['DelAlgaeF']));
-                    setDisAlgaeData(teamData.map((row: any) => row['DisAlgae']));
+                    setDisAlgaeData(teamData.map((row: any) => row['DisAlg']));
                 } catch (error) {
                     console.error('Error fetching team data:', error);
                 }
@@ -159,7 +161,7 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                         <TableRow className="table-row-bordered">
                             {columns.map((column, index) => (
                                 <TableCell key={index} className={comments[index] !== 'ControllerScouting' && index > 0 && index < columns.length - 2 ? 'orange-cell' : ''}>
-                                    {column}
+                                    {column} ({realMatchNumber[index-1]})
                                 </TableCell>
                             ))}
                         </TableRow>

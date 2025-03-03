@@ -10,6 +10,7 @@ interface TeleopProps {
 
 const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
     const [matchCount, setMatchCount] = useState<number>(0);
+    const [realMatchNumber, setRealMatchNumber] = useState<number[]>([]);
     const [acqCoralSData, setAcqCoralSData] = useState<any[]>([]);
     const [acqCoralFData, setAcqCoralFData] = useState<any[]>([]);
     const [acqAlgaeRData, setAcqAlgaeRData] = useState<any[]>([]);
@@ -52,7 +53,7 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                     throw new Error('Parsed data is not an array or is undefined');
                 }
 
-                const columns = ['AcqCoralS', 'AcqCoralF', 'AcqAlgaeR', 'AcqAlgaeF', 'DelCoralL1', 'DelCoralL2', 'DelCoralL3', 'DelCoralL4', 'DelCoralF', 'DelAlgaeP', 'DelAlgaeN', 'DelAlgaeF', 'DisAlgae'];
+                const columns = ['AcqCoralS', 'AcqCoralF', 'AcqAlgaeR', 'AcqAlgaeF', 'DelCoralL1', 'DelCoralL2', 'DelCoralL3', 'DelCoralL4', 'DelCoralF', 'DelAlgaeP', 'DelAlgaeN', 'DelAlgaeF', 'DisAlg'];
                 const minMax: { [key: string]: { min: number; max: number } } = {};
 
                 columns.forEach(column => {
@@ -89,8 +90,9 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                     const teamDataEndAuto = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'EndAuto');
                     const teamDataEndMatch = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'EndMatch');
 
-                    const uniqueMatches = Array.from(new Set(teamDataEndAuto.map((row: any) => row['Match'])));
+                    const uniqueMatches = Array.from(new Set(teamDataEndMatch.map((row: any) => row['Match'])));
                     setMatchCount(uniqueMatches.length);
+                    setRealMatchNumber(uniqueMatches);
 
                     const commentsData = teamDataEndMatch.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => row.comments);
                     setComments(commentsData);
@@ -103,7 +105,7 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                                 const endAutoValue = parseFloat(endAutoRow[column]);
                                 return endMatchValue - endAutoValue;
                             }
-                            return null;
+                            return parseFloat(endMatchRow[column]);
                         }).filter((value: number | null) => value !== null);
                     };
 
@@ -119,7 +121,7 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                     setDelAlgaePData(calculateDifference('DelAlgaeP'));
                     setDelAlgaeNData(calculateDifference('DelAlgaeN'));
                     setDelAlgaeFData(calculateDifference('DelAlgaeF'));
-                    setDisAlgaeData(calculateDifference('DisAlgae'));
+                    setDisAlgaeData(calculateDifference('DisAlg'));
                 } catch (error) {
                     console.error('Error fetching team data:', error);
                 }
@@ -164,7 +166,7 @@ const Teleop: React.FC<TeleopProps> = ({ selectedTeam }) => {
                         <TableRow className="table-row-bordered">
                             {columns.map((column, index) => (
                                 <TableCell key={index} className={comments[index] !== 'ControllerScouting' && index > 0 && index < columns.length - 2 ? 'orange-cell' : ''}>
-                                    {column}
+                                    {column} ({realMatchNumber[index-1]})
                                 </TableCell>
                             ))}
                         </TableRow>
