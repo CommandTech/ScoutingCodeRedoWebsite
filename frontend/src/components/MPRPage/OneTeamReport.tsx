@@ -28,7 +28,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
     const [climbTimes, setClimbTimes] = useState<number[]>([]);
     const [recordTypes, setRecordTypes] = useState<string[]>([]);
     const [commentsData, setCommentsData] = useState<string[]>([]);
-    const [config, setConfig] = useState({ baseURL: '', apiKey: ''});
+    const [config, setConfig] = useState({ baseURL: '', apiKey: '' });
     const [nickname, setNickname] = useState<string>('');
 
     useEffect(() => {
@@ -60,6 +60,20 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
     }, [config, robotNumber]);
 
     useEffect(() => {
+        const padValues = (autoArray: any[], matchArray: any[], allMatches: any[]) => {
+            const autoPadded = allMatches.map(match => {
+                const item = autoArray.find(item => item.match === match);
+                return item ? item.value : 0;
+            });
+
+            const matchPadded = allMatches.map(match => {
+                const item = matchArray.find(item => item.match === match);
+                return item ? item.value : 'N/A';
+            });
+
+            return { autoPadded, matchPadded };
+        };
+
         const fetchData = async () => {
             const response = await fetch('/ExcelCSVFiles/Activities.csv');
             const csvData = await response.text();
@@ -77,39 +91,60 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
             );
             setFilteredCoralCounts(filteredCoral);
 
-            const delCoralL4Auto = filteredData.filter((row: any) => row.RecordType === 'EndAuto').map((row: any) => parseInt(row.DelCoralL4));
-            const delCoralL4Match = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => parseInt(row.DelCoralL4));
-            const delCoralL4Diff = delCoralL4Match.map((value, index) => value - delCoralL4Auto[index]);
+            const delCoralL4Auto = filteredData.filter((row: any) => row.RecordType === 'EndAuto').map((row: any) => ({ match: row.Match, value: parseInt(row.DelCoralL4) }));
+            const delCoralL4Match = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => ({ match: row.Match, value: parseInt(row.DelCoralL4) }));
+
+            const delCoralL3Auto = filteredData.filter((row: any) => row.RecordType === 'EndAuto').map((row: any) => ({ match: row.Match, value: parseInt(row.DelCoralL3) }));
+            const delCoralL3Match = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => ({ match: row.Match, value: parseInt(row.DelCoralL3) }));
+
+            const delCoralL2Auto = filteredData.filter((row: any) => row.RecordType === 'EndAuto').map((row: any) => ({ match: row.Match, value: parseInt(row.DelCoralL2) }));
+            const delCoralL2Match = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => ({ match: row.Match, value: parseInt(row.DelCoralL2) }));
+
+            const delCoralL1Auto = filteredData.filter((row: any) => row.RecordType === 'EndAuto').map((row: any) => ({ match: row.Match, value: parseInt(row.DelCoralL1) }));
+            const delCoralL1Match = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => ({ match: row.Match, value: parseInt(row.DelCoralL1) }));
+
+            const delCoralFAuto = filteredData.filter((row: any) => row.RecordType === 'EndAuto').map((row: any) => ({ match: row.Match, value: parseInt(row.DelCoralF) }));
+            const delCoralFMatch = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => ({ match: row.Match, value: parseInt(row.DelCoralF) }));
+
+            const delAlgaeNAuto = filteredData.filter((row: any) => row.RecordType === 'EndAuto').map((row: any) => ({ match: row.Match, value: parseInt(row.DelAlgaeN) }));
+            const delAlgaeNMatch = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => ({ match: row.Match, value: parseInt(row.DelAlgaeN) }));
+
+            const delAlgaePAuto = filteredData.filter((row: any) => row.RecordType === 'EndAuto').map((row: any) => ({ match: row.Match, value: parseInt(row.DelAlgaeP) }));
+            const delAlgaePMatch = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => ({ match: row.Match, value: parseInt(row.DelAlgaeP) }));
+
+            // Create a set of all match numbers and sort them
+            const allMatches = Array.from(new Set([
+                ...delCoralL4Auto.map(item => item.match), ...delCoralL4Match.map(item => item.match),
+                ...delCoralL3Auto.map(item => item.match), ...delCoralL3Match.map(item => item.match),
+                ...delCoralL2Auto.map(item => item.match), ...delCoralL2Match.map(item => item.match),
+                ...delCoralL1Auto.map(item => item.match), ...delCoralL1Match.map(item => item.match),
+                ...delCoralFAuto.map(item => item.match), ...delCoralFMatch.map(item => item.match),
+                ...delAlgaeNAuto.map(item => item.match), ...delAlgaeNMatch.map(item => item.match),
+                ...delAlgaePAuto.map(item => item.match), ...delAlgaePMatch.map(item => item.match)
+            ])).sort((a, b) => a - b);
+
+            const { autoPadded: delCoralL4AutoPadded, matchPadded: delCoralL4MatchPadded } = padValues(delCoralL4Auto, delCoralL4Match, allMatches);
+            const { autoPadded: delCoralL3AutoPadded, matchPadded: delCoralL3MatchPadded } = padValues(delCoralL3Auto, delCoralL3Match, allMatches);
+            const { autoPadded: delCoralL2AutoPadded, matchPadded: delCoralL2MatchPadded } = padValues(delCoralL2Auto, delCoralL2Match, allMatches);
+            const { autoPadded: delCoralL1AutoPadded, matchPadded: delCoralL1MatchPadded } = padValues(delCoralL1Auto, delCoralL1Match, allMatches);
+            const { autoPadded: delCoralFAutoPadded, matchPadded: delCoralFMatchPadded } = padValues(delCoralFAuto, delCoralFMatch, allMatches);
+            const { autoPadded: delAlgaeNAutoPadded, matchPadded: delAlgaeNMatchPadded } = padValues(delAlgaeNAuto, delAlgaeNMatch, allMatches);
+            const { autoPadded: delAlgaePAutoPadded, matchPadded: delAlgaePMatchPadded } = padValues(delAlgaePAuto, delAlgaePMatch, allMatches);
+
+            const delCoralL4Diff = delCoralL4MatchPadded.map((value, index) => value - delCoralL4AutoPadded[index]);
+            const delCoralL3Diff = delCoralL3MatchPadded.map((value, index) => value - delCoralL3AutoPadded[index]);
+            const delCoralL2Diff = delCoralL2MatchPadded.map((value, index) => value - delCoralL2AutoPadded[index]);
+            const delCoralL1Diff = delCoralL1MatchPadded.map((value, index) => value - delCoralL1AutoPadded[index]);
+            const delCoralFDiff = delCoralFMatchPadded.map((value, index) => value - delCoralFAutoPadded[index]);
+            const delAlgaeNDiff = delAlgaeNMatchPadded.map((value, index) => value - delAlgaeNAutoPadded[index]);
+            const delAlgaePDiff = delAlgaePMatchPadded.map((value, index) => value - delAlgaePAutoPadded[index]);
+
             setDelCoralL4Diffs(delCoralL4Diff);
-
-            const delCoralL3Auto = filteredData.filter((row: any) => row.RecordType === 'EndAuto').map((row: any) => parseInt(row.DelCoralL3));
-            const delCoralL3Match = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => parseInt(row.DelCoralL3));
-            const delCoralL3Diff = delCoralL3Match.map((value, index) => value - delCoralL3Auto[index]);
             setDelCoralL3Diffs(delCoralL3Diff);
-
-            const delCoralL2Auto = filteredData.filter((row: any) => row.RecordType === 'EndAuto').map((row: any) => parseInt(row.DelCoralL2));
-            const delCoralL2Match = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => parseInt(row.DelCoralL2));
-            const delCoralL2Diff = delCoralL2Match.map((value, index) => value - delCoralL2Auto[index]);
             setDelCoralL2Diffs(delCoralL2Diff);
-
-            const delCoralL1Auto = filteredData.filter((row: any) => row.RecordType === 'EndAuto').map((row: any) => parseInt(row.DelCoralL1));
-            const delCoralL1Match = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => parseInt(row.DelCoralL1));
-            const delCoralL1Diff = delCoralL1Match.map((value, index) => value - delCoralL1Auto[index]);
             setDelCoralL1Diffs(delCoralL1Diff);
-
-            const delCoralFAuto = filteredData.filter((row: any) => row.RecordType === 'EndAuto').map((row: any) => parseInt(row.DelCoralF));
-            const delCoralFMatch = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => parseInt(row.DelCoralF));
-            const delCoralFDiff = delCoralFMatch.map((value, index) => value - delCoralFAuto[index]);
             setDelCoralFDiffs(delCoralFDiff);
-
-            const delAlgaeNAuto = filteredData.filter((row: any) => row.RecordType === 'EndAuto').map((row: any) => parseInt(row.DelAlgaeN));
-            const delAlgaeNMatch = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => parseInt(row.DelAlgaeN));
-            const delAlgaeNDiff = delAlgaeNMatch.map((value, index) => value - delAlgaeNAuto[index]);
             setDelAlgaeNDiffs(delAlgaeNDiff);
-
-            const delAlgaePAuto = filteredData.filter((row: any) => row.RecordType === 'EndAuto').map((row: any) => parseInt(row.DelAlgaeP));
-            const delAlgaePMatch = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => parseInt(row.DelAlgaeP));
-            const delAlgaePDiff = delAlgaePMatch.map((value, index) => value - delAlgaePAuto[index]);
             setDelAlgaePDiffs(delAlgaePDiff);
 
             const climbStatesData = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => row.EndState);
@@ -176,7 +211,7 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
                         <TableBody>
                             <TableRow className="table-row-bordered2">
                                 {columns.map((column, index) => (
-                                    <TableCell key={index} className={commentsData[index-1] !== 'ControllerScouting' && index > 0 && index < columns.length - 2 ? 'orange-cell' : ''}>
+                                    <TableCell key={index} className={commentsData[index - 1] !== 'ControllerScouting' && index > 0 && index < columns.length - 2 ? 'orange-cell' : ''}>
                                         {column}
                                     </TableCell>
                                 ))}
