@@ -19,7 +19,6 @@ const NumberScouted: React.FC<NumberScoutedProps> = ({ teamNumber }) => {
           return columns[1] === 'frc'+ teamNumber && columns[4] === 'EndMatch';
         });
         setCount(filteredRows.length);
-        console.log(`Number of times team ${teamNumber} was scouted: ${filteredRows.length}`);
       } catch (error) {
         console.error('Error fetching CSV data:', error);
       }

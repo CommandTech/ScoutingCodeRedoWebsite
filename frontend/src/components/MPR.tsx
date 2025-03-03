@@ -60,11 +60,9 @@ const MPR = () => {
         const response = await axios.get(`${config.baseURL}event/${config.year}${config.EventCode}/matches/simple?X-TBA-Auth-Key=${config.apiKey}`);
         const matches = response.data.filter((match: any) => match.comp_level === 'qm');
         const matchNumbers = matches.map((match: any) => match.match_number).sort((a: number, b: number) => a - b);
-        console.log(`${config.baseURL}event/${config.year}${config.EventCode}/matches/simple?X-TBA-Auth-Key=${config.apiKey}`);
         setTeams(matchNumbers);
       } catch (error) {
         console.error('Error fetching matches:', error);
-        console.log(`${config.baseURL}event/${config.year}${config.EventCode}/matches/simple?X-TBA-Auth-Key=${config.apiKey}`);
       }
     };
 
@@ -83,7 +81,6 @@ const MPR = () => {
       if (match) {
         const blueTeams = match.alliances.blue.team_keys.map((team: string) => team);
         const redTeams = match.alliances.red.team_keys.map((team: string) => team);
-        console.log(blueTeams, redTeams);
         setBlueTeams(blueTeams);
         setRedTeams(redTeams);
       }

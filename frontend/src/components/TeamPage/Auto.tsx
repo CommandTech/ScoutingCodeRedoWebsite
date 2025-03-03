@@ -136,7 +136,7 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
         const sorted = [...arr].sort((a, b) => a - b);
         const mid = Math.floor(sorted.length / 2);
         const median = sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
-        return isNaN(median) ? 'N/A' : median.toFixed(2);
+        return isNaN(median) ? 'N/A' : median;
     };
 
     const handleChange1 = (event: SelectChangeEvent<string>) => {
@@ -224,7 +224,7 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                             calculateMedian(acqCoralSData) < 4 ? 'auto green' :
                                                 'auto blue'
                             }>
-                                {calculateMedian(acqCoralSData)}
+                                {parseFloat(calculateMedian(acqCoralSData)).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
@@ -264,7 +264,7 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                             calculateMedian(acqCoralFData) < 4 ? 'auto green' :
                                                 'auto blue'
                             }>
-                                {calculateMedian(acqCoralFData)}
+                                {parseFloat(calculateMedian(acqCoralFData)).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
@@ -304,7 +304,7 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                             (calculateMedian(acqAlgaeRData) >= 5 && calculateMedian(acqAlgaeRData) <= 6) ? 'auto green' :
                                                 'auto blue'
                             }>
-                                {calculateMedian(acqAlgaeRData)}
+                                {parseFloat(calculateMedian(acqAlgaeRData)).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
@@ -344,7 +344,7 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                             (calculateMedian(acqAlgaeFData) >= 5 && calculateMedian(acqAlgaeFData) <= 6) ? 'auto green' :
                                                 'auto blue'
                             }>
-                                {calculateMedian(acqAlgaeFData)}
+                                {parseFloat(calculateMedian(acqAlgaeFData)).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow className="table-row-bordered">
@@ -405,7 +405,7 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                             calculateMedian(delCoralL1Data) < 4 ? 'auto green' :
                                                 'auto blue'
                             }>
-                                {calculateMedian(delCoralL1Data)}
+                                {parseFloat(calculateMedian(delCoralL1Data)).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
@@ -445,7 +445,7 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                             calculateMedian(delCoralL2Data) < 4 ? 'auto green' :
                                                 'auto blue'
                             }>
-                                {calculateMedian(delCoralL2Data)}
+                                {parseFloat(calculateMedian(delCoralL2Data)).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
@@ -485,7 +485,7 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                             calculateMedian(delCoralL3Data) < 4 ? 'auto green' :
                                                 'auto blue'
                             }>
-                                {calculateMedian(delCoralL3Data)}
+                                {parseFloat(calculateMedian(delCoralL3Data)).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
@@ -525,7 +525,7 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                             calculateMedian(delCoralL4Data) < 4 ? 'auto green' :
                                                 'auto blue'
                             }>
-                                {calculateMedian(delCoralL4Data)}
+                                {parseFloat(calculateMedian(delCoralL4Data)).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow style={{ borderBottom: '4px solid black' }}>
@@ -565,7 +565,7 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                             calculateMedian(delCoralFData) > 4 ? 'auto green' :
                                                 'auto blue'
                             }>
-                                {calculateMedian(delCoralFData)}
+                                {parseFloat(calculateMedian(delCoralFData)).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
@@ -605,7 +605,7 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                             (calculateMedian(delAlgaePData) >= 5 && calculateMedian(delAlgaePData) <= 6) ? 'auto green' :
                                                 'auto blue'
                             }>
-                                {calculateMedian(delAlgaePData)}
+                                {parseFloat(calculateMedian(delAlgaePData)).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
@@ -645,7 +645,7 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                             (calculateMedian(delAlgaeNData) >= 5 && calculateMedian(delAlgaeNData) <= 6) ? 'auto green' :
                                                 'auto blue'
                             }>
-                                {calculateMedian(delAlgaeNData)}
+                                {parseFloat(calculateMedian(delAlgaeNData)).toFixed(2)}
                             </TableCell>
                         </TableRow>
                         <TableRow>
@@ -685,7 +685,7 @@ const Auto: React.FC<AutoProps> = ({ selectedTeam }) => {
                                             (calculateMedian(delAlgaeFData) >= 5 && calculateMedian(delAlgaeFData) <= 6) ? 'auto green' :
                                                 'auto blue'
                             }>
-                                {calculateMedian(delAlgaeFData)}
+                                {parseFloat(calculateMedian(delAlgaeFData)).toFixed(2)}
                             </TableCell>
                         </TableRow>
                     </TableBody>

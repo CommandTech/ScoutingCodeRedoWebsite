@@ -31,8 +31,6 @@ const AptsTDisplay = ({ selectedTeams }: { selectedTeams: any[] }) => {
     }
   }, [selectedTeams]);
 
-  console.log('Selected Teams:', selectedTeams); // Debugging log
-
   // Extract team names from selectedTeams
   const teams = selectedTeams.flatMap(team => [
     team['Red0'],
@@ -42,9 +40,6 @@ const AptsTDisplay = ({ selectedTeams }: { selectedTeams: any[] }) => {
     team['Blue1'],
     team['Blue2']
   ]).filter(Boolean); // Filter out any undefined or null values
-
-  console.log('Teams:', teams); // Debugging log
-  console.log('Average AptsT:', averageAptsT); // Debugging log
 
   const data = {
     labels: teams,
