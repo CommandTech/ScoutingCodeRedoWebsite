@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import './CSS/Surfacing.css';
 import { readCSVFile } from '../../utils/readCSV';
 import GraphsInterface from '../Graphs/GraphsInterface';
+import TeamNumber from '../Old/MultiPage/Team-Number';
 
 interface SurfacingProps {
     selectedTeam: string;
@@ -88,6 +89,9 @@ const Surfacing: React.FC<SurfacingProps> = ({ selectedTeam }) => {
                         const strategy = row['Strategy'];
                         if (strategy) {
                             acc[strategy] = (acc[strategy] || 0) + 1;
+                        }
+                        if (selectedTeam === 'frc8023') {
+                            //console.log(parsedData);
                         }
                         return acc;
                     }, {});

@@ -144,7 +144,7 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
             throw new Error('Parsed data is not an array or is undefined');
           }
 
-          const teamMatchEvents = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'MatchEvent');
+          const teamMatchEvents = parsedData.filter((row: any) => row['Team'] === selectedTeam && row['RecordType'] === 'Match_Event');
           const eventCounts: { [key: string]: number } = {};
 
           teamMatchEvents.forEach((row: any) => {
@@ -153,7 +153,6 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
               eventCounts[event] = (eventCounts[event] || 0) + 1;
             }
           });
-
           setMatchEventCounts(eventCounts);
         } catch (error) {
           console.error('Error fetching match event data:', error);
@@ -190,7 +189,7 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
           <TableHead>
             <TableRow className="table-row-bordered">
               {columns.map((column, index) => (
-                <TableCell key={index} className={commentsData[index-1] !== 'ControllerScouting' && index > 0 && index < columns.length - 2 ? 'orange-cell' : ''}>
+                <TableCell key={index} className={commentsData[index - 1] !== 'ControllerScouting' && index > 0 && index < columns.length - 2 ? 'orange-cell' : ''}>
                   {column}
                 </TableCell>
               ))}
@@ -294,9 +293,9 @@ const Summary: React.FC<SummaryProps> = ({ selectedTeam }) => {
         <Table>
           <TableHead>
             <TableRow className="table-row-bordered">
-              <TableCell className="fixed-width">Match Event</TableCell>
+              <TableCell className="fixed-width" style={{ textAlign: 'center' }}>Match Event</TableCell>
               {Object.keys(matchEventCounts).map((event, index) => (
-                <TableCell key={index}>{event}</TableCell>
+                <TableCell key={index} style={{ textAlign: 'center' }}>{event}</TableCell>
               ))}
             </TableRow>
           </TableHead>
