@@ -158,6 +158,37 @@ const OneTeamReport: React.FC<OneTeamReportProps> = ({ color, robotNumber, chart
 
             const commentsData = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => row.Comments);
             setCommentsData(commentsData);
+
+            // Compare EndMatch and EndAuto arrays and add 'N/A' to startingLocations if needed
+            const endMatchMatches = filteredData.filter((row: any) => row.RecordType === 'EndMatch').map((row: any) => row.Match).sort((a, b) => a - b);
+            const endAutoMatches = filteredData.filter((row: any) => row.RecordType === 'EndAuto').map((row: any) => row.Match).sort((a, b) => a - b);
+
+            const updatedStartingLocations: React.SetStateAction<string[]> = [];
+            const updatedLeaveLocs: React.SetStateAction<string[]> = [];
+            const updatedFilteredCoral: React.SetStateAction<number[]> = [];
+            let autoIndex = 0;
+
+            endMatchMatches.forEach(match => {
+                if (endAutoMatches[autoIndex] === match) {
+                    updatedStartingLocations.push(startingLocs[autoIndex]);
+                    updatedLeaveLocs.push(leaveLocs[autoIndex]);
+                    updatedFilteredCoral.push(filteredCoral[autoIndex]);
+                    autoIndex++;
+                } else {
+                    updatedStartingLocations.push('N/A');
+                    updatedLeaveLocs.push('N/A');
+                    updatedFilteredCoral.push(-1);
+                }
+            });
+
+            setStartingLocations(updatedStartingLocations);
+            setLeaveLocations(updatedLeaveLocs);
+            setFilteredCoralCounts(updatedFilteredCoral);
+            if (robotNumber === 'frc166') {
+                console.log(updatedStartingLocations);
+                console.log(updatedLeaveLocs);
+                console.log(updatedFilteredCoral);
+            }
         };
 
         fetchData();
